@@ -2,22 +2,15 @@ package lesson200323;
 
 import java.util.Random;
 
+import utils.Utils;
+
 public class DependenciesExamples {
 	public static void main(String[] args) {
 		while (true) {
 			Client client = new Client(createWorker());
 			client.process();
-			pause(1000);
+			Utils.pause(1000);
 		}
-	}
-
-	private static void pause(int i) {
-		try {
-			Thread.sleep(i);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-
 	}
 
 	private static Worker createWorker() { // Factory Method design pattern

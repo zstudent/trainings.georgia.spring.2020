@@ -8,7 +8,7 @@ public class LSD {
     private static final int BITS_PER_BYTE = 8;
 
     public static void main(String[] args) {
-		int[] a = generate(100_000_000);
+		int[] a = generate(10_000_000);
 		int[] b = Arrays.copyOf(a, a.length);
 		int[] c = Arrays.copyOf(a, a.length);
 		
@@ -83,12 +83,12 @@ public class LSD {
                 aux[count[c]++] = a[i];
             }
 
-            // copy back
-            for (int i = 0; i < n; i++)
-                a[i] = aux[i];
-//            int[] t = aux;
-//            aux = a;
-//            a = t;
+//            // copy back
+//            for (int i = 0; i < n; i++)
+//                a[i] = aux[i];
+            int[] t = aux;
+            aux = a;
+            a = t;
         }
     }
 }
