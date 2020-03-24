@@ -17,9 +17,12 @@ https://www.coursera.org/specializations/genomic-data-science?
 Advanced:
 Computer Science:
 https://www.coursera.org/learn/algorithms-part2
+
 Bioinformatics:
 https://www.coursera.org/specializations/bioinformatics
+https://www.bioinformaticsalgorithms.org
 http://rosalind.info/problems/locations/
+
 High Performance Computing:
 https://www.udacity.com/course/high-performance-computing--ud281
 https://www.udacity.com/course/high-performance-computer-architecture--ud007
