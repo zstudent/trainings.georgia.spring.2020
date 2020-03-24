@@ -1,0 +1,24 @@
+Beginner
+Biology & Genetics:
+https://www.udacity.com/course/tales-from-the-genome--bio110
+Computer Science:
+https://www.coursera.org/learn/cs-programming-java
+
+Intermediate
+Computer Science:
+https://www.coursera.org/learn/cs-algorithms-theory-machines
+https://www.coursera.org/learn/algorithms-part1
+Biology:
+https://www.edx.org/course/introduction-to-biology-the-secret-of-life-3
+Genomics:
+https://www.coursera.org/specializations/genomic-data-science?
+
+Advanced:
+Computer Science:
+https://www.coursera.org/learn/algorithms-part2
+Bioinformatics:
+https://www.coursera.org/specializations/bioinformatics
+http://rosalind.info/problems/locations/
+High Performance Computing:
+https://www.udacity.com/course/high-performance-computing--ud281
+https://www.udacity.com/course/high-performance-computer-architecture--ud007
