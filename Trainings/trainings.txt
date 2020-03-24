@@ -12,6 +12,7 @@ Biology:
 https://www.edx.org/course/introduction-to-biology-the-secret-of-life-3
 Genomics:
 https://www.coursera.org/specializations/genomic-data-science?
+(sections 1, 4, 5, 7)
 
 Advanced:
 Computer Science:
