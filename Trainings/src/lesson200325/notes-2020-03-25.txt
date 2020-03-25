@@ -40,6 +40,13 @@ private void action(Action action) {
   CustomerDAO   
   ProductDAO
   
+  7654 3210
+  0100 0000  == 64  2**6
+  
+  1101  == 13  
+  
+  1*2**3 + 1*2**2 + 0*2**1 + 1*2**0 = 8 + 4 + 0 + 1 = 13   
+  
   
   
   

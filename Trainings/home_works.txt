@@ -1,0 +1,10 @@
+
+2020-03-25
+
+1) implement RADIX correctly in Python; compare performance.
+
+2) finish implementation of BST: add get method
+
+3) rewrite BST on Python
+
+Optional 4) implement LinkedList with Iterable support.
