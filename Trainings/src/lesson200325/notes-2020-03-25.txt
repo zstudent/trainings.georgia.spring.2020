@@ -29,4 +29,35 @@ private void action(Action action) {
   
   Sentence ->  Word -> Letter
   
+  Java         MacOS         Windows
+  
+  Button <->  MacButton <->  WButton
+  Label  <->  MacLabel  <->  WLabel
+  List   <->  MacList   <->  WList
+  
+  Storage       AWS          MongoDB       Neo4J
+  UserDAO       AWSUserDAO   MUserDAO      N4JUserDAO
+  CustomerDAO   
+  ProductDAO
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
    
