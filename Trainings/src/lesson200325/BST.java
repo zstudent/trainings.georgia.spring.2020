@@ -1,4 +1,4 @@
-package lesson200325;
+//package lesson200325;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -21,6 +21,21 @@ public class BST implements Iterable<String>{
 	
 	public void put(String key, String value) {
 		root = put(root, key, value);
+	}
+	public String get(String key){return get(root,key);}
+
+	private String get(Node x, String key){
+		if(x == null){
+			return null;
+		}
+		int cmp = key.compareTo(x.key);
+		if(cmp == 0){
+			return x.value;
+		}
+		if(cmp > 0){
+			return get(x.right, key);
+		}
+		return get(x.left, key);
 	}
 
 	private Node put(Node x, String key, String value) {
