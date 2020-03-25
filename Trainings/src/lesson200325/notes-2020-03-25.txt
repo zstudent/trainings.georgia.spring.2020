@@ -1,0 +1,32 @@
+Wrapper :  Adapter, Decorator, Proxy, Facade
+
+Microservices  API Gateways (Facades!)
+
+Dispatching:
+
+private void action(Action action) {
+    switch (action) {
+      case GO_TO_SLEEP:
+        goToSleep();
+        break;
+      case WAKE_UP:
+        wakeUp();
+        break;
+      case GO_HOME:
+        goHome();
+        break;
+      case GO_TO_MINE:
+        goToMine();
+        break;
+      case WORK:
+        work();
+        break;
+      default:
+        LOGGER.info("Undefined action");
+        break;
+    }
+  }
+  
+  Sentence ->  Word -> Letter
+  
+   
