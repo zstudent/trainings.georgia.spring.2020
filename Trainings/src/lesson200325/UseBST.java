@@ -14,6 +14,7 @@ public class UseBST {
 		for (String key : bst) {
 			System.out.println(key);
 		}
+		System.out.println(bst.get("Bob"));
 	}
 
 }

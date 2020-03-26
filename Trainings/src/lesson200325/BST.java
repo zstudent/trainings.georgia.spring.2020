@@ -35,6 +35,18 @@ public class BST implements Iterable<String>{
 		
 		return x;
 	}
+	
+	public String get(String key) {
+		return get(root, key);
+	}
+	
+	private String get(Node x, String key) {
+		if (x == null) return null;
+		int cmp = key.compareTo(x.key);
+		if (cmp < 0) return get(x.left, key);
+		else if (cmp > 0) return get(x.right, key);
+		else return x.value;
+	}
 
 	@Override
 	public Iterator<String> iterator() {
