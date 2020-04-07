@@ -8,3 +8,10 @@
 3) rewrite BST on Python
 
 Optional 4) implement LinkedList with Iterable support.
+
+
+
+2020-04-07
+1) Convert lesson200407.LinkedList into the Stack with push, pop and top operations.
+2) learn generators in Python
+3) implement this class (Stack) in Python using generator 
