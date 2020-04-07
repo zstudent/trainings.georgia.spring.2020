@@ -12,6 +12,17 @@ public class UseLinkedList {
 		
 		System.out.println(list);
 		
+		LinkedStack<String> stacky = new LinkedStack<>();
+		stacky.push("one");
+		stacky.push("two");
+		stacky.push("three");
+		
+		System.out.println(stacky);
+		
+		stacky.pop();
+		System.out.println(stacky.pop());
+		
+		
 		int[] arr = {10,20,30};
 		
 		for (int i = 0; i < arr.length; i++) {
