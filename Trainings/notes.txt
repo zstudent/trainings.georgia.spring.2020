@@ -1,0 +1,22 @@
+
+ R ->  P  -> W
+ 
+ Sequential
+ [RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW]
+ ---------------------- time ----------------------------------------->>>>>>
+ Concurrent
+ RRRRRRRRRRRRRRRRRR
+ \\\\\\\\\\\\\\\\\\
+ parallel computations
+  PppPppPppPppPp
+   PppPppPppPppPp
+    PppPppPppPppP
+  \  \  \  \  \  \  \   
+   WWWWWWWWWWWWWWWWWW
+   
+   
+   MVC  Model View Controller
+   
+   Model (Observable!)
+   
+   Controller -<events>->  Model --<notifies>-> Views/Controller
