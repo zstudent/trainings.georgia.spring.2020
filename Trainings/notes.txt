@@ -1,4 +1,7 @@
 
+2020-04-08
+----------
+
  R ->  P  -> W
  
  Sequential
@@ -20,3 +23,26 @@
    Model (Observable!)
    
    Controller -<events>->  Model --<notifies>-> Views/Controller
+   
+   
+  Supplier   () -> T
+  Consumer   T  -> ()
+  Function   T  ->  R            int(4.50) -> 4
+  UnaryOperator   T -> T        Math.abs(-30)  -> 30
+  BinaryOperator  T,T -> T     10 + 20 -> 30
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
