@@ -32,15 +32,38 @@
   BinaryOperator  T,T -> T     10 + 20 -> 30
   
   
+  A  B  C    M
   
+  A --> B, C
+  B --> A, C
+  C --> A, B
   
+  a.addObse(B)
+  a.addObse(C)
   
+  M.add(a)
+  M.add(b)
+  M.add(c)
   
+  m.changed(a, data)
   
+  m-> b,c
   
+  A  B  C
+  D  M  E
+  F  G  I
   
+  Ethernet - HUB (Switch)
   
+  Event Bus
   
+  Chain:
+  
+  King -> Commander -> Officer -> Soldier
+
+Interpreter:
+
+4 3 2 - 1 + *    4 * ( 3 - 2 + 1 )
   
   
   
