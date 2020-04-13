@@ -22,7 +22,7 @@
    
    Model (Observable!)
    
-   Controller -<events>->  Model --<notifies>-> Views/Controller
+   external events -> Controller -<model events>->  Model -<changes itself>- --<notifies listeners>-> Views/Controller
    
    
   Supplier   () -> T
@@ -64,6 +64,53 @@
 Interpreter:
 
 4 3 2 - 1 + *    4 * ( 3 - 2 + 1 )
+  
+  
+  
+2020-04-13  Tetris
+-----------  
+  
+MVC  Model View Controller
+
+Model ((core/kernel/entities)+use cases(logic))  
+
+external events -> Controller -<model events>->  Model -<changes itself>- --<notifies listeners>-> Views/Controller
+ 
+Level       Score
+-----------------
+[       X       ]    Left
+[       XXX     ]    Right
+[               ]    Drop
+[               ]    Rotate (clockwise/counter-clockwise - for home work)
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[ XXXXXX XXXXXX ]  
+-----------------  
+  
+  Figure
+  Field
+  
+  Infinitest - plugin for Eclipse
+  
+     [(XXXX)
+     [(    )
+     [(    )
+     [(    )
+     [
+     [
+     [
+     [
+  
+  
+  
+  
+  
+  
   
   
   
