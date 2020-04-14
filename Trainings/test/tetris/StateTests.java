@@ -18,7 +18,7 @@ public class StateTests {
 		Arrays.fill(previousRow, 2);
 		previousRow[state.col] = 0;
 		
-		state.removeFilledRows();
+		state.field.removeFilledRows();
 		
 		assertEquals(0, lastRow[state.col]);
 		assertEquals(2, lastRow[0]);

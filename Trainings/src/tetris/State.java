@@ -1,13 +1,11 @@
 package tetris;
 
-import java.util.Arrays;
-
 public class State {
 
 	static final int ROWS = 20;
 	static final int COLUMNS = 10;
 
-	Field field;
+	public Field field;
 	Figure figure;
 	public int row;
 	public int col;
@@ -52,20 +50,6 @@ public class State {
 					continue;
 				field.data[row + r][col + c] = v;
 			}
-		}
-	}
-
-	public void removeFilledRows() {
-		OUTER: for (int r = 0; r < field.data.length; r++) {
-			for (int c = 0; c < field.data[r].length; c++) {
-				if (field.data[r][c] == 0)
-					continue OUTER;
-			}
-			for (int i = r; i > 0; i--) {
-				System.arraycopy(field.data[i - 1], 0, field.data[i], 0,
-						field.data[i].length);
-			}
-			Arrays.fill(field.data[0], 0);
 		}
 	}
 

@@ -31,12 +31,19 @@ public class Logic {
 		if (!state.isFigureFitTheField()) {
 			state.row--;
 			state.pasteFigureIntoTheField();
-			state.removeFilledRows();
+			state.field.removeFilledRows();
 			state.launchNewFigure();
 			// TODO:  homework:  determine GAME OVER
 			return true;
 		}
 		return true;
+	}
+
+	public void dropDown() {
+		while (state.isFigureFitTheField()) {
+			state.row++;
+		}
+		state.row--;
 	}
 
 }

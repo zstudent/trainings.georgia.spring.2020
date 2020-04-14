@@ -28,4 +28,8 @@ public class Controller implements ModelListener {
 		model.moveDown();
 	}
 
+	public void dropDown() {
+		model.dropDown();
+	}
+
 }

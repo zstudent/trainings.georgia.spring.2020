@@ -56,6 +56,10 @@ public class Tetris {
 					controller.moveRight();
 					break;
 
+				case KeyEvent.VK_DOWN:
+					controller.dropDown();
+					break;
+					
 				default:
 					break;
 				}
@@ -65,7 +69,7 @@ public class Tetris {
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(200);
+					Thread.sleep(5000);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -76,6 +80,10 @@ public class Tetris {
 		thread.start();
 
 		frame.setVisible(true);
+		
+		SwingUtilities.invokeLater(() -> {
+			model.refreshView();
+		});
 	}
 
 }

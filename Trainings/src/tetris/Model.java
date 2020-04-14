@@ -32,5 +32,14 @@ public class Model {
 	public void addListener(ModelListener modelListener) {
 		listeners.add(modelListener);
 	}
+
+	public void refreshView() {
+		fireOnChange();
+	}
+
+	public void dropDown() {
+		logic.dropDown();
+		fireOnChange();
+	}
 	
 }
