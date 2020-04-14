@@ -16,7 +16,7 @@ public class State {
 	}
 
 	void launchNewFigure() {
-		this.figure = new Figure(Figure.O);
+		this.figure = new Figure();
 		row = 0;
 		col = field.data[0].length / 2 - figure.data[0].length / 2;
 	}
