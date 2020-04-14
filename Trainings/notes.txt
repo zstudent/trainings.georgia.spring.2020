@@ -1,0 +1,139 @@
+
+2020-04-08
+----------
+
+ R ->  P  -> W
+ 
+ Sequential
+ [RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW][RPW]
+ ---------------------- time ----------------------------------------->>>>>>
+ Concurrent
+ RRRRRRRRRRRRRRRRRR
+ \\\\\\\\\\\\\\\\\\
+ parallel computations
+  PppPppPppPppPp
+   PppPppPppPppPp
+    PppPppPppPppP
+  \  \  \  \  \  \  \   
+   WWWWWWWWWWWWWWWWWW
+   
+   
+   MVC  Model View Controller
+   
+   Model (Observable!)
+   
+   external events -> Controller -<model events>->  Model -<changes itself>- --<notifies listeners>-> Views/Controller
+   
+   
+  Supplier   () -> T
+  Consumer   T  -> ()
+  Function   T  ->  R            int(4.50) -> 4
+  UnaryOperator   T -> T        Math.abs(-30)  -> 30
+  BinaryOperator  T,T -> T     10 + 20 -> 30
+  
+  
+  A  B  C    M
+  
+  A --> B, C
+  B --> A, C
+  C --> A, B
+  
+  a.addObse(B)
+  a.addObse(C)
+  
+  M.add(a)
+  M.add(b)
+  M.add(c)
+  
+  m.changed(a, data)
+  
+  m-> b,c
+  
+  A  B  C
+  D  M  E
+  F  G  I
+  
+  Ethernet - HUB (Switch)
+  
+  Event Bus
+  
+  Chain:
+  
+  King -> Commander -> Officer -> Soldier
+
+Interpreter:
+
+4 3 2 - 1 + *    4 * ( 3 - 2 + 1 )
+  
+  
+  
+2020-04-13  Tetris
+-----------  
+  
+MVC  Model View Controller
+
+Model ((core/kernel/entities)+use cases(logic))  
+
+external events -> Controller -<model events>->  Model -<changes itself>- --<notifies listeners>-> Views/Controller
+ 
+Level       Score
+-----------------
+[       X       ]    Left
+[       XXX     ]    Right
+[               ]    Drop
+[               ]    Rotate (clockwise/counter-clockwise - for home work)
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[               ]  
+[ XXXXXX XXXXXX ]  
+-----------------  
+  
+  Figure
+  Field
+  
+  Infinitest - plugin for Eclipse
+  
+     [(XXXX)
+     [(    )
+     [(    )
+     [(    )
+     [
+     [
+     [
+     [
+  
+  
+  2020-04-14
+  ---------
+  
+  ------------------------
+  [        .1             ]
+  [        XXX            ]
+  [                       ]
+  [                       ]
+  
+  
+  testRemoveFullLine
+  
+  before
+  [00000000000000000000000]
+  [22222222220222222222222]
+  [11111111111111111111111]
+  -------------------------
+  state.removeFilledRows();
+  after
+  [00000000000000000000000]
+  [00000000000000000000000]
+  [22222222220222222222222]
+  -------------------------
+  
+  
+  
+  
+  
+  
+  

@@ -15,3 +15,15 @@ Optional 4) implement LinkedList with Iterable support.
 1) Convert lesson200407.LinkedList into the Stack with push, pop and top operations.
 2) learn generators in Python
 3) implement this class (Stack) in Python using generator 
+
+
+2020-04-14
+Tetris:  (deadline next Tuesday, April 21)
+1) implement rotation
+2) detect and process GAME OVER
+3) add score
+4) add levels  and increase falling speed every level
+
+Create new game Snake (deadline May 4)
+
+Award points:  12 10 8 7 6 5 4 3 2 1
