@@ -2,7 +2,7 @@ package tetris;
 
 public class Field {
 
-	int[][] data = new int[0][0];
+	int[][] data;
 	
 	public Field(int cols, int rows) {
 		this.data = new int[rows][cols];

@@ -30,7 +30,11 @@ public class Logic {
 		state.row++;
 		if (!state.isFigureFitTheField()) {
 			state.row--;
-			return false;
+			state.pasteFigureIntoTheField();
+			state.removeFilledRows();
+			state.launchNewFigure();
+			// TODO:  homework:  determine GAME OVER
+			return true;
 		}
 		return true;
 	}

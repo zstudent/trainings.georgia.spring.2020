@@ -25,7 +25,7 @@ public class LogicTests {
 	@Test
 	public void testMovedLeftTooFar() {
 		logic.state.col = 0;
-		logic.state.figure = new Figure(Figure.FOUR_HORIZONTAL);
+		logic.state.figure = new Figure(Figure.I);
 		boolean success = logic.moveLeft();
 		assertEquals(0, logic.state.col);
 		assertFalse(success);
@@ -43,7 +43,7 @@ public class LogicTests {
 	public void testMovedRightTooFar() {
 		int col = fieldWidth() - figureWidth();
 		logic.state.col = col;
-		logic.state.figure = new Figure(Figure.FOUR_HORIZONTAL);
+		logic.state.figure = new Figure(Figure.I);
 		boolean success = logic.moveRight();
 		assertEquals(col, logic.state.col);
 		assertFalse(success);
@@ -67,11 +67,15 @@ public class LogicTests {
 
 	@Test
 	public void testMovedDownTooFar() throws Exception {
+		logic.state.figure = new Figure(Figure.I);
 		logic.state.row = fieldHeight() - 1;
 		int row = logic.state.row;
+		Figure old = logic.state.figure; 
 		boolean success = logic.moveDown();
-		assertEquals(row, logic.state.row);
-		assertFalse(success);
+		assertFalse(old == logic.state.figure);
+		assertEquals(0, logic.state.row);
+		assertTrue(success);
+		// TODO HOMEWORK:  check that old figure is copied to the field
 	}
 
 	private int fieldHeight() {

@@ -25,9 +25,9 @@ public class InstantiationsTest {
 	
 	@Test
 	public void testConcreteFigureCreation() throws Exception {
-		Figure figure = new Figure(Figure.FOUR_HORIZONTAL);
+		Figure figure = new Figure(Figure.I);
 		assertNotNull(figure.data);
-		assertTrue(figure.data == Figure.FOUR_HORIZONTAL);
+		assertTrue(figure.data == Figure.I);
 		assertEquals(figure.data[0].length, 4);
 	}
 	
