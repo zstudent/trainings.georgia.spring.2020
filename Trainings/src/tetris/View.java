@@ -5,13 +5,15 @@ import javax.swing.*;
 public class View {
 
 	private PlatformGraphics graphics;
-	
+	private PlatformLable textLable;
+
 	public View() {
 		graphics = (color, row, col) -> {};
 	}
 	
-	public View(PlatformGraphics graphics) {
+	public View(PlatformGraphics graphics,PlatformLable textLable) {
 		this.graphics = graphics;
+		this.textLable = textLable;
 	}
 
 	public void draw(State state) {
@@ -19,9 +21,9 @@ public class View {
 		drawData(state.figure.data, state.row, state.col, false);
 	}
 
-	public void drawGameOver()
+	public void drawLabel()
 	{
-
+		textLable.writeLable("Game over");
 	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {

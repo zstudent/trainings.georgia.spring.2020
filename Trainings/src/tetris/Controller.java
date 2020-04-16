@@ -16,6 +16,7 @@ public class Controller implements ModelListener {
 	@Override
 	public void fireGameOver() {
 		filter.setGameOver(true);
+		view.drawLabel();
 	}
 
 	@Override

@@ -50,7 +50,7 @@ public class State {
 				if (v == 0)
 					continue;
 				field.data[row + r][col + c] = v;
-				if( ROWS - (row + r ) > stateHeight) stateHeight = ROWS - (row  + r);
+				if( ROWS - (row + r ) > stateHeight) stateHeight = ROWS - (row  + r);//Update stateHeight accordingly.
 			}
 		}
 	}

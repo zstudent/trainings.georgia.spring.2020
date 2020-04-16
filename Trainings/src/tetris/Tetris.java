@@ -1,15 +1,10 @@
 package tetris;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public class Tetris {
 	private static final Color[] COLORS = 
@@ -22,11 +17,12 @@ public class Tetris {
 
 	private static void setup() {
 		JFrame frame = new JFrame("Tetris");
-
+		frame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
 
 		panel.setPreferredSize(new Dimension(400, 700));
-		frame.add(panel);
+
+		frame.add(panel,BorderLayout.CENTER);
 
 		frame.pack();
 
@@ -36,14 +32,20 @@ public class Tetris {
 		
 		Model model = new Model();
 
+		JLabel textField = new JLabel();
+		panel.add(textField,BorderLayout.NORTH);
+		//panel.add(textField);
 		Graphics2D graphics = (Graphics2D) panel.getGraphics();
-		View view = new View((color, row, col) -> {
-			graphics.setColor(COLORS[color]);
-			graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
-		});
+		View view = new View(
+			(color, row, col) -> {
+				graphics.setColor(COLORS[color]);
+				graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
+			},
+			(msg)->{
+				textField.setText(msg);
+			});
 
 		controller.set(model, view);
-
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
