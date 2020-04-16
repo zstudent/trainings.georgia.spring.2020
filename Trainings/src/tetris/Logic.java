@@ -33,10 +33,8 @@ public class Logic {
 			state.pasteFigureIntoTheField();
 			state.field.removeFilledRows();
 			state.launchNewFigure();
+			if(state.stateHeight >= state.ROWS) return false;
 			return true;
-		}
-		if(state.row == 0){
-			return false;
 		}
 		return true;
 	}

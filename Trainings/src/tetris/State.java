@@ -9,16 +9,17 @@ public class State {
 	Figure figure;
 	public int row;
 	public int col;
-	int[][] backup ;
+	int[][] backup ;	//Store backup for every rotation, so we can undo in case of bad placement.
+	int stateHeight = 0;	//Store the height of state.
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
 		launchNewFigure();
 	}
 
 	void launchNewFigure() {
-		this.figure = new Figure();
-		row = 0;
-		col = field.data[0].length / 2 - figure.data[0].length / 2;
+			this.figure = new Figure();
+			row = 0;
+			col = field.data[0].length / 2 - figure.data[0].length / 2;
 	}
 
 	boolean isFigureFitTheField() {
@@ -49,6 +50,7 @@ public class State {
 				if (v == 0)
 					continue;
 				field.data[row + r][col + c] = v;
+				if( ROWS - (row + r ) > stateHeight) stateHeight = ROWS - (row  + r);
 			}
 		}
 	}
@@ -63,26 +65,17 @@ public class State {
 		{
 			for(int c=0; c<figure.data[r].length; c++)
 			{
-				rotatedFigure[width-c-1][height - r - 1] = figure.data[r][c];//Should inverse the matrix.
+				rotatedFigure[r][c] = figure.data[r][c];
 			}
 		}
-		backup = figure.data;
-		figure.data = rotatedFigure;
-		mirror();
-	}
-
-	private void mirror()
-	{
-//		int width = figure.data[0].length;
-//		int height = figure.data.length;
-//		for(int row=0; row<height; row++)
-//		{
-//			for(int col =0; col<width; col++){
-//				int temp = figure.data[row][col];
-//				figure.data[row][col] = figure.data[row][figure.data[row].length-col-1];
-//				figure.data[row][figure.data[row].length-col-1] = temp;
-//			}
-//		}
+		for(int r=0; r<figure.data.length; r++)
+		{
+			for(int c=0; c<figure.data[r].length; c++)
+			{
+			 	figure.data[r][c] = rotatedFigure[c][3-r];
+			}
+		}
+		backup = rotatedFigure;
 	}
 
 	public void undo()

@@ -1,5 +1,7 @@
 package tetris;
 
+import javax.swing.*;
+
 public class View {
 
 	private PlatformGraphics graphics;
@@ -17,6 +19,11 @@ public class View {
 		drawData(state.figure.data, state.row, state.col, false);
 	}
 
+	public void drawGameOver()
+	{
+
+	}
+
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {
 		for (int r = 0; r < data.length; r++) {
 			for (int c = 0; c < data[r].length; c++) {
@@ -26,6 +33,7 @@ public class View {
 			}
 		}
 	}
+
 
 	private void drawBox(int color, int row, int col) {
 		graphics.fillRect(color, row, col);

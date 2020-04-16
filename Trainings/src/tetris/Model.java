@@ -27,6 +27,17 @@ public class Model {
 	public void moveDown() {
 		if (logic.moveDown())
 			fireOnChange();
+		else{
+			fireGameOver();
+		}
+	}
+
+	private void fireGameOver()
+	{
+		for(ModelListener listener : listeners)
+		{
+			listener.fireGameOver();
+		}
 	}
 
 	public void rotateLeft()
@@ -47,5 +58,4 @@ public class Model {
 		logic.dropDown();
 		fireOnChange();
 	}
-	
 }
