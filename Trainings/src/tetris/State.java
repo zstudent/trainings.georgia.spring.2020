@@ -9,7 +9,7 @@ public class State {
 	Figure figure;
 	public int row;
 	public int col;
-
+	int[][] backup ;
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
 		launchNewFigure();
@@ -53,4 +53,40 @@ public class State {
 		}
 	}
 
+	void rotateFigureLeft()
+	{
+		int[][] rotatedFigure = new int[figure.data.length][figure.data[0].length];
+		int height = figure.data.length;
+		int width = figure.data[0].length;
+
+		for(int r=0; r<figure.data.length; r++)
+		{
+			for(int c=0; c<figure.data[r].length; c++)
+			{
+				rotatedFigure[width-c-1][height - r - 1] = figure.data[r][c];//Should inverse the matrix.
+			}
+		}
+		backup = figure.data;
+		figure.data = rotatedFigure;
+		mirror();
+	}
+
+	private void mirror()
+	{
+//		int width = figure.data[0].length;
+//		int height = figure.data.length;
+//		for(int row=0; row<height; row++)
+//		{
+//			for(int col =0; col<width; col++){
+//				int temp = figure.data[row][col];
+//				figure.data[row][col] = figure.data[row][figure.data[row].length-col-1];
+//				figure.data[row][figure.data[row].length-col-1] = temp;
+//			}
+//		}
+	}
+
+	public void undo()
+	{
+		figure.data = backup;
+	}
 }

@@ -29,6 +29,12 @@ public class Model {
 			fireOnChange();
 	}
 
+	public void rotateLeft()
+	{
+		if(logic.rotateLeft())
+			fireOnChange();
+	}
+
 	public void addListener(ModelListener modelListener) {
 		listeners.add(modelListener);
 	}

@@ -59,7 +59,8 @@ public class Tetris {
 				case KeyEvent.VK_DOWN:
 					controller.dropDown();
 					break;
-					
+					case KeyEvent.VK_UP:
+						controller.rotateLeft();
 				default:
 					break;
 				}
@@ -69,7 +70,7 @@ public class Tetris {
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(500);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}

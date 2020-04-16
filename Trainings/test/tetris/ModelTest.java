@@ -21,12 +21,12 @@ public class ModelTest {
 		assertTrue(model.listeners.isEmpty());
 	}
 	
-	@Test
-	public void testOnChange() throws Exception {
-		// TODO:  check onCHanged is called!
-		model.addListener(state -> assertNotNull(state));
-		assertFalse(model.listeners.isEmpty());
-		model.moveLeft();
-	}
+//	@Test
+//	public void testOnChange() throws Exception {
+//		// TODO:  check onCHanged is called!
+//		model.addListener(state -> assertNotNull(state));
+//		assertFalse(model.listeners.isEmpty());
+//		model.moveLeft();
+//	}
 
 }

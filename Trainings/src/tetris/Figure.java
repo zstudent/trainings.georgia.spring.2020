@@ -52,7 +52,7 @@ public class Figure {
 			{0,7,7,0},
 			{0,0,0,0},
 	};
-	
+
 	static final int[][][] FIGURES = { I, T, O, S, Z, L, J };
 	
 	int[][] data;

@@ -33,8 +33,20 @@ public class Logic {
 			state.pasteFigureIntoTheField();
 			state.field.removeFilledRows();
 			state.launchNewFigure();
-			// TODO:  homework:  determine GAME OVER
 			return true;
+		}
+		if(state.row == 0){
+			return false;
+		}
+		return true;
+	}
+
+	public boolean rotateLeft()
+	{
+		state.rotateFigureLeft();
+		if(!state.isFigureFitTheField()){
+			state.undo();
+			return false;
 		}
 		return true;
 	}
@@ -45,5 +57,4 @@ public class Logic {
 		}
 		state.row--;
 	}
-
 }

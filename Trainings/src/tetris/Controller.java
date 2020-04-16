@@ -32,4 +32,5 @@ public class Controller implements ModelListener {
 		model.dropDown();
 	}
 
+	public void rotateLeft() { model.rotateLeft();}
 }
