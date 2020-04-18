@@ -37,7 +37,7 @@ public class Tetris {
 
 		JLabel scoreField = new JLabel();
 		panel.add(scoreField,BorderLayout.EAST);
-
+		scoreField.setText("0");
 		JButton button = new JButton("Restart");
 		//panel.add(textField);
 		Graphics2D graphics = (Graphics2D) panel.getGraphics();
@@ -49,7 +49,8 @@ public class Tetris {
 			(msg)->{
 				gameOverField.setText(msg);
 			}, (msg)->{
-				scoreField.setText(msg);
+				//User gets 10 points for each cleared row.
+				scoreField.setText(Integer.parseInt(scoreField.getText())+(Integer.parseInt(msg)*10) + "");
 		});
 
 		controller.set(model, view);
@@ -75,11 +76,10 @@ public class Tetris {
 				}
 			}
 		});
-
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(500);
+					Thread.sleep(controller.timer);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}

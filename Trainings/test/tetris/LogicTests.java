@@ -60,9 +60,9 @@ public class LogicTests {
 	@Test
 	public void testMovedDown() throws Exception {
 		int row = logic.state.row;
-		boolean success = logic.moveDown();
+		int success = logic.moveDown();
 		assertEquals(row + 1, logic.state.row);
-		assertTrue(success);
+		assertTrue(success==-1);
 	}
 
 	@Test
@@ -71,10 +71,10 @@ public class LogicTests {
 		logic.state.row = fieldHeight() - 1;
 		int row = logic.state.row;
 		Figure old = logic.state.figure; 
-		boolean success = logic.moveDown();
+		int success = logic.moveDown();
 		assertFalse(old == logic.state.figure);
 		assertEquals(0, logic.state.row);
-		assertTrue(success);
+		assertTrue(success==-1);
 		// TODO HOMEWORK:  check that old figure is copied to the field
 	}
 

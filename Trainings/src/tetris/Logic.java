@@ -26,17 +26,22 @@ public class Logic {
 		return true;
 	}
 
-	public boolean moveDown() {
+	//Changed moveDown()'s return type to int instead of boolean,
+	//It now returns  :-1 if no rows cleared and game goes on,
+	//				  :-2 if no rows cleared and game is over after moving down
+	//				  :else if number of rows cleared
+	public int moveDown() {
 		state.row++;
 		if (!state.isFigureFitTheField()) {
 			state.row--;
 			state.pasteFigureIntoTheField();
 			int clearedRows = state.field.removeFilledRows();
+			if(clearedRows>0) return clearedRows;
 			state.launchNewFigure();
-			if(state.stateHeight >= state.ROWS) return false;
-			return true;
+			if(state.stateHeight >= state.ROWS) return -1;
+			return 0;
 		}
-		return true;
+		return 0;
 	}
 
 	public boolean rotateLeft()

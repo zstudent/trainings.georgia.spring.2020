@@ -15,7 +15,7 @@ public class View {
 	public View(PlatformGraphics graphics,PlatformLable gameOverLable,PlatformLable scoreLabel) {
 		this.graphics = graphics;
 		this.gameOverLable = gameOverLable;
-		this.scoreLable = scoreLable;
+		this.scoreLable = scoreLabel;
 	}
 
 	public void draw(State state) {
@@ -28,7 +28,9 @@ public class View {
 		gameOverLable.writeLable(msg);
 	}
 
-	public void drawScoreLabel(){scoreLable.writeLable("");}
+	public void drawScoreLabel(String msg){
+		scoreLable.writeLable(msg);
+	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {
 		for (int r = 0; r < data.length; r++) {

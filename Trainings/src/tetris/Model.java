@@ -23,15 +23,31 @@ public class Model {
 		if (logic.moveRight())
 			fireOnChange();
 	}
-	
+
+	//Changed moveDown()'s body
 	public void moveDown() {
-		if (logic.moveDown())
+		int move = logic.moveDown();
+		if (move==0)
 			fireOnChange();
-		else{
+		else if(move==-1){
 			fireGameOver();
+		}
+		else{
+			fireScoreChange(move);
 		}
 	}
 
+	//Tell controller that score should be updated on view.
+	private void fireScoreChange(int numClearedRows)
+	{
+		for(ModelListener listener : listeners)
+		{
+			listener.fireScoreChange(numClearedRows);
+		}
+
+	}
+
+	//Tell controller that game is over.
 	private void fireGameOver()
 	{
 		for(ModelListener listener : listeners)
@@ -40,6 +56,7 @@ public class Model {
 		}
 	}
 
+	//Tell controller to update view() to show rotated body.
 	public void rotateLeft()
 	{
 		if(logic.rotateLeft())
