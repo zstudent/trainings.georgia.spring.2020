@@ -42,6 +42,7 @@ public class Tetris {
 				controller.restartGame();
 			}
 		});
+		button.setFocusable(false);
 		Graphics2D graphics = (Graphics2D) panel.getGraphics();
 		View view = new View(
 			(color, row, col) -> {
