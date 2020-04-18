@@ -5,15 +5,17 @@ import javax.swing.*;
 public class View {
 
 	private PlatformGraphics graphics;
-	private PlatformLable textLable;
+	private PlatformLable gameOverLable;
+	private PlatformLable scoreLable;
 
 	public View() {
 		graphics = (color, row, col) -> {};
 	}
 	
-	public View(PlatformGraphics graphics,PlatformLable textLable) {
+	public View(PlatformGraphics graphics,PlatformLable gameOverLable,PlatformLable scoreLabel) {
 		this.graphics = graphics;
-		this.textLable = textLable;
+		this.gameOverLable = gameOverLable;
+		this.scoreLable = scoreLable;
 	}
 
 	public void draw(State state) {
@@ -21,10 +23,12 @@ public class View {
 		drawData(state.figure.data, state.row, state.col, false);
 	}
 
-	public void drawLabel()
+	public void drawGameOverLabel(String msg)
 	{
-		textLable.writeLable("Game over");
+		gameOverLable.writeLable(msg);
 	}
+
+	public void drawScoreLabel(){scoreLable.writeLable("");}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {
 		for (int r = 0; r < data.length; r++) {

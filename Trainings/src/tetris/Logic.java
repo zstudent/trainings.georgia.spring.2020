@@ -31,7 +31,7 @@ public class Logic {
 		if (!state.isFigureFitTheField()) {
 			state.row--;
 			state.pasteFigureIntoTheField();
-			state.field.removeFilledRows();
+			int clearedRows = state.field.removeFilledRows();
 			state.launchNewFigure();
 			if(state.stateHeight >= state.ROWS) return false;
 			return true;

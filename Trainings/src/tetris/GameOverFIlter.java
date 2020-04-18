@@ -1,5 +1,9 @@
 package tetris;
 
+/*
+    This class is a middle man between controller and model.
+    If gameOver is true, it doesn't let controller's requests through to model.
+ */
 public class GameOverFIlter {
     private Model model;
     private boolean gameOver;

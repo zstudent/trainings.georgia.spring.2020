@@ -16,7 +16,12 @@ public class Controller implements ModelListener {
 	@Override
 	public void fireGameOver() {
 		filter.setGameOver(true);
-		view.drawLabel();
+		view.drawGameOverLabel("Game over");
+	}
+
+	public void updateScore()
+	{
+
 	}
 
 	@Override
@@ -37,4 +42,5 @@ public class Controller implements ModelListener {
 	public void dropDown() { filter.dropDown(); }
 
 	public void rotateLeft() { filter.rotateLeft();}
+
 }

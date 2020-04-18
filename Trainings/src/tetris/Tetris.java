@@ -32,8 +32,13 @@ public class Tetris {
 		
 		Model model = new Model();
 
-		JLabel textField = new JLabel();
-		panel.add(textField,BorderLayout.NORTH);
+		JLabel gameOverField = new JLabel();
+		panel.add(gameOverField,BorderLayout.NORTH);
+
+		JLabel scoreField = new JLabel();
+		panel.add(scoreField,BorderLayout.EAST);
+
+		JButton button = new JButton("Restart");
 		//panel.add(textField);
 		Graphics2D graphics = (Graphics2D) panel.getGraphics();
 		View view = new View(
@@ -42,8 +47,10 @@ public class Tetris {
 				graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
 			},
 			(msg)->{
-				textField.setText(msg);
-			});
+				gameOverField.setText(msg);
+			}, (msg)->{
+				scoreField.setText(msg);
+		});
 
 		controller.set(model, view);
 		frame.addKeyListener(new KeyAdapter() {
