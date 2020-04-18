@@ -1,6 +1,8 @@
 package tetris;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -19,27 +21,27 @@ public class Tetris {
 		JFrame frame = new JFrame("Tetris");
 		frame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
-
 		panel.setPreferredSize(new Dimension(400, 700));
-
 		frame.add(panel,BorderLayout.CENTER);
-
 		frame.pack();
-
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		Controller controller = new Controller();
-		
 		Model model = new Model();
 
 		JLabel gameOverField = new JLabel();
 		panel.add(gameOverField,BorderLayout.NORTH);
-
 		JLabel scoreField = new JLabel();
-		panel.add(scoreField,BorderLayout.EAST);
+		panel.add(scoreField,BorderLayout.NORTH);
 		scoreField.setText("0");
 		JButton button = new JButton("Restart");
-		//panel.add(textField);
+		panel.add(button,BorderLayout.NORTH);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.restartGame();
+			}
+		});
 		Graphics2D graphics = (Graphics2D) panel.getGraphics();
 		View view = new View(
 			(color, row, col) -> {

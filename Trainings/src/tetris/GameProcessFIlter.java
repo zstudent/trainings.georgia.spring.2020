@@ -4,16 +4,17 @@ package tetris;
     This class is a middle man between controller and model.
     If gameOver is true, it doesn't let controller's requests through to model.
  */
-public class GameOverFIlter {
+public class GameProcessFIlter {
+
     private Model model;
+
     private boolean gameOver;
 
-    public GameOverFIlter(Model model)
+    public GameProcessFIlter(Model model)
     {
         this.model = model;
         gameOver = false;
     }
-
     public void setGameOver(boolean gameOver) {
         this.gameOver = gameOver;
     }
@@ -37,6 +38,7 @@ public class GameOverFIlter {
     {
         if (!gameOver) model.moveDown();
     }
+
     public void dropDown()
     {
         if (!gameOver) model.dropDown();

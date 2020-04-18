@@ -13,12 +13,6 @@ public class Model {
 			fireOnChange();
 	}
 
-	private void fireOnChange() {
-		for (ModelListener listener : listeners) {
-			listener.onChange(logic.state);
-		}
-	}
-
 	public void moveRight() {
 		if (logic.moveRight())
 			fireOnChange();
@@ -47,6 +41,12 @@ public class Model {
 
 	}
 
+	private void fireOnChange() {
+		for (ModelListener listener : listeners) {
+			listener.onChange(logic.state);
+		}
+	}
+
 	//Tell controller that game is over.
 	private void fireGameOver()
 	{
@@ -73,6 +73,12 @@ public class Model {
 
 	public void dropDown() {
 		logic.dropDown();
+		fireOnChange();
+	}
+
+	public void restartGame()
+	{
+		logic.clearState();
 		fireOnChange();
 	}
 }

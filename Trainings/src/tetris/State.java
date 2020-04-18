@@ -82,4 +82,11 @@ public class State {
 	{
 		figure.data = backup;
 	}
+
+	public boolean clearState()
+	{
+		field.data = new int[field.data.length][field.data[0].length];
+		launchNewFigure();
+		return true;
+	}
 }

@@ -4,14 +4,14 @@ public class Controller implements ModelListener {
 
 	View view;
 	Model model;
-	GameOverFIlter filter;
+	GameProcessFIlter filter;
 	int timer = 500;
 
 	public void set(Model model, View view) {
 		this.model = model;
 		this.view = view;
 		model.addListener(this);
-		filter = new GameOverFIlter(model);
+		filter = new GameProcessFIlter(model);
 	}
 
 	@Override
@@ -20,11 +20,17 @@ public class Controller implements ModelListener {
 		view.drawGameOverLabel("Game over");
 	}
 
+	public void restartGame()
+	{
+		model.restartGame();
+		filter.setGameOver(false);
+		timer = 500;	//Restart timer.
+	}
+
 	@Override
 	public void onChange(State state) {
 		view.draw(state);
 	}
-
 
 	//If rows were cleared update score on view and increase speed.
 	@Override

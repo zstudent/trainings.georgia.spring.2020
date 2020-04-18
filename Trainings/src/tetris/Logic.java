@@ -60,4 +60,9 @@ public class Logic {
 		}
 		state.row--;
 	}
+
+	public boolean clearState()
+	{
+		return state.clearState();
+	}
 }
