@@ -31,10 +31,9 @@ public class Logic {
 		if (!state.isFigureFitTheField()) {
 			state.row--;
 			state.pasteFigureIntoTheField();
-			state.field.removeFilledRows();
+			state.field.removeFilledRows(state);
 			state.launchNewFigure();
 			// TODO:  homework:  determine GAME OVER
-			return true;
 		}
 		return true;
 	}
@@ -43,7 +42,24 @@ public class Logic {
 		while (state.isFigureFitTheField()) {
 			state.row++;
 		}
-		state.row--;
+		state.row--;			
+	}
+	
+	
+	public void rotate() {
+		int[][] oldfirst = state.figure.data;
+		state.figure.data = new Figure().rotate_map.get(state.figure.data);
+		if(!state.isFigureFitTheField()) {
+			state.figure.data = oldfirst;
+		}
+		
+	}
+	
+	boolean gameOver() {
+		if(state.isFigureFitTheField()) {
+			return false;
+		}
+		return true;			
 	}
 
 }
