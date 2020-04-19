@@ -72,7 +72,7 @@ public class State {
 		{
 			for(int c=0; c<figure.data[r].length; c++)
 			{
-			 	figure.data[r][c] = rotatedFigure[c][3-r];
+			 	figure.data[r][c] = rotatedFigure[c][figure.data.length-1-r];
 			}
 		}
 		figure.figureHeight = figure.calculateFigureHeight();
