@@ -25,11 +25,11 @@ public class View {
 
 	public void drawGameOverLabel(String msg)
 	{
-		gameOverLable.writeLable(msg);
+		gameOverLable.writeLable(msg,false);
 	}
 
-	public void drawScoreLabel(String msg){
-		scoreLable.writeLable(msg);
+	public void drawScoreLabel(String msg,boolean b){
+		scoreLable.writeLable(msg,b);
 	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {

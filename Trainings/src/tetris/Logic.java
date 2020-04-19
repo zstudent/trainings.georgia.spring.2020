@@ -38,7 +38,7 @@ public class Logic {
 			int clearedRows = state.field.removeFilledRows();
 			if(clearedRows>0) return clearedRows;
 			state.launchNewFigure();
-			if(state.stateHeight >= state.ROWS) return -1;
+			if(state.stateHeight >= state.ROWS - state.figure.figureHeight) return -1;
 			return 0;
 		}
 		return 0;
@@ -63,6 +63,8 @@ public class Logic {
 
 	public boolean clearState()
 	{
+		state.stateHeight = 0;
+		state.launchNewFigure();
 		return state.clearState();
 	}
 }

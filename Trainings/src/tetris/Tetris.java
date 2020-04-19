@@ -49,12 +49,13 @@ public class Tetris {
 				graphics.setColor(COLORS[color]);
 				graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
 			},
-			(msg)->{
+			(msg,restart)->{
 				gameOverField.setText(msg);
-			}, (msg)->{
+			}, (msg,restart)->{
 				//User gets 10 points for each cleared row.
-				scoreField.setText(Integer.parseInt(scoreField.getText())+(Integer.parseInt(msg)*10) + "");
-		});
+				if(!restart)scoreField.setText(Integer.parseInt(scoreField.getText())+(Integer.parseInt(msg)*10) + "");
+				else scoreField.setText("0");
+			});
 
 		controller.set(model, view);
 		frame.addKeyListener(new KeyAdapter() {

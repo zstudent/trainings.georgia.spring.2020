@@ -15,16 +15,18 @@ public class Controller implements ModelListener {
 	}
 
 	@Override
-	public void fireGameOver() {
+	public void fireGameOver(String msg) {
 		filter.setGameOver(true);
-		view.drawGameOverLabel("Game over");
+		view.drawGameOverLabel(msg);
 	}
 
 	public void restartGame()
 	{
 		model.restartGame();
-		filter.setGameOver(false);
 		timer = 500;	//Restart timer.
+		fireScoreChange(0,true);
+		fireGameOver("");
+		filter.setGameOver(false);
 	}
 
 	@Override
@@ -34,9 +36,9 @@ public class Controller implements ModelListener {
 
 	//If rows were cleared update score on view and increase speed.
 	@Override
-	public void fireScoreChange(int numClearedRows) {
+	public void fireScoreChange(int numClearedRows,boolean restart) {
 		increaseSpeed();
-		view.drawScoreLabel(""+numClearedRows);
+		view.drawScoreLabel(""+numClearedRows,restart);
 	}
 
 	//Increase speed by not too much, So game will be playable.

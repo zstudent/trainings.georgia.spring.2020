@@ -10,7 +10,7 @@ public class State {
 	public int row;
 	public int col;
 	int[][] backup ;	//Store backup for every rotation, so we can undo in case of bad placement.
-	int stateHeight = 0;	//Store the height of state.
+	public int stateHeight =0 ;	//Store the height of state.
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
 		launchNewFigure();
@@ -75,6 +75,7 @@ public class State {
 			 	figure.data[r][c] = rotatedFigure[c][3-r];
 			}
 		}
+		figure.figureHeight = figure.calculateFigureHeight();
 		backup = rotatedFigure;
 	}
 
@@ -86,7 +87,7 @@ public class State {
 	public boolean clearState()
 	{
 		field.data = new int[field.data.length][field.data[0].length];
-		launchNewFigure();
+		//launchNewFigure();
 		return true;
 	}
 }

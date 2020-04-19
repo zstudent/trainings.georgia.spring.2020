@@ -70,7 +70,7 @@ public class Figure {
 		figureHeight = calculateFigureHeight();
 	}
 
-	private int calculateFigureHeight()
+	public int calculateFigureHeight()
 	{
 		//Remember all the figures in our matrices start from row=0;
 		int height = 0 ;

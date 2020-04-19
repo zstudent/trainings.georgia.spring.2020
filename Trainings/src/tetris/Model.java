@@ -36,7 +36,7 @@ public class Model {
 	{
 		for(ModelListener listener : listeners)
 		{
-			listener.fireScoreChange(numClearedRows);
+			listener.fireScoreChange(numClearedRows,false);
 		}
 
 	}
@@ -52,7 +52,7 @@ public class Model {
 	{
 		for(ModelListener listener : listeners)
 		{
-			listener.fireGameOver();
+			listener.fireGameOver("Game Over");
 		}
 	}
 
