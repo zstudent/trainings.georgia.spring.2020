@@ -1,0 +1,18 @@
+
+                                                   
+       Telnet                                   >- 80 | 
+                ------------------------------->>- 13 |  Server
+                                                >- 22 |
+                                                
+              Socket local port < <----------> > local port Socket
+              bi-directional
+              
+              
+          1500 bytes  
+         [X       ] -> 
+           package    
+           
+           flush
+           
+           
+   free ports:  1024  <     < 65565  (2**16)
