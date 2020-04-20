@@ -20,7 +20,7 @@ public class Model {
 	}
 
 	public void moveRight() {
-		if (logic.moveRight())
+		if (logic.moveRight())	    
 			fireOnChange();
 	}
 	
@@ -40,6 +40,28 @@ public class Model {
 	public void dropDown() {
 		logic.dropDown();
 		fireOnChange();
+	}
+	
+	public boolean gameOver() {
+		return logic.state.gameIsOver;
+	}
+	
+	public void rotate() {
+		logic.rotate();
+		fireOnChange();
+	}
+
+	public String updateLevel() {
+		return logic.updateLevel();
+	}
+
+	public String updateScore() {
+		return logic.updateScore();
+	}
+
+	public void restart() {
+		// TODO Auto-generated method stub
+		logic = new Logic(new State());
 	}
 	
 }

@@ -32,4 +32,25 @@ public class Controller implements ModelListener {
 		model.dropDown();
 	}
 
+	
+	public void rotate() {
+		model.rotate();
+	}
+
+	public boolean gameOver() {
+		return model.gameOver();
+	}
+
+	public String updateLevel() {
+		return model.updateLevel();
+	}
+
+	public String updateScore() {
+		return model.updateScore();
+	}
+
+	public void restart() {
+		model.restart();
+	}
+
 }

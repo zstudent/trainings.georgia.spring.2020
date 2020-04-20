@@ -9,6 +9,7 @@ public class State {
 	Figure figure;
 	public int row;
 	public int col;
+	public boolean gameIsOver = false;
 
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);

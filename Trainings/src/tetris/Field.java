@@ -1,14 +1,19 @@
-package tetris;
+	package tetris;
 
 import java.util.Arrays;
 
 public class Field {
 
 	int[][] data;
+	int level;
+	int countRemovedRows;
 	
 	public Field(int cols, int rows) {
 		this.data = new int[rows][cols];
+		this.level = 0;
+		this.countRemovedRows = 0;
 	}
+	
 
 	public void removeFilledRows() {
 		OUTER: for (int r = 0; r < data.length; r++) {
@@ -20,6 +25,7 @@ public class Field {
 				System.arraycopy(data[i - 1], 0, data[i], 0,
 						data[i].length);
 			}
+			countRemovedRows++;
 			Arrays.fill(data[0], 0);
 		}
 	}
