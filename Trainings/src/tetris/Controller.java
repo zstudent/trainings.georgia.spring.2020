@@ -4,19 +4,18 @@ public class Controller implements ModelListener {
 
 	View view;
 	Model model;
-	GameProcessFIlter filter;
+	boolean gameOver = false;
 	int timer = 500;
 
 	public void set(Model model, View view) {
 		this.model = model;
 		this.view = view;
 		model.addListener(this);
-		filter = new GameProcessFIlter(model);
 	}
 
 	@Override
 	public void fireGameOver(String msg) {
-		filter.setGameOver(true);
+		gameOver = true;
 		view.drawGameOverLabel(msg);
 	}
 
@@ -26,7 +25,7 @@ public class Controller implements ModelListener {
 		timer = 500;	//Restart timer.
 		fireScoreChange(0,true);
 		fireGameOver("");
-		filter.setGameOver(false);
+		gameOver = false;
 	}
 
 	@Override
@@ -47,18 +46,14 @@ public class Controller implements ModelListener {
 		timer=timer*4/5;
 	}
 
-	public void moveLeft() { filter.moveLeft(); }
+	public void moveLeft() { if(!gameOver) model.moveLeft(); }
 
-	public void moveRight() {
-		filter.moveRight();
-	}
+	public void moveRight() { if(!gameOver) model.moveRight(); }
 
-	public void moveDown() {
-		filter.moveDown();
-	}
+	public void moveDown() { if(!gameOver) model.moveDown(); }
 
-	public void dropDown() { filter.dropDown(); }
+	public void dropDown() { if(!gameOver) model.dropDown(); }
 
-	public void rotateLeft() { filter.rotateLeft();}
+	public void rotateLeft() { if(!gameOver) model.rotateLeft();}
 
 }

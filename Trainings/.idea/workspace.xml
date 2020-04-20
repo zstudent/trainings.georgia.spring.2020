@@ -3,16 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="a1d4eaba-00d7-4a29-a4f1-45cf1d5880db" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Field.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Figure.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Logic.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Model.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tetris/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/FigureTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/FigureTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/InstantiationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/InstantiationsTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/LogicTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/LogicTests.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/ModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/ModelTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/StateTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/StateTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetris/Controller.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Controller.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetris/GameProcessFIlter.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -151,7 +143,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587380830754</updated>
-      <workItem from="1587380838257" duration="12174000" />
+      <workItem from="1587380838257" duration="12549000" />
     </task>
     <servers />
   </component>
@@ -171,30 +163,30 @@
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="415" y="189" width="525" height="416" key="#com.intellij.ide.util.TreeClassChooserDialog/0.27.1366.741@0.27.1366.741" timestamp="1587382753791" />
-    <state x="416" y="146" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587387674718">
+    <state x="416" y="146" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog" timestamp="1587393999846">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state x="416" y="146" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1366.741@0.27.1366.741" timestamp="1587387674718" />
+    <state x="416" y="146" width="524" height="502" key="#com.intellij.refactoring.safeDelete.UnsafeUsagesDialog/0.27.1366.741@0.27.1366.741" timestamp="1587393999846" />
     <state x="305" y="141" width="735" height="513" key="FileChooserDialogImpl" timestamp="1587382857067">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="305" y="141" width="735" height="513" key="FileChooserDialogImpl/0.27.1366.741@0.27.1366.741" timestamp="1587382857067" />
-    <state width="1320" height="136" key="GridCell.Tab.0.bottom" timestamp="1587393779185">
+    <state width="1320" height="300" key="GridCell.Tab.0.bottom" timestamp="1587394114706">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="136" key="GridCell.Tab.0.bottom/0.27.1366.741@0.27.1366.741" timestamp="1587393779185" />
-    <state width="1320" height="136" key="GridCell.Tab.0.center" timestamp="1587393779183">
+    <state width="1320" height="300" key="GridCell.Tab.0.bottom/0.27.1366.741@0.27.1366.741" timestamp="1587394114706" />
+    <state width="1320" height="300" key="GridCell.Tab.0.center" timestamp="1587394114705">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="136" key="GridCell.Tab.0.center/0.27.1366.741@0.27.1366.741" timestamp="1587393779183" />
-    <state width="1320" height="136" key="GridCell.Tab.0.left" timestamp="1587393779181">
+    <state width="1320" height="300" key="GridCell.Tab.0.center/0.27.1366.741@0.27.1366.741" timestamp="1587394114705" />
+    <state width="1320" height="300" key="GridCell.Tab.0.left" timestamp="1587394114704">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="136" key="GridCell.Tab.0.left/0.27.1366.741@0.27.1366.741" timestamp="1587393779181" />
-    <state width="1320" height="136" key="GridCell.Tab.0.right" timestamp="1587393779184">
+    <state width="1320" height="300" key="GridCell.Tab.0.left/0.27.1366.741@0.27.1366.741" timestamp="1587394114704" />
+    <state width="1320" height="300" key="GridCell.Tab.0.right" timestamp="1587394114706">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="136" key="GridCell.Tab.0.right/0.27.1366.741@0.27.1366.741" timestamp="1587393779184" />
+    <state width="1320" height="300" key="GridCell.Tab.0.right/0.27.1366.741@0.27.1366.741" timestamp="1587394114706" />
     <state width="1320" height="219" key="GridCell.Tab.1.bottom" timestamp="1587389233550">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
