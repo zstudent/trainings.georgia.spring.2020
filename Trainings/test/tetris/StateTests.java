@@ -39,4 +39,16 @@ public class StateTests {
 		state.undo();
 		assertEquals(3,state.figure.figureHeight);
 	}
+
+	@Test
+	public void testClearState()
+	{
+		State state = new State();
+		state.launchNewFigure();
+		assertEquals(0,state.stateHeight);
+		state.pasteFigureIntoTheField();
+		assertNotEquals(0,state.stateHeight);
+		state.clearState();
+		assertEquals(0,state.stateHeight);
+	}
 }

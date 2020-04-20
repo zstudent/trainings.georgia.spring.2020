@@ -2,13 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1d4eaba-00d7-4a29-a4f1-45cf1d5880db" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trainings.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Trainings.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetris/Field.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Field.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tetris/Figure.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Figure.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetris/Logic.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Logic.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/tetris/Model.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/Model.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/tetris/State.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/tetris/State.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/tetris/ControllerTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/ControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/tetris/FigureTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/FigureTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/tetris/InstantiationsTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/InstantiationsTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/tetris/LogicTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/LogicTests.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/tetris/ModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/ModelTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/tetris/StateTests.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/tetris/StateTests.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -82,7 +85,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="FigureTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="InstantiationsTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Trainings" />
       <extension name="coverage">
         <pattern>
@@ -91,13 +94,13 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="tetris" />
-      <option name="MAIN_CLASS_NAME" value="tetris.FigureTests" />
+      <option name="MAIN_CLASS_NAME" value="tetris.InstantiationsTest" />
       <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="StateTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="ModelTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="Trainings" />
       <extension name="coverage">
         <pattern>
@@ -106,8 +109,24 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="tetris" />
-      <option name="MAIN_CLASS_NAME" value="tetris.StateTests" />
+      <option name="MAIN_CLASS_NAME" value="tetris.ModelTest" />
       <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="ModelTest.testCreation" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="Trainings" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="tetris.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="tetris" />
+      <option name="MAIN_CLASS_NAME" value="tetris.ModelTest" />
+      <option name="METHOD_NAME" value="testCreation" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -115,8 +134,9 @@
     <recent_temporary>
       <list>
         <item itemvalue="Application.Tetris" />
-        <item itemvalue="JUnit.StateTests" />
-        <item itemvalue="JUnit.FigureTests" />
+        <item itemvalue="JUnit.ModelTest" />
+        <item itemvalue="JUnit.ModelTest.testCreation" />
+        <item itemvalue="JUnit.InstantiationsTest" />
         <item itemvalue="JUnit.ControllerTest" />
       </list>
     </recent_temporary>
@@ -131,7 +151,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1587380830754</updated>
-      <workItem from="1587380838257" duration="5987000" />
+      <workItem from="1587380838257" duration="12174000" />
     </task>
     <servers />
   </component>
@@ -143,6 +163,10 @@
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="141" y="55" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.27.1366.741@0.27.1366.741" timestamp="1587382771778" />
+    <state x="491" y="105" width="374" height="585" key="#com.intellij.ide.util.MemberChooser" timestamp="1587393613389">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="491" y="105" width="374" height="585" key="#com.intellij.ide.util.MemberChooser/0.27.1366.741@0.27.1366.741" timestamp="1587393613389" />
     <state x="415" y="189" width="525" height="416" key="#com.intellij.ide.util.TreeClassChooserDialog" timestamp="1587382753791">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
@@ -155,22 +179,38 @@
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="305" y="141" width="735" height="513" key="FileChooserDialogImpl/0.27.1366.741@0.27.1366.741" timestamp="1587382857067" />
-    <state width="1320" height="141" key="GridCell.Tab.0.bottom" timestamp="1587387675098">
+    <state width="1320" height="136" key="GridCell.Tab.0.bottom" timestamp="1587393779185">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="141" key="GridCell.Tab.0.bottom/0.27.1366.741@0.27.1366.741" timestamp="1587387675098" />
-    <state width="1320" height="141" key="GridCell.Tab.0.center" timestamp="1587387675094">
+    <state width="1320" height="136" key="GridCell.Tab.0.bottom/0.27.1366.741@0.27.1366.741" timestamp="1587393779185" />
+    <state width="1320" height="136" key="GridCell.Tab.0.center" timestamp="1587393779183">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="141" key="GridCell.Tab.0.center/0.27.1366.741@0.27.1366.741" timestamp="1587387675094" />
-    <state width="1320" height="141" key="GridCell.Tab.0.left" timestamp="1587387675086">
+    <state width="1320" height="136" key="GridCell.Tab.0.center/0.27.1366.741@0.27.1366.741" timestamp="1587393779183" />
+    <state width="1320" height="136" key="GridCell.Tab.0.left" timestamp="1587393779181">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="141" key="GridCell.Tab.0.left/0.27.1366.741@0.27.1366.741" timestamp="1587387675086" />
-    <state width="1320" height="141" key="GridCell.Tab.0.right" timestamp="1587387675095">
+    <state width="1320" height="136" key="GridCell.Tab.0.left/0.27.1366.741@0.27.1366.741" timestamp="1587393779181" />
+    <state width="1320" height="136" key="GridCell.Tab.0.right" timestamp="1587393779184">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
-    <state width="1320" height="141" key="GridCell.Tab.0.right/0.27.1366.741@0.27.1366.741" timestamp="1587387675095" />
+    <state width="1320" height="136" key="GridCell.Tab.0.right/0.27.1366.741@0.27.1366.741" timestamp="1587393779184" />
+    <state width="1320" height="219" key="GridCell.Tab.1.bottom" timestamp="1587389233550">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1320" height="219" key="GridCell.Tab.1.bottom/0.27.1366.741@0.27.1366.741" timestamp="1587389233550" />
+    <state width="1320" height="219" key="GridCell.Tab.1.center" timestamp="1587389233549">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1320" height="219" key="GridCell.Tab.1.center/0.27.1366.741@0.27.1366.741" timestamp="1587389233549" />
+    <state width="1320" height="219" key="GridCell.Tab.1.left" timestamp="1587389233548">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1320" height="219" key="GridCell.Tab.1.left/0.27.1366.741@0.27.1366.741" timestamp="1587389233548" />
+    <state width="1320" height="219" key="GridCell.Tab.1.right" timestamp="1587389233549">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state width="1320" height="219" key="GridCell.Tab.1.right/0.27.1366.741@0.27.1366.741" timestamp="1587389233549" />
     <state x="166" y="27" width="1024" height="741" key="SettingsEditor" timestamp="1587383096610">
       <screen x="0" y="27" width="1366" height="741" />
     </state>
@@ -179,5 +219,9 @@
       <screen x="0" y="27" width="1366" height="741" />
     </state>
     <state x="355" y="291" width="646" height="213" key="com.intellij.jarRepository.RepositoryAttachDialog-DOWNLOAD/0.27.1366.741@0.27.1366.741" timestamp="1587380868297" />
+    <state x="347" y="176" key="run.anything.popup" timestamp="1587393277719">
+      <screen x="0" y="27" width="1366" height="741" />
+    </state>
+    <state x="347" y="176" key="run.anything.popup/0.27.1366.741@0.27.1366.741" timestamp="1587393277719" />
   </component>
 </project>

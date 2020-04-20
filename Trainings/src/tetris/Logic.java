@@ -63,7 +63,6 @@ public class Logic {
 
 	public boolean clearState()
 	{
-		state.stateHeight = 0;
 		state.launchNewFigure();
 		return state.clearState();
 	}

@@ -70,6 +70,7 @@ public class State {
 
 	public boolean clearState()
 	{
+		stateHeight = 0;
 		field.data = new int[field.data.length][field.data[0].length];
 		return true;
 	}

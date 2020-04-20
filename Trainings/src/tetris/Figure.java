@@ -5,10 +5,10 @@ import java.util.Random;
 public class Figure {
 	
 	static final int[][] I = {
-			{1,0,0,0},
-			{1,0,0,0},
-			{1,0,0,0},
-			{1,0,0,0},
+			{1,1,1,1},
+			{0,0,0,0},
+			{0,0,0,0},
+			{0,0,0,0},
 	};
 	
 	static final int[][] T = {

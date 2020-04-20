@@ -14,7 +14,7 @@ public class FigureTests {
     public void testFigureHeight()
     {
         Figure figure = new Figure(Figure.I);
-        assertEquals(4,figure.figureHeight);
+        assertEquals(1,figure.figureHeight);
 
         Figure figure2 = new Figure(Figure.O);
         assertEquals(2,figure2.figureHeight);
@@ -24,8 +24,8 @@ public class FigureTests {
     public void rotatedFigureHeight()
     {
         Figure I = new Figure(Figure.I);
-        assertEquals(4,I.figureHeight);
-        assertEquals(1,I.rotateFigure().figureHeight);
+        assertEquals(1,I.figureHeight);
+        assertEquals(4,I.rotateFigure().figureHeight);
 
         Figure L = new Figure(Figure.L);
         assertEquals(3,L.figureHeight);

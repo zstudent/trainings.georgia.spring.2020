@@ -27,5 +27,25 @@ public class Field {
 		}
 		return count;
 	}
+
+
+	/*
+		Added this for easier debugging.
+	 */
+	public String toString() {
+		StringBuilder buff = new StringBuilder();
+		int height = data.length;
+		int width = data[0].length;
+		for (int y = height-1; y>=0; y--) {
+			buff.append('|');
+			for (int x=0; x<width; x++) {
+				if (data[y][x]>0) buff.append('+');
+				else buff.append(' ');
+			}
+			buff.append("|\n");
+		}
+		for (int x=0; x<width+2; x++) buff.append('-');
+		return(buff.toString());
+	}
 	
 }
