@@ -13,7 +13,7 @@ public class SimpleChatServer {
 	private static final int DEFAULT_PORT = 10000;
 
 	public static void main(String[] args) {
-		System.out.println("Start chat server at " + DEFAULT_PORT);
+		System.out.println("Starting chat server at " + DEFAULT_PORT);
 		try {
 			ServerSocket ss = new ServerSocket(DEFAULT_PORT);
 			while (true) {
