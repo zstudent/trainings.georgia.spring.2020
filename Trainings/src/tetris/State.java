@@ -9,8 +9,9 @@ public class State {
 	Figure figure;
 	public int row;
 	public int col;
-	int[][] backup ;	//Store backup for every rotation, so we can undo in case of bad placement.
+	Figure backup ;	//Store backup for every rotation, so we can undo in case of bad placement.
 	public int stateHeight =0 ;	//Store the height of state.
+
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
 		launchNewFigure();
@@ -21,6 +22,7 @@ public class State {
 			row = 0;
 			col = field.data[0].length / 2 - figure.data[0].length / 2;
 	}
+
 
 	boolean isFigureFitTheField() {
 		int height = field.data.length;
@@ -57,37 +59,18 @@ public class State {
 
 	void rotateFigureLeft()
 	{
-		int[][] rotatedFigure = new int[figure.data.length][figure.data[0].length];
-		int height = figure.data.length;
-		int width = figure.data[0].length;
-
-		for(int r=0; r<figure.data.length; r++)
-		{
-			for(int c=0; c<figure.data[r].length; c++)
-			{
-				rotatedFigure[r][c] = figure.data[r][c];
-			}
-		}
-		for(int r=0; r<figure.data.length; r++)
-		{
-			for(int c=0; c<figure.data[r].length; c++)
-			{
-			 	figure.data[r][c] = rotatedFigure[c][figure.data.length-1-r];
-			}
-		}
-		figure.figureHeight = figure.calculateFigureHeight();
-		backup = rotatedFigure;
+		backup = figure;
+		figure = figure.rotateFigure();
 	}
 
 	public void undo()
 	{
-		figure.data = backup;
+		figure = backup;
 	}
 
 	public boolean clearState()
 	{
 		field.data = new int[field.data.length][field.data[0].length];
-		//launchNewFigure();
 		return true;
 	}
 }

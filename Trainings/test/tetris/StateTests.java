@@ -1,10 +1,12 @@
 package tetris;
 
-import static org.junit.Assert.*;
+
+import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class StateTests {
 
@@ -26,4 +28,15 @@ public class StateTests {
 		assertEquals(0, previousRow[state.col]);
 	}
 
+	@Test
+	public void testStateHeight()
+	{
+		State state = new State();
+		state.figure = new Figure(Figure.L);
+		assertEquals(3,state.figure.figureHeight);
+		state.rotateFigureLeft();
+		assertEquals(2,state.figure.figureHeight);
+		state.undo();
+		assertEquals(3,state.figure.figureHeight);
+	}
 }

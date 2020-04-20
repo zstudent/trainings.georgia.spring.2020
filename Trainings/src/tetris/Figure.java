@@ -61,27 +61,51 @@ public class Figure {
 
 	public Figure(int[][] figureData) {
 		data = figureData;
+		calculateFigureHeight();
 	}
 	
 	static Random random = new Random();
 	
 	public Figure() {
 		data = FIGURES[random.nextInt(FIGURES.length)];
-		figureHeight = calculateFigureHeight();
+		calculateFigureHeight();
 	}
 
-	public int calculateFigureHeight()
+	public void calculateFigureHeight()
 	{
 		//Remember all the figures in our matrices start from row=0;
-		int height = 0 ;
+		boolean first = true;
+		int startHeight = -1;
+		int endHeight = -1;
 		for( int r=0; r< data.length; r++)
 		{
 			for(int c=0; c<data[r].length; c++)
 			{
-				if(data[r][c]>0) height = r;
+				if(first && data[r][c]>0)
+				{
+					first = false;
+					startHeight = r;
+				}
+				else if(data[r][c]>0)
+				{
+					endHeight = r;
+				}
 			}
 		}
 		//Height is number of row index + 1;
-	 	return height+1;
+	 	this.figureHeight = endHeight - startHeight + 1;
+	}
+
+	public Figure rotateFigure()
+	{
+		int[][] rotatedFigure = new int[data.length][data[0].length];
+		for(int r=0; r<data.length; r++)
+		{
+			for(int c=0; c<data[r].length; c++)
+			{
+				rotatedFigure[r][c] = data[c][data.length-1-r];
+			}
+		}
+		return new Figure(rotatedFigure);
 	}
 }

@@ -1,0 +1,35 @@
+
+
+7 
+[1|0|0|0|0|0|0]
+
+N=1_000_000
+
+2WN  = 20mlns
+
+1.39NLogN  = 28mlns
+
+32 bits = 4 bytes
+1 byte = 8 bits  2**8 = 256
+count[256+1]
+
+W = 4
+2WN = 8mln
+
+40 + 20 = 60
+
+40 hours for a work
+20 hours for a self-development
+
+8 + 2
+8 + 2
+8 + 2
+8 + 2
+8 + 2
+4
+6
+
+
+
+
+
