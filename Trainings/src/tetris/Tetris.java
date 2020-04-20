@@ -1,12 +1,12 @@
 package tetris;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.Dimension;
 import java.awt.Graphics2D;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
@@ -22,16 +22,20 @@ public class Tetris {
 
 	private static void setup() {
 		JFrame frame = new JFrame("Tetris");
-
 		JPanel panel = new JPanel();
-
+		frame.setLayout(new BorderLayout());
 		panel.setPreferredSize(new Dimension(400, 700));
-		frame.add(panel);
-
+		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
-
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-
+		JLabel gameOver = new JLabel();
+		panel.add(gameOver,BorderLayout.WEST);
+		JLabel score = new JLabel();
+		panel.add(score,BorderLayout.EAST);
+		score.setText("Score: 0");
+		Font f = new Font("TimesRoman",Font.BOLD,25);
+		gameOver.setForeground(Color.red);
+		gameOver.setFont(f);
 		Controller controller = new Controller();
 		
 		Model model = new Model();
@@ -59,21 +63,28 @@ public class Tetris {
 				case KeyEvent.VK_DOWN:
 					controller.dropDown();
 					break;
-					
+				case KeyEvent.VK_UP:
+					controller.rotate();
+					break;
 				default:
 					break;
 				}
 			}
 		});
-
+		
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(controller.SleepTime());
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
 				SwingUtilities.invokeLater(controller::moveDown);
+				score.setText("Score:" + controller.SumScore());
+				if(controller.gameOver()) {
+					gameOver.setText("Game Over");
+					break;
+				}
 			}
 		});
 		thread.setDaemon(true);

@@ -24,8 +24,17 @@ public class Model {
 			fireOnChange();
 	}
 	
-	public void moveDown() {
-		if (logic.moveDown())
+	public int moveDown() {
+		int check =logic.moveDown(); 
+		if (check>=0) {
+			fireOnChange();
+			return check;
+		}
+		if(check==-1) return -1;
+		return 0;
+	}
+	public void rotate() {
+		if (logic.rotate())
 			fireOnChange();
 	}
 
@@ -37,9 +46,10 @@ public class Model {
 		fireOnChange();
 	}
 
-	public void dropDown() {
-		logic.dropDown();
+	public int dropDown() {
+		int tempScore = logic.dropDown();
 		fireOnChange();
+		return tempScore;
 	}
 	
 }
