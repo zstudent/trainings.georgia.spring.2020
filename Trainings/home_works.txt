@@ -27,3 +27,7 @@ Tetris:  (deadline next Tuesday, April 21)
 Create new game Snake (deadline May 4)
 
 Award points:  12 10 8 7 6 5 4 3 2 1
+
+
+2020-04-21
+Apply JMH to SearchExamples
