@@ -136,6 +136,15 @@ Level       Score
   -----------
   Effective TCP/IP Programming  by Jon C. Snader
   
+  2020-04-21
+  ----------
+  Sorting algorithms 
+  Why? 
+  - fast search
+  
+  Searcher:  accepts int[] and int and returns int
+  int[], int ->  int  BiFinction
+  
   
   
   
