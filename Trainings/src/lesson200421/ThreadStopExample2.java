@@ -27,6 +27,4 @@ public class ThreadStopExample2 {
 		}
 		System.out.println(c);
 	}
-
-	
 }
