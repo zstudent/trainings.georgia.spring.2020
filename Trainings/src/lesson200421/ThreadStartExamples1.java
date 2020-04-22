@@ -1,6 +1,6 @@
 package lesson200421;
 
-public class ThreadExamples1 {
+public class ThreadStartExamples1 {
 
 	public static void main(String[] args) {
 		System.out.println(Thread.currentThread());
@@ -12,7 +12,7 @@ public class ThreadExamples1 {
 		new Thread(() -> System.out.println(Thread.currentThread()))
 				.start();
 
-		new Thread(ThreadExamples1::cycle).start();
+		new Thread(ThreadStartExamples1::cycle).start();
 	}
 
 	private static void cycle() {

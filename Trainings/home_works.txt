@@ -31,3 +31,6 @@ Award points:  12 10 8 7 6 5 4 3 2 1
 
 2020-04-21
 Apply JMH to SearchExamples
+
+2020-04-22
+Take ThreadStartExamples1 from lesson200421 and change it to use ExecutorService
