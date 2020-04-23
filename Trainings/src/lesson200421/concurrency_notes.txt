@@ -1,0 +1,75 @@
+
+- what are threads?
+- how to create threads?
+- how to terminate threads?
+- worker pattern
+- executors
+- more stuff (TBD)
+
+
+Operating system processes
+     Memory
+[                   Data                   ]   Program A \
+[                   Code                   ]   Program A  >  Process 5345345 (PID)
+[     Code |  Data | Code | Code & Data    ]   Program A /
+[                                          ]
+[          COMMON  MEMORY BLOCK            ]   SHARED
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]  Program B
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ] Editor
+[                                          ]
+[                                          ]
+[                                          ] System process
+[                                          ]
+[                                          ]
+
+JVM (Java Virtual Machine) -> OS process
+
+[                  Code (classes)          ]
+[                  Code of A               ]
+[                  Code of String          ]
+[                  Code of some Runnable   ]
+[                  Code (classes)          ]
+[                  Code (classes)          ]
+[                Heap (dynamics memory)    ]
+[    [A]  [String] [String]                ]
+[    [A  int  String .... ]                ]   JVM Process
+[                                          ]
+[                                          ]   Heap is shared between all Threads
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]
+[                                          ]
+[   ---< end of heap >---                  ]
+[  Execution Stack  local variables        ] Thread 0    local cache
+[                                          ] Thread 1    local cache
+[                                          ] Thread 2    local cache
+[                                          ] Thread 3    local cache
+[                                          ] Thread 4    local cache
+
+
+1ms 1000microsec.   1000 / 8  125 for each thread
+
+             []
+        []        []
+       
+       []           [] 
+
+        []        []
+             []
+
+19201775438  Ex 1  Volatile  
+ 4806304103  Ex 2  Interrupt
+ no result   Ex 3  Stop
+ 8549720131  Ex 4  isInterrupted
+12812723378  Ex 5  AtomicBoolean
+
