@@ -19,12 +19,10 @@ public class Logic {
     }
 
     private int currentDirection;
-    private int prevDirection;
 
     public boolean moveRight()
     {
         moveSnake(0,1);
-        prevDirection = currentDirection;
         currentDirection = DIRECTION_RIGHT;
         return true;
     }
@@ -32,7 +30,6 @@ public class Logic {
     public boolean moveLeft()
     {
         moveSnake(0,-1);
-        prevDirection = currentDirection;
         currentDirection = DIRECTION_LEFT;
         return true;
     }
@@ -41,7 +38,6 @@ public class Logic {
     public boolean moveDown()
     {
         moveSnake(1,0);
-        prevDirection = currentDirection;
         currentDirection = DIRECTION_DOWN;
         return true;
     }
@@ -50,7 +46,6 @@ public class Logic {
     public boolean moveUp()
     {
         moveSnake(-1,0);
-        prevDirection = currentDirection;
         currentDirection = DIRECTION_UP;
         return true;
     }
@@ -67,29 +62,30 @@ public class Logic {
 
     private void moveSnake(int deltaRow,int deltaCol)
     {
-        Snake snake = state.getStateSnake();
-        Cell snakeHead = snake.getSnakeHead();
-        LinkedList<Cell> snakeBody = snake.getSnakeBody();
-        Cell snakeTail = snake.getTail();
-        state.removeSnakeFromBoard();
+        LinkedList<Cell> body = state.getStateSnake().getSnakeBody();
         snakeEatsApple();
-        snakeHead.setCol(snakeHead.getCol() + deltaCol);
-        snakeHead.setRow(snakeHead.getRow() + deltaRow);
-        if(snakeHead.getCol() < 0) snakeHead.setCol(state.getStateBoard().getNumCols()-1);
-        if(snakeHead.getRow() < 0) snakeHead.setRow(state.getStateBoard().getNumRows()-1);
-        if(snakeHead.getRow() > state.getStateBoard().getNumRows()-1) snakeHead.setRow(0);
-        if(snakeHead.getCol() > state.getStateBoard().getNumCols()-1) snakeHead.setCol(0);
-        for(Cell tmp : snakeBody)
-        {
-            tmp.setCol(tmp.getCol()+deltaCol);
-            tmp.setRow(tmp.getRow()+deltaRow);
-            if(tmp.getCol() < 0) tmp.setCol(state.getStateBoard().getNumCols()-1);
-            if(tmp.getRow() < 0) tmp.setRow(state.getStateBoard().getNumRows()-1);
-            if(tmp.getRow() > state.getStateBoard().getNumRows()-1) tmp.setRow(0);
-            if(tmp.getCol() > state.getStateBoard().getNumCols()-1) tmp.setCol(0);
-
+        Cell newHead = new Cell(0,0,Color.RED);
+        int newRow = state.getStateSnake().getSnakeHead().getRow()+deltaRow;
+        int newCol = state.getStateSnake().getSnakeHead().getCol()+deltaCol;
+        if(newCol < 0) newCol = (state.getStateBoard().getNumCols()-1);
+        if(newRow < 0) newRow = (state.getStateBoard().getNumRows()-1);
+        if(newRow > state.getStateBoard().getNumRows()-1) newRow = (0);
+        if(newCol > state.getStateBoard().getNumCols()-1) newCol = (0);
+        if(body.isEmpty()){
+            state.getStateBoard().setColor(state.getStateSnake().getSnakeHead().getRow(), state.getStateSnake().getSnakeHead().getCol(),Color.BLACK);
+            state.getStateSnake().setHeadCol(newCol);
+            state.getStateSnake().setHeadRow(newRow);
+            state.getStateBoard().setColor(state.getStateSnake().getHeadRow(),state.getStateSnake().getHeadCol(),Color.RED);
+        }else{
+            state.getStateBoard().setColor(body.getLast().getRow(), body.getLast().getCol(),Color.BLACK);
+            state.getStateSnake().getSnakeBody().removeLast();
+            state.getStateSnake().getSnakeBody().addFirst(state.getStateSnake().getSnakeHead());
+            newHead.setCol(newCol);
+            newHead.setRow(newRow);
+            state.getStateSnake().setHead(newHead);
+            state.getStateBoard().setColor(newHead.getRow(),newHead.getCol(),Color.RED);
         }
-        state.colorSnakeOnBoard();
+
     }
 
     private void snakeEatsApple()
@@ -100,8 +96,6 @@ public class Logic {
             state.generateApple();
             snake.growSnake(currentDirection);
         }
-
-        //Snake ++
     }
 
     private boolean snakeMeetsApple()
@@ -114,10 +108,4 @@ public class Logic {
         }
         return false;
     }
-
-    private void repaintSnakeOnBoard()
-    {
-
-    }
-
 }

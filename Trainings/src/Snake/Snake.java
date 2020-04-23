@@ -7,13 +7,13 @@ import java.util.List;
 
 public class Snake {
     private Cell snakeHead;
-    private Cell snakeTail;
+    //private Cell snakeTail;
     private LinkedList<Cell> snakeBody;
 
     public Snake(int row, int col)
     {
         snakeHead = new Cell(row,col,Color.RED);
-        snakeTail = snakeHead;
+        //snakeTail = snakeHead;
         snakeBody = new LinkedList<Cell>();
     }
 
@@ -44,20 +44,30 @@ public class Snake {
         this.snakeHead.setRow(row);
     }
 
-    public Cell getTail() { return this.snakeTail; }
+    public void setHead(Cell newHead){ this.snakeHead = newHead; }
 
-    public void setTail(Cell newTail) { this.snakeTail = newTail; }
+   // public Cell getTail() { return this.snakeTail; }
+
+    //public void setTail(Cell newTail) { this.snakeTail = newTail; }
 
     public void growSnake(int direction){
-        int row = snakeTail.getRow();
-        int col = snakeTail.getCol();
-        if( direction == 1) col++;
-        else if (direction == -1) col--;
-        else if (direction == 2) row--;
-        else if (direction == -2) row++;
-        Cell c = new Cell(row,col,Color.RED);
-        this.snakeBody.add(c);
-        snakeTail = c;
+        int r = 0;
+        int c = 0;
+        if(snakeBody.isEmpty())
+        {
+            r = snakeHead.getRow();
+            c = snakeHead.getCol();
+        }
+        else{
+            r = snakeBody.getLast().getRow();
+            c = snakeBody.getLast().getCol();
+        }
+        if( direction == 1) c++;
+        else if (direction == -1) c--;
+        else if (direction == 2) r--;
+        else if (direction == -2) r++;
+        Cell cell = new Cell(r,c,Color.RED);
+        snakeBody.addLast(cell);
     }
 
 }

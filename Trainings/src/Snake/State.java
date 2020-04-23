@@ -45,30 +45,4 @@ public class State {
         apple.setRow(row);
         board.setColor(row,col,apple.getColor());
     }
-
-    public void colorSnakeOnBoard()
-    {
-        board.setColor(snake.getHeadRow(),snake.getHeadCol(),Color.RED);
-        LinkedList<Cell> body = snake.getSnakeBody();
-        if(body.size()>0)
-        {
-            for(Cell c : body)
-            {
-                board.setColor(c.getRow(),c.getCol(),c.getColor());
-            }
-        }
-    }
-
-    public void removeSnakeFromBoard()
-    {
-        board.setColor(snake.getHeadRow(),snake.getHeadCol(),Color.BLACK);
-        LinkedList<Cell> body = snake.getSnakeBody();
-        if(body.size()>0)
-        {
-            for(Cell c : body)
-            {
-                board.setColor(c.getRow(),c.getCol(),Color.BLACK);
-            }
-        }
-    }
 }
