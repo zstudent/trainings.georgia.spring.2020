@@ -4,7 +4,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -41,19 +43,25 @@ public class MatrixExample {
 		ExecutorService service = Executors.newFixedThreadPool(
 				Runtime.getRuntime().availableProcessors() / 2);
 
-		List<Future<BigInteger>> futures = new ArrayList<Future<BigInteger>>();
+//		List<Future<BigInteger>> futures = new ArrayList<Future<BigInteger>>();
+		 CompletionService<BigInteger> ecs
+         = new ExecutorCompletionService<BigInteger>(service);
 		
 		for (int i = 0; i < matrix.length; i++) {
 			int tmp = i;
-			futures.add(service.submit(()->{
+//			futures.add(service.submit(()->{
+//				return rowSum(matrix[tmp]);
+//			}));
+			ecs.submit(() -> {
 				return rowSum(matrix[tmp]);
-			}));
+			});
 		}
 		
-		for (Future<BigInteger> future : futures) {
+//		for (Future<BigInteger> future : futures) {
+		for (int i = 0; i < matrix.length; i++) {
 			try {
-				BigInteger rowSum = future.get();
-				result.add(rowSum);
+//				BigInteger rowSum = future.get();
+				result.add(ecs.take().get());
 			} catch (InterruptedException | ExecutionException e) {
 				e.printStackTrace();
 			}
