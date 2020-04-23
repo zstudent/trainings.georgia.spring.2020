@@ -34,3 +34,8 @@ Apply JMH to SearchExamples
 
 2020-04-22
 Take ThreadStartExamples1 from lesson200421 and change it to use ExecutorService
+
+2020-04-23
+1) https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/ExecutorCompletionService.html
+   Apply ExecutorCompletionService to MatrixExample
+2)  Explore jvisualvm features
