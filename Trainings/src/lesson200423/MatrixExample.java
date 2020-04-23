@@ -86,7 +86,7 @@ public class MatrixExample {
 		
 		for (int i = 0; i < futures.size(); i++) {
 			try {
-				result = cs.take().get();
+				result.add(cs.take().get());
 			} catch (InterruptedException | ExecutionException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
