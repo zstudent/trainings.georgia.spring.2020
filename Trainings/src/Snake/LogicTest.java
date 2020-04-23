@@ -3,6 +3,7 @@ package Snake;
 import org.junit.jupiter.api.Test;
 
 import java.awt.*;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -21,18 +22,18 @@ class LogicTest {
         Logic logic = new Logic(new State(10,10));
         assertEquals(10,logic.getSnake().getHeadCol());
         logic.moveLeft();
-        assertEquals(11,logic.getSnake().getHeadCol());
+        assertEquals(9,logic.getSnake().getHeadCol());
         assertEquals(Color.BLACK, logic.getBoard().getColor(10,10));
-        assertEquals(Color.RED, logic.getBoard().getColor(10,11));
+        assertEquals(Color.RED, logic.getBoard().getColor(10,9));
     }
 
     @Test
-    public void moveLeftTooFar()
+    public void moveRightTooFar()
     {
         Logic logic = new Logic(new State(10,29));
         assertEquals(29,logic.getSnake().getHeadCol());
         assertEquals(Color.RED, logic.getBoard().getColor(10,29));
-        logic.moveLeft();
+        logic.moveRight();
         assertEquals(0,logic.getSnake().getHeadCol());
         assertEquals(Color.BLACK,logic.getBoard().getColor(10,29));
         assertEquals(Color.RED,logic.getBoard().getColor(10,0));
@@ -46,39 +47,49 @@ class LogicTest {
         assertEquals(Color.RED, logic.getBoard().getColor(10,10));
         logic.moveRight();
         assertEquals(Color.BLACK, logic.getBoard().getColor(10,10));
-        assertEquals(9,logic.getSnake().getHeadCol());
-        assertEquals(Color.RED,logic.getBoard().getColor(10,9));
+        assertEquals(11,logic.getSnake().getHeadCol());
+        assertEquals(Color.RED,logic.getBoard().getColor(10,11));
     }
 
 
     @Test
-    public void moveRightTooFar()
+    public void moveLeftTooFar()
     {
         Logic logic = new Logic(new State(10,0));
         assertEquals(0,logic.getSnake().getHeadCol());
         assertEquals(10,logic.getSnake().getHeadRow());
         assertEquals(Color.RED, logic.getBoard().getColor(10,0));
-        logic.moveRight();
+        logic.moveLeft();
         assertEquals(29,logic.getSnake().getHeadCol());
         assertEquals(Color.BLACK,logic.getBoard().getColor(10,0));
         assertEquals(Color.RED,logic.getBoard().getColor(10,29));
     }
 
     @Test
-    public void moveRightAndLeft()
+    public void testMoveRightAndLeft()
     {
         Logic logic = new Logic(new State(9,10));
         assertEquals(10,logic.getSnake().getHeadCol());
         assertEquals(9,logic.getSnake().getHeadRow());
         assertEquals(Color.RED,logic.getBoard().getColor(9,10));
-        assertNotEquals(Color.RED,logic.getBoard().getColor(9,11));
-        assertNotEquals(Color.RED,logic.getBoard().getColor(9,8));
         moveLeft();
         moveRight();
         assertEquals(10,logic.getSnake().getHeadCol());
         assertEquals(9,logic.getSnake().getHeadRow());
         assertEquals(Color.RED,logic.getBoard().getColor(9,10));
-        assertNotEquals(Color.RED,logic.getBoard().getColor(9,11));
-        assertNotEquals(Color.RED,logic.getBoard().getColor(9,8));
+    }
+
+    @Test
+    public void testMoveUpAndDown()
+    {
+        Logic logic = new Logic(new State(10,10));
+        assertEquals(10,logic.getSnake().getHeadRow());
+        assertEquals(10,logic.getSnake().getHeadCol());
+        logic.moveDown();
+        assertEquals(11,logic.getSnake().getHeadRow());
+        assertEquals(10,logic.getSnake().getHeadCol());
+        logic.moveUp();
+        assertEquals(10,logic.getSnake().getHeadRow());
+        assertEquals(10,logic.getSnake().getHeadCol());
     }
 }
