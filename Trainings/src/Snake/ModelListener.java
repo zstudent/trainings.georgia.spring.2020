@@ -1,5 +1,6 @@
 package Snake;
 
 public interface ModelListener {
-    void refreshBoard(Board board);
+    void onChange(Board board);
+    void fireGameOver();
 }

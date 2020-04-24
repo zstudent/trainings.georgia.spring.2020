@@ -1,6 +1,6 @@
 package Snake;
 
 @FunctionalInterface
-public interface FollowInterface {
+public interface LastDirectionFollow {
     void move();
 }

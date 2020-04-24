@@ -13,7 +13,6 @@ public class Snake {
     public Snake(int row, int col)
     {
         snakeHead = new Cell(row,col,Color.RED);
-        //snakeTail = snakeHead;
         snakeBody = new LinkedList<Cell>();
     }
 
@@ -45,10 +44,6 @@ public class Snake {
     }
 
     public void setHead(Cell newHead){ this.snakeHead = newHead; }
-
-   // public Cell getTail() { return this.snakeTail; }
-
-    //public void setTail(Cell newTail) { this.snakeTail = newTail; }
 
     public void growSnake(int direction){
         int r = 0;

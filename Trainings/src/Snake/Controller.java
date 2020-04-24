@@ -1,5 +1,6 @@
 package Snake;
 
+//Controller/Middle man between Model and View.
 public class Controller implements ModelListener {
     private Model model;
     private View view;
@@ -11,19 +12,7 @@ public class Controller implements ModelListener {
         model.addListener(this);
     }
 
-
-    public Model getModel()
-    {
-        return this.model;
-    }
-
-
-    public View getView()
-    {
-        return this.view;
-    }
-
-
+    //Movements of Snake.
     public void moveLeft()
     {
         model.moveLeft();
@@ -44,8 +33,14 @@ public class Controller implements ModelListener {
         model.moveUp();
     }
 
+    //Returns timer of game.
+    public int getTimer(){ return model.getTimer(); }
+
+    //Notifies view about changes in Model.
     @Override
-    public void refreshBoard(Board board) {
-        view.draw(board);
-    }
+    public void onChange(Board board) { view.draw(board); }
+
+    //Notifies view about that game is over.
+    @Override
+    public void fireGameOver(){ view.drawLabel(true); }
 }

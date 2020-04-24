@@ -1,7 +1,7 @@
 package Snake;
 
 import java.awt.*;
-
+//Represents Board of the game.
 public class Board {
     private Cell[][] board;
     private int numRows;
@@ -15,6 +15,7 @@ public class Board {
         clearBoard();
     }
 
+    //paint whole board cells black.
     public void clearBoard()
     {
         for (int i = 0; i < numRows; i++) {

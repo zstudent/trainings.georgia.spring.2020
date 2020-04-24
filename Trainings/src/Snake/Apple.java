@@ -5,7 +5,6 @@ import java.awt.*;
 public class Apple {
     private Cell apple;
 
-
     public Apple(int row,int col)
     {
         apple = new Cell(row, col,Color.GREEN);

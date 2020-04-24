@@ -1,11 +1,9 @@
 package Snake;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.function.Predicate;
 
 public class Main {
 
@@ -16,7 +14,7 @@ public class Main {
 
     private static void setup()
     {
-        JFrame frame = new JFrame("Snake");
+        JFrame frame = new JFrame("MySnake");
         frame.setLayout(new BorderLayout());
         frame.setSize(700,700);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -24,41 +22,77 @@ public class Main {
         frame.add(view, BorderLayout.CENTER);
         Model model = new Model(15,15);
         Controller controller = new Controller(model,view);
-        FollowWay.followWay = ()->{controller.moveRight();};
+        //Initialise snake's initial follow pattern.
+        LastDirection.followWay = ()->{controller.moveRight();};
+        LastDirection.lastDirection = KeyEvent.VK_RIGHT;
+
+        //All if() statements during listening to key presses
+        //are to not let user press opposite or same direction button
+        //to avoid poor UX.
         frame.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
                 switch (e.getKeyCode()){
                     case KeyEvent.VK_RIGHT:
-                        controller.moveRight();
-                        FollowWay.followWay=()->{controller.moveRight();};
+                        if(LastDirection.lastDirection!=KeyEvent.VK_LEFT
+                                && LastDirection.lastDirection!=KeyEvent.VK_RIGHT)
+                        {
+                            controller.moveRight();
+                            LastDirection.followWay=()->{controller.moveRight();};
+                            LastDirection.lastDirection = KeyEvent.VK_RIGHT;
+                        }
                         break;
                     case KeyEvent.VK_LEFT:
-                        controller.moveLeft();
-                        FollowWay.followWay=()->{controller.moveLeft();};
+                        if(LastDirection.lastDirection!=KeyEvent.VK_RIGHT
+                                && LastDirection.lastDirection!=KeyEvent.VK_LEFT)
+                        {
+                            controller.moveLeft();
+                            LastDirection.followWay=()->{controller.moveLeft();};
+                            LastDirection.lastDirection = KeyEvent.VK_LEFT;
+                        }
                         break;
                     case KeyEvent.VK_UP:
-                        controller.moveUp();
-                        FollowWay.followWay=()->{controller.moveUp();};
+                        if(LastDirection.lastDirection!=KeyEvent.VK_DOWN
+                                && LastDirection.lastDirection!=KeyEvent.VK_UP)
+                        {
+                            controller.moveUp();
+                            LastDirection.followWay=()->{controller.moveUp();};
+                            LastDirection.lastDirection = KeyEvent.VK_UP;
+                        }
                         break;
                     case KeyEvent.VK_DOWN:
-                        controller.moveDown();
-                        FollowWay.followWay=()->{controller.moveDown();};
+                        if(LastDirection.lastDirection!=KeyEvent.VK_UP
+                                && LastDirection.lastDirection!=KeyEvent.VK_DOWN)
+                        {
+                            controller.moveDown();
+                            LastDirection.followWay=()->{controller.moveDown();};
+                            LastDirection.lastDirection = KeyEvent.VK_DOWN;
+                        }
                         break;
                 }
             }
         });
 
+        //Engine of Snake game, Ticks in every Controller.getTimer() m.second.
         new Thread(()->{
             while(true) {
                 try {
-                    Thread.sleep(300);
+                    Thread.sleep(controller.getTimer());
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                SwingUtilities.invokeLater(FollowWay.followWay::move);
+                //Follow snake's last direction.
+                LastDirection.followWay.move();
             }
         }).start();
         frame.setVisible(true);
+    }
+
+    //Holds data about last direction of snake, before user pressed key.
+    public static class LastDirection {
+        //Functional interface is used to make snake follow last direction.
+        public static LastDirectionFollow followWay;
+        //lastDirection variable is to not to let snake go on current direction's opposite side.
+        public static int lastDirection;
     }
 }

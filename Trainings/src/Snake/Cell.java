@@ -14,7 +14,6 @@ public class Cell {
         this.col = col;
     }
 
-
     public void setCol(int col) {
         this.col = col;
     }

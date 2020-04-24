@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-
+    //All calculations are accumulated in logic object.
     private  Logic logic;
-
+    //List of listeners to this Model.Controller is later added in this list.
     List<ModelListener> listeners = new ArrayList<>();
 
     public Model(int snakeRow,int snakeCol)
@@ -15,53 +15,60 @@ public class Model {
         logic = new Logic(new State(snakeRow,snakeCol));
     }
 
-    public boolean moveLeft()
+    public void moveLeft()
     {
         if(logic.moveLeft())
             refreshView();
-        return true;
+        else fireGameOver();
     }
 
     public void moveRight()
     {
         if(logic.moveRight())
             refreshView();
+        else fireGameOver();
     }
 
-    public boolean moveDown()
+    public void moveDown()
     {
         if(logic.moveDown())
             refreshView();
-        return true;
+        else fireGameOver();
     }
 
-    public boolean moveUp()
+    public void moveUp()
     {
         if(logic.moveUp())
             refreshView();
-        return true;
+        else fireGameOver();
     }
 
+    //Add new model listeners(In our case Controller is one being added).
     public void addListener(ModelListener listener)
     {
         listeners.add(listener);
     }
 
+    //Notify Model listeners that model was updated/changed.
     public void refreshView()
     {
         for(ModelListener listener : listeners)
         {
-            listener.refreshBoard(logic.getBoard());
+            listener.onChange(logic.getBoard());
         }
     }
 
-    public Board getBoard()
+    //Notify Model listeners that game is over.
+    public void fireGameOver()
     {
-        return logic.getBoard();
+        for(ModelListener listener : listeners)
+        {
+            listener.fireGameOver();
+        }
     }
-
-    public Snake getSnake()
+    //return game's timer value.
+    public int getTimer()
     {
-        return logic.getSnake();
+       return logic.getTimer();
     }
 }
