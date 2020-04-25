@@ -10,13 +10,13 @@ import java.util.LinkedList;
 import static org.junit.Assert.assertEquals;
 
 public class SnakeBodyTests {
-
     Logic logic;
 
     @BeforeEach
     public void setUp()
     {
         logic = new Logic(new State(10,10));
+        logic.SANITY_CHECK = true;
     }
 
     @Test
@@ -34,7 +34,7 @@ public class SnakeBodyTests {
         snake.setHeadCol(apple.getCol());
         snake.setHeadRow(apple.getRow()-1);
         logic.moveDown();
-        logic.moveLeft();//This is just so body growth updates snake's body.
+        logic.moveDown();
         LinkedList<Cell> snakeBody = snake.getSnakeBody();
         assertEquals(1,snakeBody.size());
         assertEquals(Color.RED,logic.getBoard().getColor(snakeBody.getLast().getRow(),snakeBody.getLast().getCol()));
@@ -54,5 +54,35 @@ public class SnakeBodyTests {
         logic.moveDown();
         logic.moveDown();
         assertEquals(2,snake.getSnakeBody().size());
+    }
+
+    @Test
+    public void testSnakeEatsBorderApple()
+    {
+        Food apple = logic.getApple();
+        Snake snake = logic.getSnake();
+        apple.setCol(0);
+        apple.setRow(0);
+        snake.setHeadCol(0);
+        snake.setHeadRow(1);
+        logic.moveUp();
+        logic.moveUp();
+        assertEquals(1,snake.getSnakeBody().size());
+        assertEquals(logic.getBoard().getNumRows()-1,snake.getHeadRow());
+    }
+
+    @Test
+    public void testSnakeEatsBorderApple_2()
+    {
+        Food apple = logic.getApple();
+        Snake snake = logic.getSnake();
+        apple.setCol(0);
+        apple.setRow(0);
+        snake.setHeadCol(1);
+        snake.setHeadRow(0);
+        logic.moveLeft();
+        logic.moveLeft();
+        assertEquals(1,snake.getSnakeBody().size());
+        assertEquals(logic.getBoard().getNumCols()-1,snake.getHeadCol());
     }
 }

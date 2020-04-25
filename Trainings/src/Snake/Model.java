@@ -67,7 +67,7 @@ public class Model implements SnakeAteAppleListener{
             listener.fireLableChange("Game over");
         }
     }
-
+    //Notify listeners to increase speed.
     @Override
     public void increaseSpeed() {
         for(ModelListener listener : listeners)

@@ -4,6 +4,9 @@ package Snake;
 import java.util.LinkedList;
 
 public class Logic {
+    //This boolean will be true only in tests.
+    public boolean SANITY_CHECK = false;
+
     //Constants for determining directions of snake.
     private static final int DIRECTION_RIGHT = 1;
     private static final int DIRECTION_LEFT = -1;
@@ -77,7 +80,8 @@ public class Logic {
         {
             state.generateApple();
             SnakeChange.growSnake(state.getStateSnake(),state.getStateBoard(),currentDirection*-1);
-            listener.increaseSpeed();
+            //Since we don't need listeners in tests.
+            if(!SANITY_CHECK)listener.increaseSpeed();
         }
     }
 
