@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.LinkedList;
 
 //stateless class/bean.
-public class SnakeStateChange {
+public class SnakeChange {
     //Move snake with deltaRow and deltaCol
     public static void moveSnake(Board board,Snake snake,int deltaRow,int deltaCol) {
         int newRow = snake.getRow() + deltaRow;

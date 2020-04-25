@@ -13,7 +13,8 @@ public class View extends JPanel{
 
     public View() {
         setLayout(new BorderLayout());
-        label = new JLabel("Welcome!");
+        label = new JLabel("0",SwingConstants.CENTER);
+        label.setPreferredSize(new Dimension(50,50));
         this.add(label, BorderLayout.NORTH);
     }
 
@@ -23,6 +24,7 @@ public class View extends JPanel{
         this.board = board;
         //Use overridden paint component and pass this object's graphics obj.
         paintComponent(this.getGraphics());
+        label.repaint();
     }
 
     @Override
@@ -45,10 +47,10 @@ public class View extends JPanel{
         }
     }
 
+    public JLabel getLabel(){ return this.label; }
     //Changing text to JLabel
-    public void drawLabel(boolean flag)
+    public void drawLabel(String str)
     {
-        if(flag) label.setText("Game over!");
-        else label.setText("Currently playing");
+        label.setText(str);
     }
 }

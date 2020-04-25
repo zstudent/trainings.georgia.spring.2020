@@ -4,7 +4,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Model {
+public class Model implements SnakeAteAppleListener{
     //All calculations are accumulated in logic object.
     private  Logic logic;
     //List of listeners to this Model.Controller is later added in this list.
@@ -13,6 +13,7 @@ public class Model {
     public Model(int snakeRow,int snakeCol)
     {
         logic = new Logic(new State(snakeRow,snakeCol));
+        logic.setListener(this);
     }
 
     public void moveLeft()
@@ -63,12 +64,15 @@ public class Model {
     {
         for(ModelListener listener : listeners)
         {
-            listener.fireGameOver();
+            listener.fireLableChange("Game over");
         }
     }
-    //return game's timer value.
-    public int getTimer()
-    {
-       return logic.getTimer();
+
+    @Override
+    public void increaseSpeed() {
+        for(ModelListener listener : listeners)
+        {
+            listener.increaseSpeed();
+        }
     }
 }

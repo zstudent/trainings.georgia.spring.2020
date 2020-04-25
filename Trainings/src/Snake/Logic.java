@@ -1,9 +1,7 @@
 package Snake;
 
 
-import java.awt.*;
 import java.util.LinkedList;
-import java.util.List;
 
 public class Logic {
     //Constants for determining directions of snake.
@@ -11,8 +9,6 @@ public class Logic {
     private static final int DIRECTION_LEFT = -1;
     private static final int DIRECTION_UP = 2;
     private static final int DIRECTION_DOWN = -2;
-    //Initial timer is 300(ms).
-    private int timer = 300;
     private State state;
 
     public Logic(State state)
@@ -21,6 +17,7 @@ public class Logic {
     }
     //Describes current direction of snake.
     private int currentDirection;
+    SnakeAteAppleListener listener;
 
     //If moveXXXX method return false,
     //it means that game is over.
@@ -28,7 +25,7 @@ public class Logic {
     {
         if (snakeMeetsItself()) return false;
         snakeEatsApple();
-        SnakeStateChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 0,1);
+        SnakeChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 0,1);
         currentDirection = DIRECTION_RIGHT;
         return true;
     }
@@ -37,7 +34,7 @@ public class Logic {
     {
         if (snakeMeetsItself()) return false;
         snakeEatsApple();
-        SnakeStateChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 0,-1);
+        SnakeChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 0,-1);
         currentDirection = DIRECTION_LEFT;
         return true;
     }
@@ -46,7 +43,7 @@ public class Logic {
     {
         if (snakeMeetsItself()) return false;
         snakeEatsApple();
-        SnakeStateChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 1,0);
+        SnakeChange.moveSnake(state.getStateBoard(),state.getStateSnake(), 1,0);
         currentDirection = DIRECTION_DOWN;
         return true;
     }
@@ -55,7 +52,7 @@ public class Logic {
     {
         if (snakeMeetsItself()) return false;
         snakeEatsApple();
-        SnakeStateChange.moveSnake(state.getStateBoard(),state.getStateSnake(), -1,0);
+        SnakeChange.moveSnake(state.getStateBoard(),state.getStateSnake(), -1,0);
         currentDirection = DIRECTION_UP;
         return true;
     }
@@ -72,8 +69,6 @@ public class Logic {
     }
     //Returns apple obj.
     public Food getApple() { return state.getStateApple(); }
-    //Returns timer value.
-    public int getTimer(){ return timer; }
 
     //Snake/apple relationship.
     private void snakeEatsApple()
@@ -81,8 +76,8 @@ public class Logic {
         if(state.snakeMeetsApple())
         {
             state.generateApple();
-            SnakeStateChange.growSnake(state.getStateSnake(),state.getStateBoard(),currentDirection*-1);
-            timer*=0.9;
+            SnakeChange.growSnake(state.getStateSnake(),state.getStateBoard(),currentDirection*-1);
+            listener.increaseSpeed();
         }
     }
 
@@ -95,5 +90,10 @@ public class Logic {
             if(element.getCol() == state.getStateSnake().getCol() && element.getRow() == state.getStateSnake().getRow()) return true;
         }
         return false;
+    }
+
+    public void setListener(SnakeAteAppleListener listener)
+    {
+        this.listener = listener;
     }
 }

@@ -2,6 +2,7 @@ package Snake;
 
 //Controller/Middle man between Model and View.
 public class Controller implements ModelListener {
+    private int timer = 300;
     private Model model;
     private View view;
 
@@ -34,7 +35,7 @@ public class Controller implements ModelListener {
     }
 
     //Returns timer of game.
-    public int getTimer(){ return model.getTimer(); }
+    public int getTimer(){ return this.timer; }
 
     //Notifies view about changes in Model.
     @Override
@@ -42,5 +43,11 @@ public class Controller implements ModelListener {
 
     //Notifies view about that game is over.
     @Override
-    public void fireGameOver(){ view.drawLabel(true); }
+    public void fireLableChange(String msg){ view.drawLabel(msg); }
+
+    @Override
+    public void increaseSpeed() {
+        timer*=0.9;
+        view.drawLabel((Integer.parseInt(view.getLabel().getText()) + 10) + "");
+    }
 }

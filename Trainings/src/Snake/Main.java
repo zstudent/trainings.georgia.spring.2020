@@ -82,7 +82,7 @@ public class Main {
                     e.printStackTrace();
                 }
                 //Follow snake's last direction.
-                LastDirection.followWay.move();
+                SwingUtilities.invokeLater(()->LastDirection.followWay.move());
             }
         }).start();
         frame.setVisible(true);
