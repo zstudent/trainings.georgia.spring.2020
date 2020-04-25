@@ -1,6 +1,7 @@
 package Snake;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 //Extends JPanel.
@@ -11,9 +12,9 @@ public class View extends JPanel{
     private JLabel label;
 
     public View() {
-        this.setLayout(new BorderLayout());
-        label = new JLabel("");
-        this.add(label,BorderLayout.NORTH);
+        setLayout(new BorderLayout());
+        label = new JLabel("Welcome!");
+        this.add(label, BorderLayout.NORTH);
     }
 
     //Actual head function for displaying board.
@@ -31,7 +32,7 @@ public class View extends JPanel{
         drawBoard(board,g);
     }
 
-    //Getting board and draw appropriate rectenagles.
+    //Getting board and draw appropriate rectangles.
     private void drawBoard(Board board,Graphics g)
     {
         if(board==null) return;
@@ -39,7 +40,7 @@ public class View extends JPanel{
         {
             for (int j = 0; j < board.getNumRows(); j++) {
                 g.setColor(board.getColor(j,i));
-                g.fillRect(40+20*i,40+20*j,25,25);
+                g.fillRect(40+20*i,50+20*j,25,25);
             }
         }
     }

@@ -10,7 +10,6 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 class SnakeHeadTests {
-
     @Test
     public void testLogicStates()
     {
@@ -40,7 +39,6 @@ class SnakeHeadTests {
         Assertions.assertEquals(Color.BLACK,logic.getBoard().getColor(10,29));
         Assertions.assertEquals(Color.RED,logic.getBoard().getColor(10,0));
     }
-
 
     @Test
     public void testHeadmoveRight()

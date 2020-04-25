@@ -28,7 +28,7 @@ public class SnakeBodyTests {
     @Test
     public void testSnakeBodyGrow()
     {
-        Apple apple = logic.getApple();
+        Food apple = logic.getApple();
         Snake snake = logic.getSnake();
         assertEquals(0,snake.getSnakeBody().size());
         snake.setHeadCol(apple.getCol());
@@ -43,7 +43,7 @@ public class SnakeBodyTests {
     @Test
     public void testConsecutiveSnakeBodyGrow()
     {
-        Apple apple = logic.getApple();
+        Food apple = logic.getApple();
         Snake snake = logic.getSnake();
         snake.setHeadCol(apple.getCol());
         snake.setHeadRow(apple.getRow()-1);

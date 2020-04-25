@@ -25,11 +25,6 @@ public class Board {
         }
     }
 
-    public Cell[][] getBoard()
-    {
-        return this.board;
-    }
-
     public Cell getCell(int row, int col)
     {
         return board[row][col];

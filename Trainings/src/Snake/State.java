@@ -9,7 +9,7 @@ public class State {
     //Has snake and board in snapshot.
     private Snake snake;
     private Board board;
-    private Apple apple;
+    private Food apple;
 
     //Rows and Cols of board.
     private static final int ROWS = 30;
@@ -22,7 +22,7 @@ public class State {
         random = new Random();
         snake = new Snake(snakeRow,snakeCol);
         board = new Board(ROWS,COLS);
-        apple = new Apple(0,0);
+        apple = new Apple(0,0,Color.GREEN);
         setCellColor(snakeRow,snakeCol,Color.RED);
         generateApple();
     }
@@ -39,7 +39,7 @@ public class State {
         return this.board;
     }
 
-    public Apple getStateApple(){ return this.apple; }
+    public Food getStateApple() { return this.apple; }
 
     public void generateApple()
     {
@@ -59,11 +59,23 @@ public class State {
     //This function return true if apple wasn't located on  snake's (any) coordinates.
     private boolean validAppleLocation(int appleRow,int appleCol)
     {
-        if(snake.getSnakeHead().getCol()==appleCol && snake.getSnakeHead().getRow()==appleRow) return false;
+        if(snake.getHeadCol()==appleCol && snake.getHeadRow()==appleRow) return false;
         for(Cell element : snake.getSnakeBody())
         {
             if(element.getRow()==appleRow && element.getCol() == appleCol) return false;
         }
         return true;
+    }
+
+    //Returns true if snake's head met apple.
+    public boolean snakeMeetsApple()
+    {
+        Snake snake = getStateSnake();
+        Food apple = getStateApple();
+        if(snake.getHeadCol()==apple.getCol() && snake.getHeadRow() == apple.getRow())
+        {
+            return true;
+        }
+        return false;
     }
 }

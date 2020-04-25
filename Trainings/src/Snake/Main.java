@@ -19,7 +19,7 @@ public class Main {
         frame.setSize(700,700);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         View view = new View();
-        frame.add(view, BorderLayout.CENTER);
+        frame.add(view);
         Model model = new Model(15,15);
         Controller controller = new Controller(model,view);
         //Initialise snake's initial follow pattern.
@@ -94,5 +94,10 @@ public class Main {
         public static LastDirectionFollow followWay;
         //lastDirection variable is to not to let snake go on current direction's opposite side.
         public static int lastDirection;
+
+        @FunctionalInterface
+        public interface LastDirectionFollow {
+            void move();
+        }
     }
 }

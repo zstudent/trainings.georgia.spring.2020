@@ -1,40 +1,28 @@
 package Snake;
 
 import java.awt.*;
-
-public class Cell {
-    private int row;
-    private int col;
+//Cell is kindofa board component.
+//In our current example it doesn't have additional features but it can.
+public class Cell extends BoardComponent {
     private Color color;
 
-    public Cell(int row,int col,Color color)
+    public Cell(int row, int col, Color color) {
+        super(row, col);
+        setColor(color);
+    }
+
+    //Copy constructor
+    public Cell(Cell cell)
+    {
+        super(cell.getRow(),cell.getCol());
+        setColor(cell.color);
+    }
+
+    public Color getColor() { return color; }
+
+    public void setColor(Color color)
     {
         this.color = color;
-        this.row = row;
-        this.col = col;
-    }
-
-    public void setCol(int col) {
-        this.col = col;
-    }
-
-    public void setColor(Color color) {
-        this.color = color;
-    }
-
-    public void setRow(int row) {
-        this.row = row;
-    }
-
-    public Color getColor() {
-        return color;
-    }
-
-    public int getCol() {
-        return col;
-    }
-
-    public int getRow() {
-        return row;
     }
 }
+
