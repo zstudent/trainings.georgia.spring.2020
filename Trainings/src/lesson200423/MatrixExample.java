@@ -4,7 +4,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -24,6 +26,9 @@ public class MatrixExample {
 
 		System.out.println(elapsed(MatrixExample::matrixSum, matrix));
 		System.out.println(elapsed(MatrixExample::parallelMatrixSum, matrix));
+		System.out.println(elapsed(MatrixExample::parallelMatrixSumAsExecutorCompletionService, matrix));
+
+		
 	}
 
 	public static BigInteger matrixSum(long[][] matrix) {
@@ -58,7 +63,45 @@ public class MatrixExample {
 				e.printStackTrace();
 			}
 		}
+		service.shutdown();
+		return result;
+	}
+	
+	public static BigInteger parallelMatrixSumAsExecutorCompletionService(long[][] matrix) {
+		BigInteger result = new BigInteger("0");
+
+		ExecutorService service = Executors.newFixedThreadPool(
+				Runtime.getRuntime().availableProcessors() / 2);
 		
+		CompletionService<BigInteger> cs = new ExecutorCompletionService<BigInteger>(service);
+
+		List<Future<BigInteger>> futures = new ArrayList<Future<BigInteger>>();
+		
+		for (int i = 0; i < matrix.length; i++) {
+			int tmp = i;
+			futures.add(cs.submit(()->{
+				return rowSum(matrix[tmp]);
+			}));
+		}
+		
+		for (int i = 0; i < futures.size(); i++) {
+			try {
+				result.add(cs.take().get());
+			} catch (InterruptedException | ExecutionException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+//		for (Future<BigInteger> future : futures) {
+//			try {
+//				BigInteger rowSum = future.get();
+//				result.add(rowSum);
+//			} catch (InterruptedException | ExecutionException e) {
+//				e.printStackTrace();
+//			}
+//		}
+		service.shutdown();
 		return result;
 	}
 
