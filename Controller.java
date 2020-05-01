@@ -1,5 +1,6 @@
-public class Controller implements ModelListener {
 
+public class Controller implements ModelListener {
+	
 	View view;
 	Model model;
 
@@ -13,34 +14,33 @@ public class Controller implements ModelListener {
 	public void onChange(State state) {
 		view.draw(state);
 	}
-
-	public void moveLeft() {
-		model.moveLeft();
-	}
-
-	public void moveRight() {
-		model.moveRight();
-	}
-
-	public void moveDown() {
-		model.moveDown();
-	}
-
-	public void dropDown() {
-		model.dropDown();
-	}
-	
-	public void rotate() {
-		model.rotate();
-	}
-	
-	public boolean gameOver() {
-		return model.gameOver();
-	}
 	
 	public void restart() {
 		model.restart();
 	}
 	
+	public void move() {
+		model.move();
+	}
 
+	public boolean gameOver() {
+		return model.gameOver();
+	}
+
+	public void turnLeft() {
+		model.turnLeft();
+	}
+	
+	public void turnRight() {
+		model.turnRight();
+	}
+	
+	public void turnDown() {
+		model.turnDown();
+	}
+	
+	public void turnUp() {
+		model.turnUp();
+	}
+	
 }
