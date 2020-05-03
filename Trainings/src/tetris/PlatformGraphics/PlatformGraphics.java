@@ -1,4 +1,4 @@
-
+package PlatformGraphics;
 
 public interface PlatformGraphics {
 

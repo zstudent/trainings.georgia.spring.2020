@@ -2,12 +2,13 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.File;
+
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.Clip;
 import javax.swing.*;
-public class Tetris {
-	private static Clip clip; 
+public class Tetris2 {
+
 	public static void playSound(String soundName)
 	 {
 	   try 
@@ -24,7 +25,7 @@ public class Tetris {
 	     ex.printStackTrace( );
 	   }
 	 }
-
+//	private static Clip clip; 
 //	private static Thread thread;
 
 	static protected int delay = 500;
@@ -34,7 +35,7 @@ public class Tetris {
 				Color.cyan,Color.pink,Color.magenta,};
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(Tetris::setup);
+		SwingUtilities.invokeLater(Tetris2::setup);
 	}
 
 	public static void setup() {
@@ -79,15 +80,8 @@ public class Tetris {
 					controller.rotate();
 					 playSound("rotate.wav");
 					break;
-				case KeyEvent.VK_W:
-					controller.rotate();
-					 playSound("rotate.wav");
-					break;
 				
 				case KeyEvent.VK_DOWN:
-					controller.moveDown();
-					 playSound("rotate.wav");
-				case KeyEvent.VK_S:
 					controller.moveDown();
 					 playSound("rotate.wav");
 					break;
@@ -99,16 +93,9 @@ public class Tetris {
 				case KeyEvent.VK_LEFT:
 					controller.moveLeft();
 					 playSound("rotate.wav");
-				case KeyEvent.VK_A:
-					controller.moveLeft();
-					 playSound("rotate.wav");
 					break;
 
 				case KeyEvent.VK_RIGHT:
-					controller.moveRight();
-					 playSound("rotate.wav");
-					break;
-				case KeyEvent.VK_D:
 					controller.moveRight();
 					 playSound("rotate.wav");
 					break;
@@ -122,9 +109,7 @@ public class Tetris {
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					
 					Thread.sleep(delay - 40*view.level);
-					
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
@@ -143,8 +128,9 @@ public class Tetris {
 
 				      if(n == JOptionPane.YES_OPTION)
 				      {
-				          Tetris2.setup();
-				          frame.dispose();
+				    	  Tetris.setup();
+				    	  frame.dispose();
+
 				      }
 				      else
 				      {
@@ -161,10 +147,9 @@ public class Tetris {
 		thread.setDaemon(true);
 		thread.start();
 		frame.setVisible(true);
+
 		SwingUtilities.invokeLater(() -> {
 			model.refreshView();
 		});
 	}
-
-
 }
