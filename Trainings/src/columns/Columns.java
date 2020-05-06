@@ -23,12 +23,12 @@ public class Columns extends Applet implements Runnable {
     int Level, i, j, ii, k, ch;
     long Score, DScore, tc;
     Font fCourier;
-    Figure Fig;
+    Figure figure;
     int Fnew[][],Fold[][];
     boolean NoChanges = true, KeyPressed = false;
-    Graphics _gr;
+    Graphics graphics;
     
-    Thread thr = null;
+    Thread thread = null;
     
     
     void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
@@ -52,26 +52,26 @@ public class Columns extends Applet implements Runnable {
     }
     void DrawBox(int x, int y, int c) {
         if (c==0) {
-            _gr.setColor(Color.black);
-            _gr.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
-            _gr.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            graphics.setColor(Color.black);
+            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
         }
         else if (c==8) {
-            _gr.setColor(Color.white);
-            _gr.drawRect(LeftBorder+x*SL-SL+1, TopBorder+y*SL-SL+1, SL-2, SL-2);
-            _gr.drawRect(LeftBorder+x*SL-SL+2, TopBorder+y*SL-SL+2, SL-4, SL-4);
-            _gr.setColor(Color.black);
-            _gr.fillRect(LeftBorder+x*SL-SL+3, TopBorder+y*SL-SL+3, SL-6, SL-6);
+            graphics.setColor(Color.white);
+            graphics.drawRect(LeftBorder+x*SL-SL+1, TopBorder+y*SL-SL+1, SL-2, SL-2);
+            graphics.drawRect(LeftBorder+x*SL-SL+2, TopBorder+y*SL-SL+2, SL-4, SL-4);
+            graphics.setColor(Color.black);
+            graphics.fillRect(LeftBorder+x*SL-SL+3, TopBorder+y*SL-SL+3, SL-6, SL-6);
         }
         else {
-            _gr.setColor(MyStyles[c]);
-            _gr.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
-            _gr.setColor(Color.black);
-            _gr.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            graphics.setColor(MyStyles[c]);
+            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            graphics.setColor(Color.black);
+            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
         }
         //		g.setColor (Color.black);
     }
-    void DrawField(Graphics g) {
+    void DrawField(Graphics graphics) {
         int i,j;
         for (i=1; i<=Depth; i++) {
             for (j=1; j<=Width; j++) {
@@ -79,18 +79,18 @@ public class Columns extends Applet implements Runnable {
             }
         }
     }
-    void DrawFigure(Figure f) {
-        DrawBox(f.x,f.y,f.c[1]);
-        DrawBox(f.x,f.y+1,f.c[2]);
-        DrawBox(f.x,f.y+2,f.c[3]);
+    void DrawFigure(Figure figure) {
+        DrawBox(figure.xCoordinate,figure.yCoordinate,figure.color[1]);
+        DrawBox(figure.xCoordinate,figure.yCoordinate+1,figure.color[2]);
+        DrawBox(figure.xCoordinate,figure.yCoordinate+2,figure.color[3]);
     }
-    void DropFigure(Figure f) {
+    void DropFigure(Figure figure) {
         int zz;
-        if (f.y < Depth-2) {
+        if (figure.yCoordinate < Depth-2) {
             zz = Depth;
-            while (Fnew[f.x][zz]>0) zz--;
-            DScore = (((Level+1)*(Depth*2-f.y-zz) * 2) % 5) * 5;
-            f.y = zz-2;
+            while (Fnew[figure.xCoordinate][zz]>0) zz--;
+            DScore = (((Level+1)*(Depth*2-figure.yCoordinate-zz) * 2) % 5) * 5;
+            figure.yCoordinate = zz-2;
         }
     }
     boolean FullField() {
@@ -102,14 +102,14 @@ public class Columns extends Applet implements Runnable {
         return false;
     }
     void HideFigure(Figure f) {
-        DrawBox(f.x,f.y,0);
-        DrawBox(f.x,f.y+1,0);
-        DrawBox(f.x,f.y+2,0);
+        DrawBox(f.xCoordinate,f.yCoordinate,0);
+        DrawBox(f.xCoordinate,f.yCoordinate+1,0);
+        DrawBox(f.xCoordinate,f.yCoordinate+2,0);
     }
     public void init() {
         Fnew = new int[Width+2][Depth+2];
         Fold = new int[Width+2][Depth+2];
-        _gr = getGraphics();
+        graphics = getGraphics();
     }
     public boolean keyDown(Event e, int k) {
         KeyPressed = true;
@@ -134,21 +134,21 @@ public class Columns extends Applet implements Runnable {
             for (j=n; j>0; j--) Fnew[i][j] = 0;
         }
     }
-    public void paint(Graphics g) {
+    public void paint(Graphics graphics) {
         //		ShowHelp(g);
         
-        g.setColor(Color.black);
+        graphics.setColor(Color.black);
         
-        ShowLevel(g);
-        ShowScore(g);
-        DrawField(g);
-        DrawFigure(Fig);
+        ShowLevel(graphics);
+        ShowScore(graphics);
+        DrawField(graphics);
+        DrawFigure(figure);
         requestFocus();
     }
     void PasteFigure(Figure f) {
-        Fnew[f.x][f.y] = f.c[1];
-        Fnew[f.x][f.y+1] = f.c[2];
-        Fnew[f.x][f.y+2] = f.c[3];
+        Fnew[f.xCoordinate][f.yCoordinate] = f.color[1];
+        Fnew[f.xCoordinate][f.yCoordinate+1] = f.color[2];
+        Fnew[f.xCoordinate][f.yCoordinate+2] = f.color[3];
     }
     public void run() {
         for (i=0; i<Width+1; i++){
@@ -161,19 +161,19 @@ public class Columns extends Applet implements Runnable {
         Score = 0;
         j = 0;
         k = 0;
-        _gr.setColor(Color.black);
+        graphics.setColor(Color.black);
         requestFocus();
         
         do {
             tc = System.currentTimeMillis();
             new Figure();
-            DrawFigure(Fig);
-            while ((Fig.y<Depth-2) && (Fnew[Fig.x][Fig.y+3]==0)) {
+            DrawFigure(figure);
+            while ((figure.yCoordinate<Depth-2) && (Fnew[figure.xCoordinate][figure.yCoordinate+3]==0)) {
                 if ((int)(System.currentTimeMillis()-tc)>(MaxLevel-Level)*TimeShift+MinTimeShift) {
                     tc = System.currentTimeMillis();
-                    HideFigure(Fig);
-                    Fig.y++;
-                    DrawFigure(Fig);
+                    HideFigure(figure);
+                    figure.yCoordinate++;
+                    DrawFigure(figure);
                 }
                 DScore = 0;
                 do {
@@ -182,45 +182,45 @@ public class Columns extends Applet implements Runnable {
                         KeyPressed = false;
                         switch (ch) {
                             case Event.LEFT:
-                                if ((Fig.x>1) && (Fnew[Fig.x-1][Fig.y+2]==0)) {
-                                    HideFigure(Fig);
-                                    Fig.x--;
-                                    DrawFigure(Fig);
+                                if ((figure.xCoordinate>1) && (Fnew[figure.xCoordinate-1][figure.yCoordinate+2]==0)) {
+                                    HideFigure(figure);
+                                    figure.xCoordinate--;
+                                    DrawFigure(figure);
                                 }
                                 break;
                             case Event.RIGHT:
-                                if ((Fig.x<Width) && (Fnew[Fig.x+1][Fig.y+2]==0)) {
-                                    HideFigure(Fig);
-                                    Fig.x++;
-                                    DrawFigure(Fig);
+                                if ((figure.xCoordinate<Width) && (Fnew[figure.xCoordinate+1][figure.yCoordinate+2]==0)) {
+                                    HideFigure(figure);
+                                    figure.xCoordinate++;
+                                    DrawFigure(figure);
                                 }
                                 break;
                             case Event.UP:
-                                i = Fig.c[1];
-                                Fig.c[1] = Fig.c[2];
-                                Fig.c[2] = Fig.c[3];
-                                Fig.c[3] = i;
-                                DrawFigure(Fig);
+                                i = figure.color[1];
+                                figure.color[1] = figure.color[2];
+                                figure.color[2] = figure.color[3];
+                                figure.color[3] = i;
+                                DrawFigure(figure);
                                 break;
                             case Event.DOWN:
-                                i = Fig.c[1];
-                                Fig.c[1] = Fig.c[3];
-                                Fig.c[3] = Fig.c[2];
-                                Fig.c[2] = i;
-                                DrawFigure(Fig);
+                                i = figure.color[1];
+                                figure.color[1] = figure.color[3];
+                                figure.color[3] = figure.color[2];
+                                figure.color[2] = i;
+                                DrawFigure(figure);
                                 break;
                             case ' ':
-                                HideFigure(Fig);
-                                DropFigure(Fig);
-                                DrawFigure(Fig);
+                                HideFigure(figure);
+                                DropFigure(figure);
+                                DrawFigure(figure);
                                 tc = 0;
                                 break;
                             case 'P':
                             case 'p':
                                 while (!KeyPressed) {
-                                    HideFigure(Fig);
+                                    HideFigure(figure);
                                     Delay(500);
-                                    DrawFigure(Fig);
+                                    DrawFigure(figure);
                                     Delay(500);
                                 }
                                 tc = System.currentTimeMillis();
@@ -228,31 +228,31 @@ public class Columns extends Applet implements Runnable {
                             case '-':
                                 if (Level > 0) Level--;
                                 k=0;
-                                ShowLevel(_gr);
+                                ShowLevel(graphics);
                                 break;
                             case '+':
                                 if (Level < MaxLevel) Level++;
                                 k=0;
-                                ShowLevel(_gr);
+                                ShowLevel(graphics);
                                 break;
                         }
                     }
                 } while ( (int)(System.currentTimeMillis()-tc) <= (MaxLevel-Level)*TimeShift+MinTimeShift );
             };
-            PasteFigure(Fig);
+            PasteFigure(figure);
             do {
                 NoChanges = true;
                 TestField();
                 if (!NoChanges) {
                     Delay(500);
                     PackField();
-                    DrawField(_gr);
+                    DrawField(graphics);
                     Score += DScore;
-                    ShowScore(_gr);
+                    ShowScore(graphics);
                     if (k>=FigToDrop) {
                         k = 0;
                         if (Level<MaxLevel) Level++;
-                        ShowLevel(_gr);
+                        ShowLevel(graphics);
                     }
                 }
             } while (!NoChanges);
@@ -271,30 +271,30 @@ public class Columns extends Applet implements Runnable {
         g.drawString("Pause:           P",200-LeftBorder,180);
         g.drawString("Quit:     Esc or Q",200-LeftBorder,190);
     }
-    void ShowLevel(Graphics g) {
-        g.setColor(Color.black);
-        g.clearRect(LeftBorder+100,390,100,20);
-        g.drawString("Level: "+Level,LeftBorder+100,400);
+    void ShowLevel(Graphics graphics) {
+        graphics.setColor(Color.black);
+        graphics.clearRect(LeftBorder+100,390,100,20);
+        graphics.drawString("Level: "+Level,LeftBorder+100,400);
     }
-    void ShowScore(Graphics g) {
-        g.setColor(Color.black);
-        g.clearRect(LeftBorder,390,100,20);
-        g.drawString("Score: "+Score,LeftBorder,400);
+    void ShowScore(Graphics graphics) {
+        graphics.setColor(Color.black);
+        graphics.clearRect(LeftBorder,390,100,20);
+        graphics.drawString("Score: "+Score,LeftBorder,400);
     }
     public void start() {
-        _gr.setColor(Color.black);
+        graphics.setColor(Color.black);
         
         //		setBackground (new Color(180,180,180));
         
-        if (thr == null) {
-            thr = new Thread(this);
-            thr.start();
+        if (thread == null) {
+            thread = new Thread(this);
+            thread.start();
         }
     }
     public void stop() {
-        if (thr != null) {
-            thr.stop();
-            thr = null;
+        if (thread != null) {
+            thread.stop();
+            thread = null;
         }
     }
     void TestField() {
