@@ -20,7 +20,7 @@ public class Columns extends Applet implements Runnable {
     Color MyStyles[] = {Color.black,Color.cyan,Color.blue,Color.red,Color.green,
     Color.yellow,Color.pink,Color.magenta,Color.black};
     
-    int Level, i, j, ii, k, ch;
+    int Level, i, j, ii, k, change;
     long Score, DScore, tc;
     Font fCourier;
     Figure figure;
@@ -50,31 +50,48 @@ public class Columns extends Applet implements Runnable {
         }
         catch (InterruptedException e) {};
     }
+    
+    void fillRectangle(int x, int y, int coordinate) {
+    	graphics.fillRect(LeftBorder+x*SL-SL + coordinate, TopBorder+y*SL-SL + coordinate,
+    			SL - coordinate * 2, SL - coordinate * 2);
+    }
+    
+    void drawRectangle(int x, int y, int coordinate) {
+    	graphics.drawRect(LeftBorder+x*SL-SL + coordinate, TopBorder+y*SL-SL + coordinate,
+    			SL - coordinate * 2, SL - coordinate * 2);
+    }
+    
     void DrawBox(int x, int y, int c) {
         if (c==0) {
             graphics.setColor(Color.black);
-            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
-            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+//            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            fillRectangle(x, y, 0);
+//            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            drawRectangle(x, y, 0);
         }
         else if (c==8) {
             graphics.setColor(Color.white);
-            graphics.drawRect(LeftBorder+x*SL-SL+1, TopBorder+y*SL-SL+1, SL-2, SL-2);
-            graphics.drawRect(LeftBorder+x*SL-SL+2, TopBorder+y*SL-SL+2, SL-4, SL-4);
+//            graphics.drawRect(LeftBorder+x*SL-SL+1, TopBorder+y*SL-SL+1, SL-2, SL-2);
+//            graphics.drawRect(LeftBorder+x*SL-SL+2, TopBorder+y*SL-SL+2, SL-4, SL-4);
+            drawRectangle(x, y, 1);
+            drawRectangle(x, y, 2);
             graphics.setColor(Color.black);
-            graphics.fillRect(LeftBorder+x*SL-SL+3, TopBorder+y*SL-SL+3, SL-6, SL-6);
+//            graphics.fillRect(LeftBorder+x*SL-SL+3, TopBorder+y*SL-SL+3, SL-6, SL-6);
+            fillRectangle(x, y, 3);
         }
         else {
             graphics.setColor(MyStyles[c]);
-            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+//            graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            fillRectangle(x, y, 0);
             graphics.setColor(Color.black);
-            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+//            graphics.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
+            drawRectangle(x, y, 0);
         }
         //		g.setColor (Color.black);
     }
     void DrawField(Graphics graphics) {
-        int i,j;
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
                 DrawBox(j,i,Fnew[j][i]);
             }
         }
@@ -101,10 +118,10 @@ public class Columns extends Applet implements Runnable {
         }
         return false;
     }
-    void HideFigure(Figure f) {
-        DrawBox(f.xCoordinate,f.yCoordinate,0);
-        DrawBox(f.xCoordinate,f.yCoordinate+1,0);
-        DrawBox(f.xCoordinate,f.yCoordinate+2,0);
+    void HideFigure(Figure figure) {
+        DrawBox(figure.xCoordinate,figure.yCoordinate,0);
+        DrawBox(figure.xCoordinate,figure.yCoordinate+1,0);
+        DrawBox(figure.xCoordinate,figure.yCoordinate+2,0);
     }
     public void init() {
         Fnew = new int[Width+2][Depth+2];
@@ -113,25 +130,24 @@ public class Columns extends Applet implements Runnable {
     }
     public boolean keyDown(Event e, int k) {
         KeyPressed = true;
-        ch = e.key;
+        change = e.key;
         return true;
     }
     public boolean lostFocus(Event e, Object w) {
         KeyPressed = true;
-        ch = 'P';
+        change = 'P';
         return true;
     }
     void PackField() {
-        int i,j,n;
-        for (i=1; i<=Width; i++) {
-            n = Depth;
-            for (j=Depth; j>0; j--) {
+        for (int i=1; i<=Width; i++) {
+            int n = Depth;
+            for (int j=Depth; j>0; j--) {
                 if (Fold[i][j]>0) {
                     Fnew[i][n] = Fold[i][j];
                     n--;
                 }
             };
-            for (j=n; j>0; j--) Fnew[i][j] = 0;
+            for (int j=n; j>0; j--) Fnew[i][j] = 0;
         }
     }
     public void paint(Graphics graphics) {
@@ -180,7 +196,7 @@ public class Columns extends Applet implements Runnable {
                     Delay(50);
                     if (KeyPressed) {
                         KeyPressed = false;
-                        switch (ch) {
+                        switch (change) {
                             case Event.LEFT:
                                 if ((figure.xCoordinate>1) && (Fnew[figure.xCoordinate-1][figure.yCoordinate+2]==0)) {
                                     HideFigure(figure);
@@ -298,14 +314,13 @@ public class Columns extends Applet implements Runnable {
         }
     }
     void TestField() {
-        int i,j;
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
                 Fold[j][i] = Fnew [j][i];
             }
         }
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
                 if (Fnew[j][i]>0) {
                     CheckNeighbours(j,i-1,j,i+1,i,j);
                     CheckNeighbours(j-1,i,j+1,i,i,j);
