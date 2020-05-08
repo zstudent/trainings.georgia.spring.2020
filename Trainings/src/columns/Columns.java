@@ -32,7 +32,7 @@ public class Columns extends Applet implements Runnable{
     boolean NoChanges = true, KeyPressed = false;
     Graphics _gr;
     
-    Thread thr = null;
+    Thread mainThread = null;
     
     
     void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
@@ -119,32 +119,42 @@ public class Columns extends Applet implements Runnable{
 			public void keyPressed(KeyEvent e) {
 				switch (e.getKeyCode()) {
 				case KeyEvent.VK_LEFT:
-					moveFigureLeft();
+					moveColumnLeft();
 //					KeyPressed = true;
 //					ch = Event.LEFT;
 					break;
 				case KeyEvent.VK_RIGHT:
-					KeyPressed = true;
-					ch = Event.RIGHT;
+					moveColumnRight();
+//					KeyPressed = true;
+//					ch = Event.RIGHT;
 					break;
 				case KeyEvent.VK_DOWN:
-					KeyPressed = true;
-					ch = Event.DOWN;
+					moveCubeDown();
+//					KeyPressed = true;
+//					ch = Event.DOWN;
 					break;
 				case KeyEvent.VK_UP:
-					KeyPressed = true;
-					ch = Event.UP;
+					moveCubeDown();
+//					KeyPressed = true;
+//					ch = Event.UP;
 					break;
 				
 				case KeyEvent.VK_P:
 					KeyPressed = true;
 					ch = e.getKeyCode();
+					break;
+				
+				case KeyEvent.VK_SPACE:
+					KeyPressed = true;
+					ch = e.getKeyCode();
+					break;
 					
 				default:
 					break;
 				}
 			}
         });
+        //TODO - MOVE THREAD HERE
     }
     public boolean keyDown(Event e, int k) {
         KeyPressed = true;
@@ -212,23 +222,21 @@ public class Columns extends Applet implements Runnable{
                     if (KeyPressed) {
                         KeyPressed = false;
                         switch (ch) {
-//                            case Event.LEFT:
-//								moveFigureLeft();
-//                                break;
+                            case Event.LEFT:
+								moveColumnLeft();
+                                break;
                             case Event.RIGHT:
-								moveFigureRight();
+								moveColumnRight();
                                 break;
                             case Event.UP:
                             	switchCubeUp();
                                 break;
                             case Event.DOWN:
 								moveCubeDown();
+								tc = 0;
                                 break;
                             case ' ':
-                                HideFigure(Fig);
-                                DropFigure(Fig);
-                                DrawFigure(Fig);
-                                tc = 0;
+                            	dropColumn();
                                 break;
                             case 'P':
                             case 'p':
@@ -273,14 +281,20 @@ public class Columns extends Applet implements Runnable{
             } while (!NoChanges);
         }while (!FullField());
     }
-	public void moveFigureRight() {
+	public void dropColumn() {
+		HideFigure(Fig);
+		DropFigure(Fig);
+		DrawFigure(Fig);
+//		tc = 0;
+	}
+	public void moveColumnRight() {
 		if ((Fig.x<Width) && (newFigure[Fig.x+1][Fig.y+2]==0)) {
 		    HideFigure(Fig);
 		    Fig.x++;
 		    DrawFigure(Fig);
 		}
 	}
-	public void moveFigureLeft() {
+	public void moveColumnLeft() {
 		if ((Fig.x>1) && (newFigure[Fig.x-1][Fig.y+2]==0)) {
 		    HideFigure(Fig);
 		    Fig.x--;
@@ -329,15 +343,15 @@ public class Columns extends Applet implements Runnable{
         
         //		setBackground (new Color(180,180,180));
         
-        if (thr == null) {
-            thr = new Thread(this);
-            thr.start();
+        if (mainThread == null) {
+            mainThread = new Thread(this);
+            mainThread.start();
         }
     }
     public void stop() {
-        if (thr != null) {
-            thr.stop();
-            thr = null;
+        if (mainThread != null) {
+            mainThread.stop();
+            mainThread = null;
         }
     }
     void TestField() {
