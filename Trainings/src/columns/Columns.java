@@ -1,10 +1,14 @@
 package columns;
 import java.applet.*;
 import java.awt.*;
+import java.awt.RenderingHints.Key;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 
 
-public class Columns extends Applet implements Runnable {
+public class Columns extends Applet implements Runnable{
     static final int
     SL=25,
     Depth=15,
@@ -17,14 +21,14 @@ public class Columns extends Applet implements Runnable {
     TopBorder=2;
     
     
-    Color MyStyles[] = {Color.black,Color.cyan,Color.blue,Color.red,Color.green,
+    Color colorsList[] = {Color.black,Color.cyan,Color.blue,Color.red,Color.green,
     Color.yellow,Color.pink,Color.magenta,Color.black};
     
     int Level, i, j, ii, k, ch;
     long Score, DScore, tc;
     Font fCourier;
     Figure Fig;
-    int Fnew[][],Fold[][];
+    int newFigure[][],oldFigure[][];
     boolean NoChanges = true, KeyPressed = false;
     Graphics _gr;
     
@@ -32,12 +36,12 @@ public class Columns extends Applet implements Runnable {
     
     
     void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
-        if ((Fnew[j][i]==Fnew[a][b]) && (Fnew[j][i]==Fnew[c][d])) {
-            Fold[a][b] = 0;
+        if ((newFigure[j][i]==newFigure[a][b]) && (newFigure[j][i]==newFigure[c][d])) {
+            oldFigure[a][b] = 0;
             DrawBox(a,b,8);
-            Fold[j][i] = 0;
+            oldFigure[j][i] = 0;
             DrawBox(j,i,8);
-            Fold[c][d] = 0;
+            oldFigure[c][d] = 0;
             DrawBox(c,d,8);
             NoChanges = false;
             Score += (Level+1)*10;
@@ -64,7 +68,7 @@ public class Columns extends Applet implements Runnable {
             _gr.fillRect(LeftBorder+x*SL-SL+3, TopBorder+y*SL-SL+3, SL-6, SL-6);
         }
         else {
-            _gr.setColor(MyStyles[c]);
+            _gr.setColor(colorsList[c]);
             _gr.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
             _gr.setColor(Color.black);
             _gr.drawRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
@@ -72,10 +76,9 @@ public class Columns extends Applet implements Runnable {
         //		g.setColor (Color.black);
     }
     void DrawField(Graphics g) {
-        int i,j;
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
-                DrawBox(j,i,Fnew[j][i]);
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
+                DrawBox(j,i,newFigure[j][i]);
             }
         }
     }
@@ -85,18 +88,16 @@ public class Columns extends Applet implements Runnable {
         DrawBox(f.x,f.y+2,f.c[3]);
     }
     void DropFigure(Figure f) {
-        int zz;
+        int zz = Depth;
         if (f.y < Depth-2) {
-            zz = Depth;
-            while (Fnew[f.x][zz]>0) zz--;
+            while (newFigure[f.x][zz]>0) zz--;
             DScore = (((Level+1)*(Depth*2-f.y-zz) * 2) % 5) * 5;
             f.y = zz-2;
         }
     }
     boolean FullField() {
-        int i;
-        for (i=1; i<=Width; i++) {
-            if (Fnew[i][3]>0)
+        for (int i=1; i<=Width; i++) {
+            if (newFigure[i][3]>0)
                 return true;
         }
         return false;
@@ -107,9 +108,43 @@ public class Columns extends Applet implements Runnable {
         DrawBox(f.x,f.y+2,0);
     }
     public void init() {
-        Fnew = new int[Width+2][Depth+2];
-        Fold = new int[Width+2][Depth+2];
+        newFigure = new int[Width+2][Depth+2];
+        oldFigure = new int[Width+2][Depth+2];
+        this.Fig = new Figure();
+        Level = 0;
+        Score = 0;
         _gr = getGraphics();
+        addKeyListener(new KeyAdapter() {
+        	@Override
+			public void keyPressed(KeyEvent e) {
+				switch (e.getKeyCode()) {
+				case KeyEvent.VK_LEFT:
+					moveFigureLeft();
+//					KeyPressed = true;
+//					ch = Event.LEFT;
+					break;
+				case KeyEvent.VK_RIGHT:
+					KeyPressed = true;
+					ch = Event.RIGHT;
+					break;
+				case KeyEvent.VK_DOWN:
+					KeyPressed = true;
+					ch = Event.DOWN;
+					break;
+				case KeyEvent.VK_UP:
+					KeyPressed = true;
+					ch = Event.UP;
+					break;
+				
+				case KeyEvent.VK_P:
+					KeyPressed = true;
+					ch = e.getKeyCode();
+					
+				default:
+					break;
+				}
+			}
+        });
     }
     public boolean keyDown(Event e, int k) {
         KeyPressed = true;
@@ -122,16 +157,15 @@ public class Columns extends Applet implements Runnable {
         return true;
     }
     void PackField() {
-        int i,j,n;
-        for (i=1; i<=Width; i++) {
-            n = Depth;
-            for (j=Depth; j>0; j--) {
-                if (Fold[i][j]>0) {
-                    Fnew[i][n] = Fold[i][j];
+        int n = Depth;
+        for (int i=1; i<=Width; i++) {
+            for (int j=n; j>0; j--) {
+                if (oldFigure[i][j]>0) {
+                    newFigure[i][n] = oldFigure[i][j];
                     n--;
                 }
             };
-            for (j=n; j>0; j--) Fnew[i][j] = 0;
+            for (int j=n; j>0; j--) newFigure[i][j] = 0;
         }
     }
     public void paint(Graphics g) {
@@ -146,29 +180,25 @@ public class Columns extends Applet implements Runnable {
         requestFocus();
     }
     void PasteFigure(Figure f) {
-        Fnew[f.x][f.y] = f.c[1];
-        Fnew[f.x][f.y+1] = f.c[2];
-        Fnew[f.x][f.y+2] = f.c[3];
+        newFigure[f.x][f.y] = f.c[1];
+        newFigure[f.x][f.y+1] = f.c[2];
+        newFigure[f.x][f.y+2] = f.c[3];
     }
+
+    
     public void run() {
-        for (i=0; i<Width+1; i++){
-            for (j=0; j<Depth+1; j++) {
-                Fnew[i][j] = 0;
-                Fold[i][j] = 0;
+        for (int i=0; i<Width+1; i++){
+            for (int j=0; j<Depth+1; j++) {
+                newFigure[i][j] = 0;
+                oldFigure[i][j] = 0;
             }
         }
-        Level = 0;
-        Score = 0;
-        j = 0;
-        k = 0;
         _gr.setColor(Color.black);
         requestFocus();
-        
         do {
             tc = System.currentTimeMillis();
-            new Figure();
-            DrawFigure(Fig);
-            while ((Fig.y<Depth-2) && (Fnew[Fig.x][Fig.y+3]==0)) {
+            DrawFigure(new Figure());
+            while ((Fig.y<Depth-2) && (newFigure[Fig.x][Fig.y+3]==0)) {
                 if ((int)(System.currentTimeMillis()-tc)>(MaxLevel-Level)*TimeShift+MinTimeShift) {
                     tc = System.currentTimeMillis();
                     HideFigure(Fig);
@@ -178,36 +208,21 @@ public class Columns extends Applet implements Runnable {
                 DScore = 0;
                 do {
                     Delay(50);
+
                     if (KeyPressed) {
                         KeyPressed = false;
                         switch (ch) {
-                            case Event.LEFT:
-                                if ((Fig.x>1) && (Fnew[Fig.x-1][Fig.y+2]==0)) {
-                                    HideFigure(Fig);
-                                    Fig.x--;
-                                    DrawFigure(Fig);
-                                }
-                                break;
+//                            case Event.LEFT:
+//								moveFigureLeft();
+//                                break;
                             case Event.RIGHT:
-                                if ((Fig.x<Width) && (Fnew[Fig.x+1][Fig.y+2]==0)) {
-                                    HideFigure(Fig);
-                                    Fig.x++;
-                                    DrawFigure(Fig);
-                                }
+								moveFigureRight();
                                 break;
                             case Event.UP:
-                                i = Fig.c[1];
-                                Fig.c[1] = Fig.c[2];
-                                Fig.c[2] = Fig.c[3];
-                                Fig.c[3] = i;
-                                DrawFigure(Fig);
+                            	switchCubeUp();
                                 break;
                             case Event.DOWN:
-                                i = Fig.c[1];
-                                Fig.c[1] = Fig.c[3];
-                                Fig.c[3] = Fig.c[2];
-                                Fig.c[2] = i;
-                                DrawFigure(Fig);
+								moveCubeDown();
                                 break;
                             case ' ':
                                 HideFigure(Fig);
@@ -258,6 +273,34 @@ public class Columns extends Applet implements Runnable {
             } while (!NoChanges);
         }while (!FullField());
     }
+	public void moveFigureRight() {
+		if ((Fig.x<Width) && (newFigure[Fig.x+1][Fig.y+2]==0)) {
+		    HideFigure(Fig);
+		    Fig.x++;
+		    DrawFigure(Fig);
+		}
+	}
+	public void moveFigureLeft() {
+		if ((Fig.x>1) && (newFigure[Fig.x-1][Fig.y+2]==0)) {
+		    HideFigure(Fig);
+		    Fig.x--;
+		    DrawFigure(Fig);
+		}
+	}
+	public void moveCubeDown() {
+		int top = Fig.c[1];
+		Fig.c[1] = Fig.c[3];
+		Fig.c[3] = Fig.c[2];
+		Fig.c[2] = top;
+		DrawFigure(Fig);
+	}
+	public void switchCubeUp() {
+		int top = Fig.c[1];
+		Fig.c[1] = Fig.c[2];
+		Fig.c[2] = Fig.c[3];
+		Fig.c[3] = top;
+		DrawFigure(Fig);
+	}
     void ShowHelp(Graphics g) {
         g.setColor(Color.black);
         
@@ -298,15 +341,15 @@ public class Columns extends Applet implements Runnable {
         }
     }
     void TestField() {
-        int i,j;
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
-                Fold[j][i] = Fnew [j][i];
+//        int i,j;
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
+                oldFigure[j][i] = newFigure [j][i];
             }
         }
-        for (i=1; i<=Depth; i++) {
-            for (j=1; j<=Width; j++) {
-                if (Fnew[j][i]>0) {
+        for (int i=1; i<=Depth; i++) {
+            for (int j=1; j<=Width; j++) {
+                if (newFigure[j][i]>0) {
                     CheckNeighbours(j,i-1,j,i+1,i,j);
                     CheckNeighbours(j-1,i,j+1,i,i,j);
                     CheckNeighbours(j-1,i-1,j+1,i+1,i,j);
@@ -315,4 +358,9 @@ public class Columns extends Applet implements Runnable {
             }
         }
     }
+
+
+
+	
+
 }
