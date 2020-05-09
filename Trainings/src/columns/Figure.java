@@ -8,7 +8,7 @@ class Figure {
 	private static int NUM_BUCKETS = 4;
 	private  int column=Columns.FIELD_WIDTH/2+1;
 	private  int row=1;
-	private  int colorsOfFigure[]=new int[4];
+	private  int colorsOfFigure[]=new int[NUM_BUCKETS];
 	private  Random r = new Random();
 	
 	public Figure()

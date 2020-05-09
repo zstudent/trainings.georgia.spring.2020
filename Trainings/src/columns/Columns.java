@@ -2,21 +2,23 @@ package columns;
 
 import java.applet.*;
 import java.awt.*;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
 
-public class Columns extends Applet implements Runnable {
+public class Columns extends Applet implements Runnable, KeyListener {
 	static final int FIELD_LEFT_OFFSET = 2, FIELD_TOP_OFFSET = 2, SIZE_OF_COMPONENTS = 25, MAX_LEVEL = 7,
-			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200, FIELD_DEPTH = 15, FIELD_WIDTH = 7;
+			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200, FIELD_HEIGHT = 15, FIELD_WIDTH = 7;
 
 	private View view;
 	private Color colors[] = { Color.black, Color.cyan, Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
 			Color.magenta, Color.white };
-
-	private int currentLevel, k, keyPressedByPlayer;
-	private long playerScore, playerScoreAddition;
+	
+	private int currentLevel = 0, k = 0;
+	private long playerScore = 0, playerScoreAddition;
 	private Figure figure;
 	private int newField[][], oldField[][];
-	boolean NoChanges = true, KeyPressed = false;
+	boolean NoChanges = true;
 	private Thread thread = null;
 
 	void Delay(long t) {
@@ -25,15 +27,14 @@ public class Columns extends Applet implements Runnable {
 		} catch (InterruptedException e) {
 
 		}
-		;
 	}
 
 	void DropFigure(Figure figure) {
-		if (figure.getRow() < FIELD_DEPTH - 2) {
-			int figureRow = FIELD_DEPTH;
+		if (figure.getRow() < FIELD_HEIGHT - 2) {
+			int figureRow = FIELD_HEIGHT;
 			while (newField[figure.getColumn()][figureRow] > 0)
 				figureRow--;
-			playerScoreAddition = (((currentLevel + 1) * (FIELD_DEPTH * 2 - figure.getRow() - figureRow) * 2) % 5) * 5;
+			playerScoreAddition = (((currentLevel + 1) * (FIELD_HEIGHT * 2 - figure.getRow() - figureRow) * 2) % 5) * 5;
 			figure.setRow(figureRow - 2);
 		}
 	}
@@ -53,8 +54,8 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	public void init() {
-		newField = new int[FIELD_WIDTH + 2][FIELD_DEPTH + 2];
-		oldField = new int[FIELD_WIDTH + 2][FIELD_DEPTH + 2];
+		newField = new int[FIELD_WIDTH + 2][FIELD_HEIGHT + 2];
+		oldField = new int[FIELD_WIDTH + 2][FIELD_HEIGHT + 2];
 		figure = new Figure();
 		Graphics graphics = getGraphics();
 		view = new View((int row, int col, int color) -> {
@@ -64,6 +65,7 @@ public class Columns extends Applet implements Runnable {
 		}, (Long playerScore) -> {
 			drawPlayerScore(graphics, playerScore);
 		});
+		addKeyListener(this);
 	}
 	
 	private void drawPlayerScore(Graphics graphics, Long playerScore) {
@@ -78,55 +80,39 @@ public class Columns extends Applet implements Runnable {
 		graphics.drawString("Level: " + currentLevel, FIELD_LEFT_OFFSET + 100, 400);
 	}
 
-	private void drawGraphics(Graphics graphics, int row, int col, int color) {
+	private void drawGraphics(Graphics graphics, int row, int column, int color) {
 		graphics.setColor(colors[color]);
-		 if (color == 8) {
-			drawBorderedRectangle(graphics,row,col,1,1);
-			drawBorderedRectangle(graphics,row,col,2,2);
-			drawBorderedRectangle(graphics,row,col,3,3);
+		if (color == 8) {
+			for (int delta = 1; delta <= 3; delta++)
+				drawBorderedRectangle(graphics, row, column, delta);
 		} else {
-			drawBorderedRectangle(graphics, row, col,0,0);
+			drawBorderedRectangle(graphics, row, column, 0);
 		}
 	}
 
-	private void drawBorderedRectangle(Graphics graphics, int row, int col,int deltaRow,int deltaColumn) {
-		graphics.fillRect(getFigureScaledCoordinate(col)+deltaColumn,
-				 		  getFigureScaledCoordinate(row)+deltaRow,
-				 		  SIZE_OF_COMPONENTS-2*deltaColumn,
-				 		  SIZE_OF_COMPONENTS-2*deltaColumn);
+	private void drawBorderedRectangle(Graphics graphics, int row, int column, int deltaCoordinate) {
+		graphics.fillRect(getFigureScaledCoordinate(column) + deltaCoordinate,
+				getFigureScaledCoordinate(row) + deltaCoordinate, SIZE_OF_COMPONENTS - 2 * deltaCoordinate,
+				SIZE_OF_COMPONENTS - 2 * deltaCoordinate);
 		graphics.setColor(Color.black);
-		graphics.drawRect(getFigureScaledCoordinate(col)+deltaColumn,
-				 		  getFigureScaledCoordinate(row)+deltaRow, 
-				 		  SIZE_OF_COMPONENTS-2*deltaColumn,
-				 		  SIZE_OF_COMPONENTS-2*deltaRow);
+		graphics.drawRect(getFigureScaledCoordinate(column) + deltaCoordinate,
+				getFigureScaledCoordinate(row) + deltaCoordinate, SIZE_OF_COMPONENTS - 2 * deltaCoordinate,
+				SIZE_OF_COMPONENTS - 2 * deltaCoordinate);
 	}
 
 	private int getFigureScaledCoordinate(int coordinate) {
 		return FIELD_LEFT_OFFSET + coordinate * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS;
 	}
-	
-	public boolean keyDown(Event e, int k) {
-		KeyPressed = true;
-		keyPressedByPlayer = e.key;
-		return true;
-	}
-
-	public boolean lostFocus(Event e, Object w) {
-		KeyPressed = true;
-		keyPressedByPlayer = 'P';
-		return true;
-	}
 
 	void PackField() {
 		for (int col = 1; col <= FIELD_WIDTH; col++) {
-			int n = FIELD_DEPTH;
-			for (int row = FIELD_DEPTH; row > 0; row--) {
+			int n = FIELD_HEIGHT;
+			for (int row = FIELD_HEIGHT; row > 0; row--) {
 				if (oldField[col][row] > 0) {
 					newField[col][row] = oldField[col][row];
 					n--;
 				}
 			}
-			;
 			for (int j = n; j > 0; j--)
 				newField[col][j] = 0;
 		}
@@ -148,20 +134,11 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	public void run() {
-		for (int col = 0; col < FIELD_WIDTH + 1; col++) {
-			for (int row = 0; row < FIELD_DEPTH + 1; row++) {
-				newField[col][row] = 0;
-				oldField[col][row] = 0;
-			}
-		}
-		currentLevel = 0;
-		playerScore = 0;
-		int i = 0;
-		k = 0;
-		do {
+		 while (!isFieldFull()){
 			long tc = System.currentTimeMillis();
+			figure = new Figure();
 			view.drawFigure(figure);
-			while ((figure.getRow() < FIELD_DEPTH - 2) && (newField[figure.getColumn()][figure.getRow() + 3] == 0)) {
+			while ((figure.getRow() < FIELD_HEIGHT - 2) && (newField[figure.getColumn()][figure.getRow() + 3] == 0)) {
 				if ((int) (System.currentTimeMillis() - tc) > (MAX_LEVEL - currentLevel) * TimeShift + MinTimeShift) {
 					tc = System.currentTimeMillis();
 					HideFigure(figure);
@@ -169,75 +146,8 @@ public class Columns extends Applet implements Runnable {
 					view.drawFigure(figure);
 				}
 				playerScoreAddition = 0;
-				do {
-					Delay(50);
-					if (KeyPressed) {
-						KeyPressed = false;
-						switch (keyPressedByPlayer) {
-						case Event.LEFT:
-							if ((figure.getColumn() > 1)
-									&& (newField[figure.getColumn() - 1][figure.getRow() + 2] == 0)) {
-								HideFigure(figure);
-								figure.setColumn(figure.getColumn() - 1);
-								view.drawFigure(figure);
-							}
-							break;
-						case Event.RIGHT:
-							if ((figure.getColumn() < FIELD_WIDTH)
-									&& (newField[figure.getColumn() + 1][figure.getRow() + 2] == 0)) {
-								HideFigure(figure);
-								figure.setColumn(figure.getColumn() + 1);
-								view.drawFigure(figure);
-							}
-							break;
-						case Event.UP:
-							i = figure.getColorsOfFigure()[1];
-							figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[2];
-							figure.getColorsOfFigure()[2] = figure.getColorsOfFigure()[3];
-							figure.getColorsOfFigure()[3] = i;
-							view.drawFigure(figure);
-							break;
-						case Event.DOWN:
-							i = figure.getColorsOfFigure()[1];
-							figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[3];
-							figure.getColorsOfFigure()[3] = figure.getColorsOfFigure()[2];
-							figure.getColorsOfFigure()[2] = i;
-							view.drawFigure(figure);
-							break;
-						case ' ':
-							HideFigure(figure);
-							DropFigure(figure);
-							view.drawFigure(figure);
-							tc = 0;
-							break;
-						case 'P':
-						case 'p':
-							while (!KeyPressed) {
-								HideFigure(figure);
-								Delay(500);
-								view.drawFigure(figure);
-								Delay(500);
-							}
-							tc = System.currentTimeMillis();
-							break;
-						case '-':
-							if (currentLevel > 0)
-								currentLevel--;
-							k = 0;
-							view.showLevel(currentLevel);
-							break;
-						case '+':
-							if (currentLevel < MAX_LEVEL)
-								currentLevel++;
-							k = 0;
-							view.showLevel(currentLevel);
-							break;
-						}
-					}
-				} while ((int) (System.currentTimeMillis() - tc) <= (MAX_LEVEL - currentLevel) * TimeShift
-						+ MinTimeShift);
+				while ((int) (System.currentTimeMillis() - tc) <= (MAX_LEVEL - currentLevel) * TimeShift + MinTimeShift);
 			}
-			;
 			PasteFigure(figure);
 			do {
 				NoChanges = true;
@@ -256,7 +166,7 @@ public class Columns extends Applet implements Runnable {
 					}
 				}
 			} while (!NoChanges);
-		} while (!isFieldFull());
+		}
 	}
 
 	public void start() {
@@ -285,16 +195,15 @@ public class Columns extends Applet implements Runnable {
 			playerScore += (currentLevel + 1) * 10;
 			k++;
 		}
-		;
 	}
 
 	void TestField() {
-		for (int row = 1; row <= FIELD_DEPTH; row++) {
+		for (int row = 1; row <= FIELD_HEIGHT; row++) {
 			for (int col = 1; col <= FIELD_WIDTH; col++) {
 				oldField[col][row] = newField[col][row];
 			}
 		}
-		for (int col = 1; col <= FIELD_DEPTH; col++) {
+		for (int col = 1; col <= FIELD_HEIGHT; col++) {
 			for (int row = 1; row <= FIELD_WIDTH; row++) {
 				if (newField[row][col] > 0) {
 					CheckNeighbours(row, col - 1, row, col + 1, col, row);
@@ -304,5 +213,76 @@ public class Columns extends Applet implements Runnable {
 				}
 			}
 		}
+	}
+
+	@Override
+	public void keyPressed(KeyEvent e) {
+		switch (e.getKeyCode()) {
+		case KeyEvent.VK_LEFT:
+			if ((figure.getColumn() > 1) && (newField[figure.getColumn() - 1][figure.getRow() + 2] == 0)) {
+				HideFigure(figure);
+				figure.setColumn(figure.getColumn() - 1);
+				view.drawFigure(figure);
+			}
+			break;
+		case KeyEvent.VK_RIGHT:
+			if ((figure.getColumn() < FIELD_WIDTH) && (newField[figure.getColumn() + 1][figure.getRow() + 2] == 0)) {
+				HideFigure(figure);
+				figure.setColumn(figure.getColumn() + 1);
+				view.drawFigure(figure);
+			}
+			break;
+		case KeyEvent.VK_UP:
+			int tmp = figure.getColorsOfFigure()[1];
+			figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[2];
+			figure.getColorsOfFigure()[2] = figure.getColorsOfFigure()[3];
+			figure.getColorsOfFigure()[3] = tmp;
+			view.drawFigure(figure);
+			break;
+		case KeyEvent.VK_DOWN:
+			int tmp2 = figure.getColorsOfFigure()[1];
+			figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[3];
+			figure.getColorsOfFigure()[3] = figure.getColorsOfFigure()[2];
+			figure.getColorsOfFigure()[2] = tmp2;
+			view.drawFigure(figure);
+			break;
+		case KeyEvent.VK_SPACE:
+			HideFigure(figure);
+			DropFigure(figure);
+			view.drawFigure(figure);
+			// tc = 0;
+			break;
+		case KeyEvent.VK_P:
+			HideFigure(figure);
+			Delay(500);
+			view.drawFigure(figure);
+			Delay(500);
+			// tc = System.currentTimeMillis();
+			break;
+		case KeyEvent.VK_MINUS:
+			if (currentLevel > 0)
+				currentLevel--;
+			k = 0;
+			view.showLevel(currentLevel);
+			break;
+		case KeyEvent.VK_PLUS:
+			if (currentLevel < MAX_LEVEL)
+				currentLevel++;
+			k = 0;
+			view.showLevel(currentLevel);
+			break;
+		}
+	}
+
+	@Override
+	public void keyReleased(KeyEvent arg0) {
+		return;
+
+	}
+
+	@Override
+	public void keyTyped(KeyEvent arg0) {
+		return;
+
 	}
 }
