@@ -9,49 +9,32 @@ public class Columns extends Applet implements Runnable {
 			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200, FIELD_DEPTH = 15, FIELD_WIDTH = 7;
 
 	private View view;
-
 	private Color colors[] = { Color.black, Color.cyan, Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
-			Color.magenta, Color.black };
+			Color.magenta, Color.white };
 
-	int currentLevel, k, playerKeyPressed;
-	long playerScore, playerScoreAddition;
-	Figure figure;
-	int newField[][], oldField[][];
+	private int currentLevel, k, keyPressedByPlayer;
+	private long playerScore, playerScoreAddition;
+	private Figure figure;
+	private int newField[][], oldField[][];
 	boolean NoChanges = true, KeyPressed = false;
-
-	Thread thread = null;
-
-	void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
-		if ((newField[j][i] == newField[a][b]) && (newField[j][i] == newField[c][d])) {
-			oldField[a][b] = 0;
-			view.drawBox(a, b, 8);
-			oldField[j][i] = 0;
-			view.drawBox(j, i, 8);
-			oldField[c][d] = 0;
-			view.drawBox(c, d, 8);
-			NoChanges = false;
-			playerScore += (currentLevel + 1) * 10;
-			k++;
-		}
-		;
-	}
+	private Thread thread = null;
 
 	void Delay(long t) {
 		try {
 			Thread.sleep(t);
 		} catch (InterruptedException e) {
+
 		}
 		;
 	}
 
-	void DropFigure(Figure f) {
-		int zz;
-		if (f.row < FIELD_DEPTH - 2) {
-			zz = FIELD_DEPTH;
-			while (newField[f.column][zz] > 0)
-				zz--;
-			playerScoreAddition = (((currentLevel + 1) * (FIELD_DEPTH * 2 - f.row - zz) * 2) % 5) * 5;
-			f.row = zz - 2;
+	void DropFigure(Figure figure) {
+		if (figure.getRow() < FIELD_DEPTH - 2) {
+			int figureRow = FIELD_DEPTH;
+			while (newField[figure.getColumn()][figureRow] > 0)
+				figureRow--;
+			playerScoreAddition = (((currentLevel + 1) * (FIELD_DEPTH * 2 - figure.getRow() - figureRow) * 2) % 5) * 5;
+			figure.setRow(figureRow - 2);
 		}
 	}
 
@@ -65,43 +48,72 @@ public class Columns extends Applet implements Runnable {
 
 	void HideFigure(Figure figure) {
 		for (int i = 0; i < 3; i++) {
-			view.drawBox(figure.column, figure.row + i, 0);
+			view.drawBox(figure.getColumn(), figure.getRow() + i, 0);
 		}
 	}
 
 	public void init() {
 		newField = new int[FIELD_WIDTH + 2][FIELD_DEPTH + 2];
 		oldField = new int[FIELD_WIDTH + 2][FIELD_DEPTH + 2];
+		figure = new Figure();
 		Graphics graphics = getGraphics();
 		view = new View((int row, int col, int color) -> {
-			graphics.setColor(colors[color]);
-			graphics.fillRect(FIELD_LEFT_OFFSET + col * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS,
-					FIELD_TOP_OFFSET + row * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS, SIZE_OF_COMPONENTS,
-					SIZE_OF_COMPONENTS);
-			graphics.setColor(Color.black);
-			graphics.drawRect(FIELD_LEFT_OFFSET + col * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS,
-					FIELD_TOP_OFFSET + row * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS, SIZE_OF_COMPONENTS,
-					SIZE_OF_COMPONENTS);
-		}, (int currentLevel) -> {
-			graphics.setColor(Color.black);
-			graphics.clearRect(FIELD_LEFT_OFFSET + 100, 390, 100, 20);
-			graphics.drawString("Level: " + currentLevel, FIELD_LEFT_OFFSET + 100, 400);
-		}, (long playerScore) -> {
-			graphics.setColor(Color.black);
-			graphics.clearRect(FIELD_LEFT_OFFSET, 390, 100, 20);
-			graphics.drawString("Score: " + playerScore, FIELD_LEFT_OFFSET, 400);
+			drawGraphics(graphics, row, col, color);
+		}, (Integer currentLevel) -> {
+			drawPlayerLevel(graphics, currentLevel);
+		}, (Long playerScore) -> {
+			drawPlayerScore(graphics, playerScore);
 		});
 	}
+	
+	private void drawPlayerScore(Graphics graphics, Long playerScore) {
+		graphics.setColor(Color.black);
+		graphics.clearRect(FIELD_LEFT_OFFSET, 390, 100, 20);
+		graphics.drawString("Score: " + playerScore, FIELD_LEFT_OFFSET, 400);
+	}
 
+	private void drawPlayerLevel(Graphics graphics, Integer currentLevel) {
+		graphics.setColor(Color.black);
+		graphics.clearRect(FIELD_LEFT_OFFSET + 100, 390, 100, 20);
+		graphics.drawString("Level: " + currentLevel, FIELD_LEFT_OFFSET + 100, 400);
+	}
+
+	private void drawGraphics(Graphics graphics, int row, int col, int color) {
+		graphics.setColor(colors[color]);
+		 if (color == 8) {
+			drawBorderedRectangle(graphics,row,col,1,1);
+			drawBorderedRectangle(graphics,row,col,2,2);
+			drawBorderedRectangle(graphics,row,col,3,3);
+		} else {
+			drawBorderedRectangle(graphics, row, col,0,0);
+		}
+	}
+
+	private void drawBorderedRectangle(Graphics graphics, int row, int col,int deltaRow,int deltaColumn) {
+		graphics.fillRect(getFigureScaledCoordinate(col)+deltaColumn,
+				 		  getFigureScaledCoordinate(row)+deltaRow,
+				 		  SIZE_OF_COMPONENTS-2*deltaColumn,
+				 		  SIZE_OF_COMPONENTS-2*deltaColumn);
+		graphics.setColor(Color.black);
+		graphics.drawRect(getFigureScaledCoordinate(col)+deltaColumn,
+				 		  getFigureScaledCoordinate(row)+deltaRow, 
+				 		  SIZE_OF_COMPONENTS-2*deltaColumn,
+				 		  SIZE_OF_COMPONENTS-2*deltaRow);
+	}
+
+	private int getFigureScaledCoordinate(int coordinate) {
+		return FIELD_LEFT_OFFSET + coordinate * SIZE_OF_COMPONENTS - SIZE_OF_COMPONENTS;
+	}
+	
 	public boolean keyDown(Event e, int k) {
 		KeyPressed = true;
-		playerKeyPressed = e.key;
+		keyPressedByPlayer = e.key;
 		return true;
 	}
 
 	public boolean lostFocus(Event e, Object w) {
 		KeyPressed = true;
-		playerKeyPressed = 'P';
+		keyPressedByPlayer = 'P';
 		return true;
 	}
 
@@ -131,7 +143,7 @@ public class Columns extends Applet implements Runnable {
 
 	void PasteFigure(Figure figure) {
 		for (int i = 0; i < 3; i++) {
-			newField[figure.column][figure.row + i] = figure.colorsOfFigureBoxes[i + 1];
+			newField[figure.getColumn()][figure.getRow() + i] = figure.getColorsOfFigure()[i + 1];
 		}
 	}
 
@@ -146,16 +158,14 @@ public class Columns extends Applet implements Runnable {
 		playerScore = 0;
 		int i = 0;
 		k = 0;
-		requestFocus();
 		do {
 			long tc = System.currentTimeMillis();
-			new Figure();
 			view.drawFigure(figure);
-			while ((figure.row < FIELD_DEPTH - 2) && (newField[figure.column][figure.row + 3] == 0)) {
+			while ((figure.getRow() < FIELD_DEPTH - 2) && (newField[figure.getColumn()][figure.getRow() + 3] == 0)) {
 				if ((int) (System.currentTimeMillis() - tc) > (MAX_LEVEL - currentLevel) * TimeShift + MinTimeShift) {
 					tc = System.currentTimeMillis();
 					HideFigure(figure);
-					figure.row++;
+					figure.setRow(figure.getRow() + 1);
 					view.drawFigure(figure);
 				}
 				playerScoreAddition = 0;
@@ -163,33 +173,35 @@ public class Columns extends Applet implements Runnable {
 					Delay(50);
 					if (KeyPressed) {
 						KeyPressed = false;
-						switch (playerKeyPressed) {
+						switch (keyPressedByPlayer) {
 						case Event.LEFT:
-							if ((figure.column > 1) && (newField[figure.column - 1][figure.row + 2] == 0)) {
+							if ((figure.getColumn() > 1)
+									&& (newField[figure.getColumn() - 1][figure.getRow() + 2] == 0)) {
 								HideFigure(figure);
-								figure.column--;
+								figure.setColumn(figure.getColumn() - 1);
 								view.drawFigure(figure);
 							}
 							break;
 						case Event.RIGHT:
-							if ((figure.column < FIELD_WIDTH) && (newField[figure.column + 1][figure.row + 2] == 0)) {
+							if ((figure.getColumn() < FIELD_WIDTH)
+									&& (newField[figure.getColumn() + 1][figure.getRow() + 2] == 0)) {
 								HideFigure(figure);
-								figure.column++;
+								figure.setColumn(figure.getColumn() + 1);
 								view.drawFigure(figure);
 							}
 							break;
 						case Event.UP:
-							i = figure.colorsOfFigureBoxes[1];
-							figure.colorsOfFigureBoxes[1] = figure.colorsOfFigureBoxes[2];
-							figure.colorsOfFigureBoxes[2] = figure.colorsOfFigureBoxes[3];
-							figure.colorsOfFigureBoxes[3] = i;
+							i = figure.getColorsOfFigure()[1];
+							figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[2];
+							figure.getColorsOfFigure()[2] = figure.getColorsOfFigure()[3];
+							figure.getColorsOfFigure()[3] = i;
 							view.drawFigure(figure);
 							break;
 						case Event.DOWN:
-							i = figure.colorsOfFigureBoxes[1];
-							figure.colorsOfFigureBoxes[1] = figure.colorsOfFigureBoxes[3];
-							figure.colorsOfFigureBoxes[3] = figure.colorsOfFigureBoxes[2];
-							figure.colorsOfFigureBoxes[2] = i;
+							i = figure.getColorsOfFigure()[1];
+							figure.getColorsOfFigure()[1] = figure.getColorsOfFigure()[3];
+							figure.getColorsOfFigure()[3] = figure.getColorsOfFigure()[2];
+							figure.getColorsOfFigure()[2] = i;
 							view.drawFigure(figure);
 							break;
 						case ' ':
@@ -259,6 +271,21 @@ public class Columns extends Applet implements Runnable {
 			thread.stop();
 			thread = null;
 		}
+	}
+
+	void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
+		if ((newField[j][i] == newField[a][b]) && (newField[j][i] == newField[c][d])) {
+			oldField[a][b] = 0;
+			view.drawBox(a, b, 8);
+			oldField[j][i] = 0;
+			view.drawBox(j, i, 8);
+			oldField[c][d] = 0;
+			view.drawBox(c, d, 8);
+			NoChanges = false;
+			playerScore += (currentLevel + 1) * 10;
+			k++;
+		}
+		;
 	}
 
 	void TestField() {

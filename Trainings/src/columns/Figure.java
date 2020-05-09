@@ -5,16 +5,44 @@ import java.util.*;
 
 
 class Figure {
-	static int column=Columns.FIELD_WIDTH/2+1, row=1, colorsOfFigureBoxes[]=new int[4];
-	static Random r = new Random();
-
-	Figure()
+	private static int NUM_BUCKETS = 4;
+	private  int column=Columns.FIELD_WIDTH/2+1;
+	private  int row=1;
+	private  int colorsOfFigure[]=new int[4];
+	private  Random r = new Random();
+	
+	public Figure()
 	{
-		column = Columns.FIELD_WIDTH/2+1;
-		row = 1;
-		colorsOfFigureBoxes[0] = 0;
-		colorsOfFigureBoxes[1] = (int)(Math.abs(r.nextInt())%7+1);
-		colorsOfFigureBoxes[2] = (int)(Math.abs(r.nextInt())%7+1);
-		colorsOfFigureBoxes[3] = (int)(Math.abs(r.nextInt())%7+1);
+		fillFigureWithRandomColors();
+	}
+
+	private void fillFigureWithRandomColors() {
+		for(int bucket =0; bucket<NUM_BUCKETS; bucket++) {
+			colorsOfFigure[bucket] = (int)(Math.abs(r.nextInt())%7+1);
+		}
+	}
+	
+	public  int getColumn() {
+		return column;
+	}
+
+	public  void setColumn(int column) {
+		this.column = column;
+	}
+
+	public  int getRow() {
+		return row;
+	}
+
+	public  void setRow(int row) {
+		this.row = row;
+	}
+
+	public  int[] getColorsOfFigure() {
+		return colorsOfFigure;
+	}
+
+	public  void setColorsOfFigure(int colorsOfFigure[]) {
+		this.colorsOfFigure = colorsOfFigure;
 	}
 }

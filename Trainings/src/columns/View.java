@@ -2,49 +2,49 @@ package columns;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.function.Consumer;
 
 public class View {
-	static final int FIELD_DEPTH = 15, FIELD_WIDTH = 7, FIELD_LEFT_OFFSET = 2, FIELD_TOP_OFFSET = 2,
-			GAME_NUMBOX_CONSTANT = 3;
+	static final int FIELD_HEIGHT = 15, FIELD_WIDTH = 7, FIELD_LEFT_OFFSET = 2, FIELD_TOP_OFFSET = 2,
+			GAME_NUM_OF_BOX_CONSTANT = 3;
 
-	private DrawViewGraphics viewGraphics;
-	private DrawPlayerLevelInformation viewLevel;
-	private DrawPlayerScoreInformation viewScore;
-
+	private DrawViewGraphics drawGraphics;
+	private Consumer<Integer> drawLevel;
+	private Consumer<Long> drawScore;
+	
 	private Color colors[] = { Color.black, Color.cyan, Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
 			Color.magenta, Color.black };
-
-	public View(DrawViewGraphics viewGraphics, DrawPlayerLevelInformation viewLevel,
-			DrawPlayerScoreInformation viewScore) {
-		this.viewGraphics = viewGraphics;
-		this.viewLevel = viewLevel;
-		this.viewScore = viewScore;
+	
+	public View(DrawViewGraphics drawGraphics, Consumer<Integer> drawLevel, Consumer<Long> drawScore) {
+		this.drawGraphics = drawGraphics;
+		this.drawLevel = drawLevel;
+		this.drawScore = drawScore;
 	}
 
-	public void drawBox(int col, int row, int color) {
-		viewGraphics.drawRect(row, col, color);
+	public void drawBox(int column, int row, int color) {
+		drawGraphics.drawRect(row, column, color);
 	}
-
-	public void drawField(int[][] gameField) {
-		for (int row = 1; row <= FIELD_DEPTH; row++) {
-			for (int col = 1; col <= FIELD_WIDTH; col++) {
-				drawBox(col, row, gameField[col][row]);
+	
+	public void drawField(int[][] gameFiledGrid) {
+		for (int row = 1; row <= FIELD_HEIGHT; row++) {
+			for (int column = 1; column <= FIELD_WIDTH; column++) {
+				drawBox(column, row, gameFiledGrid[column][row]);
 			}
 		}
 	}
 
 	public void drawFigure(Figure figure) {
-		for (int i = 0; i < GAME_NUMBOX_CONSTANT; i++) {
-			drawBox(figure.column, figure.row + i, figure.colorsOfFigureBoxes[i + 1]);
+		for (int numOfBox = 0; numOfBox < GAME_NUM_OF_BOX_CONSTANT; numOfBox++) {
+			drawBox(figure.getColumn(), figure.getRow() + numOfBox, figure.getColorsOfFigure()[numOfBox + 1]);
 		}
 	}
 
 	void showLevel(int currentLevel) {
-		viewLevel.showLevel(currentLevel);
+		drawLevel.accept(currentLevel);
 	}
 
 	void showScore(long playerScore) {
-		viewScore.showScore(playerScore);
+		drawScore.accept(playerScore);
 	}
 	
 	//Not mandatory
