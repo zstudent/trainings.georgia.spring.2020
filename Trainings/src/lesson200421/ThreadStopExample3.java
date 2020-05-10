@@ -18,14 +18,16 @@ public class ThreadStopExample3 {
 		
 		System.out.println("finished main");
 	}
-	
+
+	static volatile boolean stop = false;
+
 	static void count() {
 		System.out.println(Thread.currentThread());
 		long c = 0;
-		while (true) {
+		while (!stop) {
 			c++;
 		}
-//		System.out.println(c);
+		System.out.println(c);
 	}
 
 	

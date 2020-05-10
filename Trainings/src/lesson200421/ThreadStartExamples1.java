@@ -19,7 +19,7 @@ public class ThreadStartExamples1 {
 		while (true) {
 			System.out.println(" hi there");
 			try {
-				Thread.sleep(1000);
+				Thread.sleep(500);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

@@ -23,7 +23,7 @@ public class SearchExamples {
 		
 		System.out.println(elapsed1 + " " + elapsed2);
 	}
-	
+
 	public static int plainSearch(int[] arr, int key) {
 		for (int i = 0; i < arr.length; i++) {
 			if (arr[i] == key) 
@@ -31,7 +31,7 @@ public class SearchExamples {
 		}
 		return -1;
 	}
-	
+
 	public static int[] generate(int length) {
 		Random r = new Random();
 		int[] arr = new int[length];
@@ -41,10 +41,9 @@ public class SearchExamples {
 		return arr;
 	}
 	
-	
-	
+
 	static public long elapsed(BiFunction<int[], Integer, Integer> searcher, int[] arr, int number) {
-		
+
 		long start = System.nanoTime();
 		
 		int result = searcher.apply(arr, number);
