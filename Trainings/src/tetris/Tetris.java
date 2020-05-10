@@ -40,7 +40,7 @@ public class Tetris {
 		
 		Model model = new Model();
 
-		Graphics2D graphics = (Graphics2D) panel.getGraphics();
+		Graphics2D graphics = (Graphics2D) panel. getGraphics();
 		View view = new View((color, row, col) -> {
 			graphics.setColor(COLORS[color]);
 			graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
