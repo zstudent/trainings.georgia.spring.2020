@@ -10,7 +10,7 @@ public class Field {
 		this.data = new int[rows][cols];
 	}
 
-	public void removeFilledRows() {
+	public boolean removeFilledRows() {
 		OUTER: for (int r = 0; r < data.length; r++) {
 			for (int c = 0; c < data[r].length; c++) {
 				if (data[r][c] == 0)
@@ -21,7 +21,9 @@ public class Field {
 						data[i].length);
 			}
 			Arrays.fill(data[0], 0);
+			return true;
 		}
+	return false;
 	}
 	
 }

@@ -4,5 +4,4 @@ package lesson200415;
 public interface Broadcaster {
 	// functional description:  String - > ()  T -> ()
 	void broadcast(String message);
-
 }
