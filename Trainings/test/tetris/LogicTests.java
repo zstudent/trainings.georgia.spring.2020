@@ -1,15 +1,17 @@
 package tetris;
 
-import static org.junit.Assert.*;
 
 import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.Assert.*;
 
 public class LogicTests {
 
 	private Logic logic;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		logic = new Logic(new State());
 	}
@@ -21,7 +23,7 @@ public class LogicTests {
 		assertEquals(col - 1, logic.state.col);
 		assertTrue(success);
 	}
-	
+
 	@Test
 	public void testMovedLeftTooFar() {
 		logic.state.col = 0;
@@ -60,22 +62,29 @@ public class LogicTests {
 	@Test
 	public void testMovedDown() throws Exception {
 		int row = logic.state.row;
-		boolean success = logic.moveDown();
+		int success = logic.moveDown();
 		assertEquals(row + 1, logic.state.row);
-		assertTrue(success);
+		assertTrue(success==0);
 	}
 
 	@Test
 	public void testMovedDownTooFar() throws Exception {
 		logic.state.figure = new Figure(Figure.I);
 		logic.state.row = fieldHeight() - 1;
+		logic.state.col = 0;
 		int row = logic.state.row;
 		Figure old = logic.state.figure; 
-		boolean success = logic.moveDown();
+		int success = logic.moveDown();
 		assertFalse(old == logic.state.figure);
 		assertEquals(0, logic.state.row);
-		assertTrue(success);
+		assertTrue(success==0);
 		// TODO HOMEWORK:  check that old figure is copied to the field
+		//Checking
+		System.out.println(logic.state.field.toString());
+		System.out.println(row);
+		System.out.println(logic.state.row);
+		for(int i=0; i<4; i++)assertTrue(logic.state.field.data[row][i]>0);
+
 	}
 
 	private int fieldHeight() {

@@ -1,0 +1,70 @@
+Wrapper :  Adapter, Decorator, Proxy, Facade
+
+Microservices  API Gateways (Facades!)
+
+Dispatching:
+
+private void action(Action action) {
+    switch (action) {
+      case GO_TO_SLEEP:
+        goToSleep();
+        break;
+      case WAKE_UP:
+        wakeUp();
+        break;
+      case GO_HOME:
+        goHome();
+        break;
+      case GO_TO_MINE:
+        goToMine();
+        break;
+      case WORK:
+        work();
+        break;
+      default:
+        LOGGER.info("Undefined action");
+        break;
+    }
+  }
+  
+  Sentence ->  Word -> Letter
+  
+  Java         MacOS         Windows
+  
+  Button <->  MacButton <->  WButton
+  Label  <->  MacLabel  <->  WLabel
+  List   <->  MacList   <->  WList
+  
+  Storage       AWS          MongoDB       Neo4J
+  UserDAO       AWSUserDAO   MUserDAO      N4JUserDAO
+  CustomerDAO   
+  ProductDAO
+  
+  7654 3210
+  0100 0000  == 64  2**6
+  
+  1101  == 13  
+  
+  1*2**3 + 1*2**2 + 0*2**1 + 1*2**0 = 8 + 4 + 0 + 1 = 13   
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+   

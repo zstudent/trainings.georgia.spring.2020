@@ -1,0 +1,11 @@
+
+
+ head => null
+
+add("One")
+ head => [ One ] -> null
+ 
+add("Two")
+ head => [ Two ] -> [ One ] -> null
+
+ 

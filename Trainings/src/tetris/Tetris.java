@@ -1,15 +1,12 @@
 package tetris;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
-import javax.swing.WindowConstants;
+import javax.swing.*;
 
 public class Tetris {
 	private static final Color[] COLORS = 
@@ -22,28 +19,45 @@ public class Tetris {
 
 	private static void setup() {
 		JFrame frame = new JFrame("Tetris");
-
+		frame.setLayout(new BorderLayout());
 		JPanel panel = new JPanel();
-
 		panel.setPreferredSize(new Dimension(400, 700));
-		frame.add(panel);
-
+		frame.add(panel,BorderLayout.CENTER);
 		frame.pack();
-
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
 		Controller controller = new Controller();
-		
 		Model model = new Model();
 
-		Graphics2D graphics = (Graphics2D) panel.getGraphics();
-		View view = new View((color, row, col) -> {
-			graphics.setColor(COLORS[color]);
-			graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
+		JLabel gameOverField = new JLabel();
+		panel.add(gameOverField,BorderLayout.NORTH);
+		JLabel scoreField = new JLabel();
+		panel.add(scoreField,BorderLayout.NORTH);
+		scoreField.setText("0");
+		JButton button = new JButton("Restart");
+		panel.add(button,BorderLayout.NORTH);
+		button.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent actionEvent) {
+				controller.restartGame();
+			}
 		});
+		button.setFocusable(false);
+		Graphics2D graphics = (Graphics2D) panel.getGraphics();
+		View view = new View(
+			(color, row, col) -> {
+				graphics.setColor(COLORS[color]);
+				graphics.fillRect(50 + col * 30, 50 + row * 30, 30, 30);
+			},
+			(msg,restart)->{
+				gameOverField.setText(msg);
+			}, (msg,restart)->{
+				//User gets 10 points for each cleared row.
+				if(!restart)scoreField.setText(Integer.parseInt(scoreField.getText())+(Integer.parseInt(msg)*10) + "");
+				else scoreField.setText("0");
+			});
 
 		controller.set(model, view);
-
 		frame.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
@@ -59,17 +73,17 @@ public class Tetris {
 				case KeyEvent.VK_DOWN:
 					controller.dropDown();
 					break;
-					
+					case KeyEvent.VK_UP:
+						controller.rotateLeft();
 				default:
 					break;
 				}
 			}
 		});
-
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(5000);
+					Thread.sleep(controller.timer);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}

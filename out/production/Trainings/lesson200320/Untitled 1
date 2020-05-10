@@ -1,0 +1,10 @@
+
+
+DAO -->  MySql  MongoDB?
+
+(DAO --> Storage)  <--- MySQL
+
+MysqlStorage implements Storage
+MongoDBStorage implements Storage
+...
+...

@@ -1,20 +1,35 @@
 package tetris;
 
+import javax.swing.*;
+
 public class View {
 
 	private PlatformGraphics graphics;
-	
+	private PlatformLable gameOverLable;
+	private PlatformLable scoreLable;
+
 	public View() {
 		graphics = (color, row, col) -> {};
 	}
 	
-	public View(PlatformGraphics graphics) {
+	public View(PlatformGraphics graphics,PlatformLable gameOverLable,PlatformLable scoreLabel) {
 		this.graphics = graphics;
+		this.gameOverLable = gameOverLable;
+		this.scoreLable = scoreLabel;
 	}
 
 	public void draw(State state) {
 		drawData(state.field.data, 0, 0, true);
 		drawData(state.figure.data, state.row, state.col, false);
+	}
+
+	public void drawGameOverLabel(String msg)
+	{
+		gameOverLable.writeLable(msg,false);
+	}
+
+	public void drawScoreLabel(String msg,boolean b){
+		scoreLable.writeLable(msg,b);
 	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {
@@ -26,6 +41,7 @@ public class View {
 			}
 		}
 	}
+
 
 	private void drawBox(int color, int row, int col) {
 		graphics.fillRect(color, row, col);
