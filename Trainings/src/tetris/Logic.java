@@ -1,11 +1,8 @@
-package tetris;
-
 public class Logic {
 
-	public State state;
-
+	public static State state;
 	public Logic(State state) {
-		this.state = state;
+		Logic.state = state;
 	}
 
 	public boolean moveLeft() {
@@ -31,12 +28,34 @@ public class Logic {
 		if (!state.isFigureFitTheField()) {
 			state.row--;
 			state.pasteFigureIntoTheField();
-			state.field.removeFilledRows();
+			int count = state.field.removeFilledRows();
+			state.rowsCleared+=count;
+			state.score+=computeScore(count, state.level);
+			if(state.rowsCleared >= 5){
+				state.level++;
+				state.rowsCleared-=5;
+			}
 			state.launchNewFigure();
 			// TODO:  homework:  determine GAME OVER
+			if(!state.isFigureFitTheField()){
+				state.gameOver = true;
+				return true;
+			}
 			return true;
 		}
 		return true;
+	}
+
+	private int computeScore(int rowsCleared, int level){
+		for (int i=1; i<=100; i++) {
+			int count=0;
+			if (rowsCleared==i) {
+				Tetris.playSound("spa.wav");
+				return (count+=50)*level;
+			}
+			}
+			
+		return 0;
 	}
 
 	public void dropDown() {
@@ -44,6 +63,15 @@ public class Logic {
 			state.row++;
 		}
 		state.row--;
+	}
+
+	public boolean rotate() {
+		state.rotateFigure();
+		if (!state.isFigureFitTheField()) {
+			state.figure.data = state.backup;
+			return false;
+		}
+		return true;
 	}
 
 }

@@ -1,14 +1,17 @@
-package tetris;
-
 public class State {
 
 	static final int ROWS = 20;
 	static final int COLUMNS = 10;
 
-	public Field field;
-	Figure figure;
 	public int row;
 	public int col;
+	public int score;
+	public int level = 1;
+	public boolean gameOver = false;
+	public int rowsCleared;
+	public int[][] backup;
+	public Field field;
+	Figure figure;
 
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
@@ -48,9 +51,27 @@ public class State {
 				int v = figure.data[r][c];
 				if (v == 0)
 					continue;
-				field.data[row + r][col + c] = v;
+				if(field.data[row + r][col + c]==0){
+					field.data[row + r][col + c] = v;
+				}
 			}
 		}
 	}
 
+	void rotateFigure() {
+		int size = figure.data.length;
+		backup = new int[figure.data.length][figure.data[0].length];
+		for(int i = 0; i < figure.data.length; i++){
+			System.arraycopy(figure.data[i], 0, backup[i],0,figure.data[0].length);
+		}
+		for (int i = 0; i < size/2; i++) {
+			for (int j = i; j < size-i-1; j++) {
+				int temp = figure.data[i][j];
+				figure.data[i][j] = figure.data[j][size-1-i];
+				figure.data[j][size-1-i] = figure.data[size-1-i][size-1-j];
+				figure.data[size-1-i][size-1-j] = figure.data[size-1-j][i];
+				figure.data[size-1-j][i] = temp;
+			}
+		}
+	}
 }
