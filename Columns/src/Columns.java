@@ -4,15 +4,15 @@ import java.awt.*;
 
 public class Columns extends Applet implements Runnable {
 
-    static final int SL=25;
+    //static final int SL=25;
     static final int Depth=15;
     static final int Width=7;
     static final int MaxLevel=7;
     static final int TimeShift=250;
     static final int FigToDrop=33;
     static final int MinTimeShift=200;
-    static final int LeftBorder=2;
-    static final int TopBorder=2;
+   //static final int LeftBorder=2;
+    //static final int TopBorder=2;
     
     
     Color[] MyStyles = {Color.black,Color.cyan,Color.blue,Color.red,Color.green,
@@ -25,17 +25,19 @@ public class Columns extends Applet implements Runnable {
     int[][] fOld;
     boolean noChanges;
     boolean keyPressed;
+    boolean gameOn;
     Graphics graphics;
+    Painter painter;
     Thread thread;
     
     void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
         if ((fNew[j][i]== fNew[a][b]) && (fNew[j][i]== fNew[c][d])) {
             fOld[a][b] = 0;
-            DrawBox(a,b,8);
+            painter.DrawBox(a,b,8);
             fOld[j][i] = 0;
-            DrawBox(j,i,8);
+            painter.DrawBox(j,i,8);
             fOld[c][d] = 0;
-            DrawBox(c,d,8);
+            painter.DrawBox(c,d,8);
             noChanges = false;
             score += (Level+1)*10;
             k++;
@@ -47,6 +49,7 @@ public class Columns extends Applet implements Runnable {
         }
         catch (InterruptedException ignored) {};
     }
+    /*
     void DrawBox(int x, int y, int c) {
         if (c==0) {
             graphics.setColor(Color.black);
@@ -79,12 +82,15 @@ public class Columns extends Applet implements Runnable {
         for(int i = 0; i < 3; i++){
             DrawBox(f.getX(),f.getY()+i,f.getColumn(i+1));
         }
-        /*
+
         DrawBox(f.x,f.y,f.c[1]);
         DrawBox(f.x,f.y+1,f.c[2]);
         DrawBox(f.x,f.y+2,f.c[3]);
-         */
+
     }
+
+    */
+
     void DropFigure(Figure f) {
         if (f.getY() < Depth-2) {
             int tmp = Depth;
@@ -110,27 +116,32 @@ public class Columns extends Applet implements Runnable {
         }
         return false;
     }
+    /*
     void HideFigure(Figure f) {
         for(int i = 0; i<3;i++){
             DrawBox(f.getX(), f.getY()+i,0);
         }
-        /*
+
         DrawBox(f.x,f.y,0);
         DrawBox(f.x,f.y+1,0);
         DrawBox(f.x,f.y+2,0);
-         */
+
     }
+    */
+
+    @Override
     public void init() {
         graphics = getGraphics();
         figure = new Figure();
         noChanges = true;
         keyPressed = false;
+        gameOn = true;
         fNew = new int[Width+2][Depth+2];
         fOld = new int[Width+2][Depth+2];
         Level = 0;
         score = 0;
         k = 0;
-        graphics.setColor(Color.black);
+        painter = new Painter(graphics);
         requestFocus();
     }
     public boolean keyDown(Event e, int k) {
@@ -156,15 +167,18 @@ public class Columns extends Applet implements Runnable {
             for (int j = n; j>0; j--) fNew[i][j] = 0;
         }
     }
+
+    @Override
     public void paint(Graphics g) {
         //		ShowHelp(g);
         g.setColor(Color.black);
-        ShowLevel(g);
-        ShowScore(g);
-        DrawField(g);
-        DrawFigure(figure);
+        painter.ShowLevel(Level);
+        painter.ShowScore(Level);
+        painter.DrawField(fNew);
+        painter.DrawFigure(figure);
         requestFocus();
     }
+
     void PasteFigure(Figure f) {
         for(int i = 0; i < 3; i++){
             fNew[f.getX()][f.getY()+i] = f.getColumn(i+1);
@@ -175,6 +189,7 @@ public class Columns extends Applet implements Runnable {
         Fnew[f.x][f.y+2] = f.c[3];
          */
     }
+
     public void run() {
         /*
         for (int i=0; i<Width+1; i++){
@@ -189,13 +204,13 @@ public class Columns extends Applet implements Runnable {
         do {
             timeCount = System.currentTimeMillis();
             figure = new Figure();
-            DrawFigure(figure);
+            painter.DrawFigure(figure);
             while ((figure.getY()<Depth-2) && (fNew[figure.getX()][figure.getY()+3]==0)) {
                 if ((int)(System.currentTimeMillis()- timeCount)>(MaxLevel-Level)*TimeShift+MinTimeShift) {
                     timeCount = System.currentTimeMillis();
-                    HideFigure(figure);
+                    painter.HideFigure(figure);
                     figure.setY(figure.getY()+1);
-                    DrawFigure(figure);
+                    painter.DrawFigure(figure);
                 }
                 dScore = 0;
                 do {
@@ -234,7 +249,7 @@ public class Columns extends Applet implements Runnable {
                                 figure.c[3] = i;
 
                                  */
-                                DrawFigure(figure);
+                                painter.DrawFigure(figure);
                                 break;
                             case Event.DOWN:
                                 figure.shiftDown();
@@ -244,7 +259,7 @@ public class Columns extends Applet implements Runnable {
                                 figure.c[3] = figure.c[2];
                                 figure.c[2] = i;
                                  */
-                                DrawFigure(figure);
+                                painter.DrawFigure(figure);
                                 break;
                             case ' ':
                                 performDrop();
@@ -295,63 +310,72 @@ public class Columns extends Applet implements Runnable {
             };
             PasteFigure(figure);
             do {
-                noChanges = true;
-                TestField();
-                if (!noChanges) {
-                    Delay(500);
-                    PackField();
-                    DrawField(graphics);
-                    score += dScore;
-                    ShowScore(graphics);
-                    if (k>=FigToDrop) {
-                        k = 0;
-                        if (Level<MaxLevel) Level++;
-                        ShowLevel(graphics);
-                    }
-                }
+                checkForChange();
             } while (!noChanges);
-        }while (!FullField());
+        }while (!FullField()&&gameOn);
+    }
+
+
+    private void checkForChange(){
+        noChanges = true;
+        TestField();
+        if (!noChanges) {
+            updateInfo();
+        }
+    }
+
+    private void updateInfo(){
+        Delay(500);
+        PackField();
+        painter.DrawField(fNew);
+        score += dScore;
+        painter.ShowScore(score);
+        if (k >= FigToDrop) {
+            k = 0;
+            if (Level<MaxLevel) Level++;
+            painter.ShowLevel(Level);
+        }
     }
 
     private void changeLevel(int sign){
         if (Level < MaxLevel) Level+=sign;
         k=0;
-        ShowLevel(graphics);
+        painter.ShowLevel(Level);
     }
 
     private void pauseGame(){
         while (!keyPressed) {
-            HideFigure(figure);
+            painter.HideFigure(figure);
             Delay(500);
-            DrawFigure(figure);
+            painter.DrawFigure(figure);
             Delay(500);
         }
         timeCount = System.currentTimeMillis();
     }
 
     private void performDrop(){
-        HideFigure(figure);
+        painter.HideFigure(figure);
         DropFigure(figure);
-        DrawFigure(figure);
+        painter.DrawFigure(figure);
         timeCount = 0;
     }
 
     private void moveRight(){
         if ((figure.getX()<Width) && (fNew[figure.getX()+1][figure.getY()+2]==0)) {
-            HideFigure(figure);
+            painter.HideFigure(figure);
             figure.setX(figure.getX()+1);
-            DrawFigure(figure);
+            painter.DrawFigure(figure);
         }
     }
 
     private void moveLeft(){
         if ((figure.getX()>1) && (fNew[figure.getX()-1][figure.getY()+2]==0)) {
-            HideFigure(figure);
+            painter.HideFigure(figure);
             figure.setX(figure.getX()-1);
-            DrawFigure(figure);
+            painter.DrawFigure(figure);
         }
     }
-
+/*
     void ShowHelp(Graphics g) {
         g.setColor(Color.black);
         
@@ -375,22 +399,30 @@ public class Columns extends Applet implements Runnable {
         g.clearRect(LeftBorder,390,100,20);
         g.drawString("Score: "+ score,LeftBorder,400);
     }
+
+ */
+
+    @Override
     public void start() {
-        graphics.setColor(Color.black);
-        
         //		setBackground (new Color(180,180,180));
-        
         if (thread == null) {
             thread = new Thread(this);
             thread.start();
         }
     }
+
+    @Override
     public void stop() {
+        gameOn = false;
+        thread = null;
+        /*
         if (thread != null) {
             thread.stop();
             thread = null;
         }
+         */
     }
+
     void TestField() {
         for (int i=1; i<=Depth; i++) {
             for (int j=1; j<=Width; j++) {
