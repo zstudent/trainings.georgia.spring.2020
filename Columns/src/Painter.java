@@ -51,22 +51,12 @@ public class Painter {
         for(int i = 0; i < 3; i++){
             drawBox(f.getX(),f.getY()+i,f.getColumn(i+1));
         }
-        /*
-        DrawBox(f.x,f.y,f.c[1]);
-        DrawBox(f.x,f.y+1,f.c[2]);
-        DrawBox(f.x,f.y+2,f.c[3]);
-         */
     }
 
     void hideFigure(Figure f) {
         for(int i = 0; i<3;i++){
             drawBox(f.getX(), f.getY()+i,0);
         }
-        /*
-        DrawBox(f.x,f.y,0);
-        DrawBox(f.x,f.y+1,0);
-        DrawBox(f.x,f.y+2,0);
-         */
     }
 
     public void paintAll(int level, long score, int[][] field, Figure figure){

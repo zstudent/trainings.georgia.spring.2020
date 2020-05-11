@@ -30,7 +30,7 @@ public class Columns extends Applet implements Runnable {
         state = new State(painter);
         requestFocus();
     }
-    
+
     public boolean keyDown(Event e, int k) {
         keyPressed = true;
         ch = e.key;

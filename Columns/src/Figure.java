@@ -38,10 +38,6 @@ class Figure {
 		return c[index];
 	}
 
-	public void setColumn(int index, int val){
-		c[index] = val;
-	}
-
 	public void shiftDown(){
 		int tmp = c[1];
 		c[1] = c[3];
