@@ -17,7 +17,7 @@ public class Painter {
         graphics.setColor(Color.black);
     }
 
-    public void DrawBox(int x, int y, int c) {
+    public void drawBox(int x, int y, int c) {
         if (c==0) {
             graphics.setColor(Color.black);
             graphics.fillRect(LeftBorder+x*SL-SL, TopBorder+y*SL-SL, SL, SL);
@@ -39,17 +39,17 @@ public class Painter {
         //		g.setColor (Color.black);
     }
 
-    public void DrawField(int[][] field) {
+    public void drawField(int[][] field) {
         for (int i=1; i<=Depth; i++) {
             for (int j=1; j<=Width; j++) {
-                DrawBox(j,i, field[j][i]);
+                drawBox(j,i, field[j][i]);
             }
         }
     }
 
-   public void DrawFigure(Figure f) {
+   public void drawFigure(Figure f) {
         for(int i = 0; i < 3; i++){
-            DrawBox(f.getX(),f.getY()+i,f.getColumn(i+1));
+            drawBox(f.getX(),f.getY()+i,f.getColumn(i+1));
         }
         /*
         DrawBox(f.x,f.y,f.c[1]);
@@ -58,9 +58,9 @@ public class Painter {
          */
     }
 
-    void HideFigure(Figure f) {
+    void hideFigure(Figure f) {
         for(int i = 0; i<3;i++){
-            DrawBox(f.getX(), f.getY()+i,0);
+            drawBox(f.getX(), f.getY()+i,0);
         }
         /*
         DrawBox(f.x,f.y,0);
@@ -69,21 +69,29 @@ public class Painter {
          */
     }
 
+    public void paintAll(int level, long score, int[][] field, Figure figure){
+        graphics.setColor(Color.black);
+        showLevel(level);
+        showScore(score);
+        drawField(field);
+        drawFigure(figure);
+    }
 
 
-    void ShowLevel(int level) {
+
+    void showLevel(int level) {
         graphics.setColor(Color.black);
         graphics.clearRect(LeftBorder+100,390,100,20);
         graphics.drawString("Level: "+ level,LeftBorder+100,400);
     }
 
-    void ShowScore(long score) {
+    void showScore(long score) {
         graphics.setColor(Color.black);
         graphics.clearRect(LeftBorder,390,100,20);
         graphics.drawString("Score: "+ score,LeftBorder,400);
     }
 
-    void ShowHelp() {
+    void showHelp() {
         graphics.setColor(Color.black);
         graphics.drawString(" Keys available:",200-LeftBorder,102);
         graphics.drawString("Roll Box Up:     ",200-LeftBorder,118);

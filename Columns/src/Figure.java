@@ -10,7 +10,7 @@ class Figure {
 
 	public Figure() {
 		c = new int[4];
-		x = Columns.Width/2+1;
+		x = State.WIDTH/2+1;
 		y = 1;
 		Random r = new Random();
 		for (int i = 1; i < 4; i++){
