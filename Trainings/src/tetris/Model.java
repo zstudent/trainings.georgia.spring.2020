@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Model {
-	
+
 	Logic logic = new Logic(new State());
 	List<ModelListener> listeners = new ArrayList<>();
-	
+
 	public void moveLeft() {
 		if (logic.moveLeft())
 			fireOnChange();
@@ -23,7 +23,7 @@ public class Model {
 		if (logic.moveRight())
 			fireOnChange();
 	}
-	
+
 	public void moveDown() {
 		if (logic.moveDown())
 			fireOnChange();
@@ -41,5 +41,22 @@ public class Model {
 		logic.dropDown();
 		fireOnChange();
 	}
+
+	public void rotateLeft() {
+		logic.rotateLeft();
+		fireOnChange();
+		
+	}
+
+	public void rotateRight() {
+		logic.rotateRight();
+		fireOnChange();
+		
+	}
+
+	public boolean gameOver() {
+		return logic.gameOver();
+	}
 	
+
 }

@@ -5,7 +5,8 @@ import java.util.Arrays;
 public class Field {
 
 	int[][] data;
-	
+	public static int score;
+
 	public Field(int cols, int rows) {
 		this.data = new int[rows][cols];
 	}
@@ -17,11 +18,10 @@ public class Field {
 					continue OUTER;
 			}
 			for (int i = r; i > 0; i--) {
-				System.arraycopy(data[i - 1], 0, data[i], 0,
-						data[i].length);
+				System.arraycopy(data[i - 1], 0, data[i], 0, data[i].length);
 			}
+			score+=50;
 			Arrays.fill(data[0], 0);
 		}
 	}
-	
 }
