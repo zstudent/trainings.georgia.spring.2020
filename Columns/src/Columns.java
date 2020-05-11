@@ -54,8 +54,8 @@ public class Columns extends Applet implements Runnable {
             timeCount = System.currentTimeMillis();
             state.generateFigure();
             painter.drawFigure(state.getFigure());
-            while ((state.getFigure().getY()<State.DEPTH-2) && (state.getFieldValue()==0)) {
-                if ((int)(System.currentTimeMillis()- timeCount)>(State.MaxLevel- state.getLevel())*TimeShift+MinTimeShift) {
+            while (state.inRange()) {
+                if (checkTime()) {
                     timeCount = System.currentTimeMillis();
                     painter.hideFigure(state.getFigure());
                     state.getFigure().setY(state.getFigure().getY()+1);
@@ -65,13 +65,19 @@ public class Columns extends Applet implements Runnable {
                 do {
                     delay(50);
                     parseEvent();
-                } while ( (int)(System.currentTimeMillis()- timeCount) <= (State.MaxLevel- state.getLevel())*TimeShift+MinTimeShift );
+                } while (!checkTime());
             };
             state.PasteFigure();
             do {
                 state.checkForChange();
             } while (!state.getChangeStatus());
         }while (!state.fullField()&&gameOn);
+    }
+
+
+    private boolean checkTime(){
+        return (int)(System.currentTimeMillis()- timeCount)>
+                (State.MaxLevel- state.getLevel())*TimeShift+MinTimeShift;
     }
 
     private void parseEvent(){

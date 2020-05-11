@@ -7,8 +7,6 @@ public class Painter {
     static final int LeftBorder=2;
     static final int SL=25;
     static final int TopBorder=2;
-    static final int Depth=15;
-    static final int Width=7;
 
     private Graphics graphics;
 
@@ -40,8 +38,8 @@ public class Painter {
     }
 
     public void drawField(int[][] field) {
-        for (int i=1; i<=Depth; i++) {
-            for (int j=1; j<=Width; j++) {
+        for (int i=1; i<=State.DEPTH; i++) {
+            for (int j=1; j<=State.WIDTH; j++) {
                 drawBox(j,i, field[j][i]);
             }
         }

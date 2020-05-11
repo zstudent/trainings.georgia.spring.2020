@@ -11,8 +11,8 @@ public class State {
     static final int FigToDrop=33;
     static final int MaxLevel=7;
     boolean noChanges;
-    int[][] fNew;
-    int[][] fOld;
+    private int[][] fNew;
+    private int[][] fOld;
 
     public State(Painter painter){
         this.painter = painter;
@@ -29,7 +29,7 @@ public class State {
         painter.paintAll(level, score, fNew, figure);
     }
 
-    public int getFieldValue(){
+    private int getFieldValue(){
         return fNew[figure.getX()][figure.getY()+3];
     }
 
@@ -57,8 +57,8 @@ public class State {
         }
     }
 
-    public int getScore() {
-        return score;
+    public boolean inRange(){
+        return (figure.getY()<DEPTH-2) && (getFieldValue()==0);
     }
 
     public void drop(){
