@@ -23,6 +23,8 @@ public class Columns extends Applet implements Runnable {
 			Color.pink, Color.magenta, Color.black };
 	
 	
+	private State state; /////////
+	
 	private int level, k, action;
 	private long score, DScore, calculateTime;
 	private int newField[][], oldField[][];
@@ -113,6 +115,7 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	public void init() {
+		state = new State();
 		newField = new int[WIDTH + 2][HEIGHT + 2];
 		oldField = new int[WIDTH + 2][HEIGHT + 2];
 		NoChanges = true;
