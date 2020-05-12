@@ -53,19 +53,19 @@ public class Columns extends Applet implements Runnable {
 		}
 	}
 
-	void DrawBox(int x, int y, int c) {
-		if (c == 0) {
+	void DrawBox(int x, int y, int color) {
+		if (color == 0) {
 			graphics.setColor(Color.black);
 			graphics.fillRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
 			graphics.drawRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
-		} else if (c == 8) {
+		} else if (color == 8) {
 			graphics.setColor(Color.white);
 			graphics.drawRect(LEFT_BORDER + x * SL - SL + 1, TOP_BORDER + y * SL - SL + 1, SL - 2, SL - 2);
 			graphics.drawRect(LEFT_BORDER + x * SL - SL + 2, TOP_BORDER + y * SL - SL + 2, SL - 4, SL - 4);
 			graphics.setColor(Color.black);
 			graphics.fillRect(LEFT_BORDER + x * SL - SL + 3, TOP_BORDER + y * SL - SL + 3, SL - 6, SL - 6);
 		} else {
-			graphics.setColor(gameColors[c]);
+			graphics.setColor(gameColors[color]);
 			graphics.fillRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
 			graphics.setColor(Color.black);
 			graphics.drawRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
@@ -82,9 +82,9 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	void DrawFigure() {
-		DrawBox(Figure.x, Figure.y, Figure.c[1]);
-		DrawBox(Figure.x, Figure.y + 1, Figure.c[2]);
-		DrawBox(Figure.x, Figure.y + 2, Figure.c[3]);
+		DrawBox(Figure.x, Figure.y, Figure.data[1]);
+		DrawBox(Figure.x, Figure.y + 1, Figure.data[2]);
+		DrawBox(Figure.x, Figure.y + 2, Figure.data[3]);
 	}
 
 	void DropFigure() {
@@ -163,9 +163,9 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	void PasteFigure() {
-		newField[Figure.x][Figure.y] = Figure.c[1];
-		newField[Figure.x][Figure.y + 1] = Figure.c[2];
-		newField[Figure.x][Figure.y + 2] = Figure.c[3];
+		newField[Figure.x][Figure.y] = Figure.data[1];
+		newField[Figure.x][Figure.y + 1] = Figure.data[2];
+		newField[Figure.x][Figure.y + 2] = Figure.data[3];
 	}
 
 	public void run() {
@@ -205,17 +205,17 @@ public class Columns extends Applet implements Runnable {
 							}
 							break;
 						case Event.UP:
-							int tmp = Figure.c[1];
-							Figure.c[1] = Figure.c[2];
-							Figure.c[2] = Figure.c[3];
-							Figure.c[3] = tmp;
+							int tmp = Figure.data[1];
+							Figure.data[1] = Figure.data[2];
+							Figure.data[2] = Figure.data[3];
+							Figure.data[3] = tmp;
 							DrawFigure();
 							break;
 						case Event.DOWN:
-							int tmp1  = Figure.c[1];
-							Figure.c[1] = Figure.c[3];
-							Figure.c[3] = Figure.c[2];
-							Figure.c[2] = tmp1;
+							int tmp1  = Figure.data[1];
+							Figure.data[1] = Figure.data[3];
+							Figure.data[3] = Figure.data[2];
+							Figure.data[2] = tmp1;
 							DrawFigure();
 							break;
 						case ' ':
