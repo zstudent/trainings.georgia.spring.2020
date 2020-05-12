@@ -1,7 +1,4 @@
-package tetris;
-
 public class Controller implements ModelListener {
-
 	View view;
 	Model model;
 
@@ -32,4 +29,7 @@ public class Controller implements ModelListener {
 		model.dropDown();
 	}
 
+	public void rotate(){ 
+		model.rotate(); 
+		}
 }
