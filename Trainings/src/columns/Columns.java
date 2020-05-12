@@ -7,11 +7,13 @@ import java.awt.event.KeyListener;
 import java.util.*;
 
 public class Columns extends Applet implements Runnable, KeyListener {
-	static final int FIELD_LEFT_OFFSET = 2, FIELD_TOP_OFFSET = 2, SIZE_OF_COMPONENTS = 25, MAX_LEVEL = 7,
-			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200, FIELD_HEIGHT = 15, FIELD_WIDTH = 7;
+	static final int FIELD_LEFT_OFFSET = 2,
+					 FIELD_TOP_OFFSET = 2, 
+					 SIZE_OF_COMPONENTS = 25;
 	
 	private View view;
 	private Model model;
+	
 	private Color colors[] = { Color.black, Color.cyan, Color.blue, Color.red, Color.green, Color.yellow, Color.pink,
 			Color.magenta, Color.white };
 
@@ -25,18 +27,6 @@ public class Columns extends Applet implements Runnable, KeyListener {
 		addKeyListener(this);
 	}
 	
-	private void drawPlayerScore(Graphics graphics, Long playerScore) {
-		graphics.setColor(Color.black);
-		graphics.clearRect(FIELD_LEFT_OFFSET, 390, 100, 20);
-		graphics.drawString("Score: " + playerScore, FIELD_LEFT_OFFSET, 400);
-	}
-
-	private void drawPlayerLevel(Graphics graphics, Integer currentLevel) {
-		graphics.setColor(Color.black);
-		graphics.clearRect(FIELD_LEFT_OFFSET + 100, 390, 100, 20);
-		graphics.drawString("Level: " + currentLevel, FIELD_LEFT_OFFSET + 100, 400);
-	}
-
 	private void drawGraphics(Graphics graphics, int row, int column, int color) {
 		graphics.setColor(colors[color]);
 		if (color == 8) {
@@ -46,7 +36,21 @@ public class Columns extends Applet implements Runnable, KeyListener {
 			drawBorderedRectangle(graphics, row, column, 0);
 		}
 	}
+	
+	private void drawPlayerLevel(Graphics graphics, Integer currentLevel) {
+		drawTextOnView(graphics,"Level",currentLevel+"",100);
+	}
+	
+	private void drawPlayerScore(Graphics graphics, Long playerScore) {
+		drawTextOnView(graphics,"Score",playerScore+"",0);
+	}
 
+	private void drawTextOnView(Graphics graphics,String text,String info,int offset) {
+		graphics.setColor(Color.black);
+		graphics.clearRect(FIELD_LEFT_OFFSET, 390, 100, 20);
+		graphics.drawString(text+": " + info, FIELD_LEFT_OFFSET+offset, 400);
+	}
+	
 	private void drawBorderedRectangle(Graphics graphics, int row, int column, int deltaCoordinate) {
 		graphics.fillRect(getFigureScaledCoordinate(column) + deltaCoordinate,
 				getFigureScaledCoordinate(row) + deltaCoordinate, SIZE_OF_COMPONENTS - 2 * deltaCoordinate,
@@ -62,19 +66,12 @@ public class Columns extends Applet implements Runnable, KeyListener {
 	}
 	
 	public void paint(Graphics graphics) {
-		model.updateView();
+		model.updateEverythingOnView();
 		requestFocus();
 	}
 
 	public void run() {
-		 gameProcess();
-	}
-	
-	public void gameProcess() {
-		while (!model.gameIsOver()){
-			model.CreateFigureAndMoveDown();
-			model.checkFieldForSimplificationsWithJustLandedFigure();
-		}
+		 model.gameProcess();
 	}
 	
 	public void start() {
@@ -116,14 +113,8 @@ public class Columns extends Applet implements Runnable, KeyListener {
 	}
 	
 	@Override
-	public void keyReleased(KeyEvent arg0) {
-		return;
-
-	}
+	public void keyReleased(KeyEvent arg0) {}
 
 	@Override
-	public void keyTyped(KeyEvent arg0) {
-		return;
-
-	}
+	public void keyTyped(KeyEvent arg0) {}
 }

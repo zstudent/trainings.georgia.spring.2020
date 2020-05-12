@@ -5,8 +5,11 @@ import java.util.*;
 
 
 class Figure {
-	private static int NUM_BUCKETS = 4;
-	private  int column=Columns.FIELD_WIDTH/2+1;
+	private static int NUM_BUCKETS = 4,
+					   FIELD_HEIGHT = 15, 
+					   FIELD_WIDTH = 7;
+	
+	private  int column=FIELD_WIDTH/2+1;
 	private  int row=1;
 	private  int colorsOfFigure[]=new int[NUM_BUCKETS];
 	private  Random r = new Random();
