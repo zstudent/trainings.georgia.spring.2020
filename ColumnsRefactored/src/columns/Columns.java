@@ -24,6 +24,7 @@ public class Columns extends Applet implements Runnable {
 	
 	
 	private State state; /////////
+	private Paint paint;
 	
 	private int level, k, action;
 	private long score, DScore, calculateTime;
@@ -36,11 +37,11 @@ public class Columns extends Applet implements Runnable {
 	void CheckNeighbours(int a, int b, int c, int d, int i, int j) {
 		if ((newField[j][i] == newField[a][b]) && (newField[j][i] == newField[c][d])) {
 			oldField[a][b] = 0;
-			DrawBox(a, b, 8);
+			paint.drawBox(a, b, 8);
 			oldField[j][i] = 0;
-			DrawBox(j, i, 8);
+			paint.drawBox(j, i, 8);
 			oldField[c][d] = 0;
-			DrawBox(c, d, 8);
+			paint.drawBox(c, d, 8);
 			NoChanges = false;
 			score += (level + 1) * 10;
 			k++;
@@ -55,38 +56,20 @@ public class Columns extends Applet implements Runnable {
 		}
 	}
 
-	void DrawBox(int x, int y, int color) {
-		if (color == 0) {
-			graphics.setColor(Color.black);
-			graphics.fillRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
-			graphics.drawRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
-		} else if (color == 8) {
-			graphics.setColor(Color.white);
-			graphics.drawRect(LEFT_BORDER + x * SL - SL + 1, TOP_BORDER + y * SL - SL + 1, SL - 2, SL - 2);
-			graphics.drawRect(LEFT_BORDER + x * SL - SL + 2, TOP_BORDER + y * SL - SL + 2, SL - 4, SL - 4);
-			graphics.setColor(Color.black);
-			graphics.fillRect(LEFT_BORDER + x * SL - SL + 3, TOP_BORDER + y * SL - SL + 3, SL - 6, SL - 6);
-		} else {
-			graphics.setColor(gameColors[color]);
-			graphics.fillRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
-			graphics.setColor(Color.black);
-			graphics.drawRect(LEFT_BORDER + x * SL - SL, TOP_BORDER + y * SL - SL, SL, SL);
-		}
-	}
 
 	void DrawField() {
 		int i, j;
 		for (i = 1; i <= HEIGHT; i++) {
 			for (j = 1; j <= WIDTH; j++) {
-				DrawBox(j, i, newField[j][i]);
+				paint.drawBox(j, i, newField[j][i]);
 			}
 		}
 	}
 
 	void DrawFigure() {
-		DrawBox(Figure.x, Figure.y, Figure.data[1]);
-		DrawBox(Figure.x, Figure.y + 1, Figure.data[2]);
-		DrawBox(Figure.x, Figure.y + 2, Figure.data[3]);
+		paint.drawBox(Figure.x, Figure.y, Figure.data[1]);
+		paint.drawBox(Figure.x, Figure.y + 1, Figure.data[2]);
+		paint.drawBox(Figure.x, Figure.y + 2, Figure.data[3]);
 	}
 
 	void DropFigure() {
@@ -109,13 +92,15 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	void HideFigure() {
-		DrawBox(Figure.x, Figure.y, 0);
-		DrawBox(Figure.x, Figure.y + 1, 0);
-		DrawBox(Figure.x, Figure.y + 2, 0);
+		paint.drawBox(Figure.x, Figure.y, 0);
+		paint.drawBox(Figure.x, Figure.y + 1, 0);
+		paint.drawBox(Figure.x, Figure.y + 2, 0);
 	}
 
 	public void init() {
-		state = new State();
+		paint = new Paint(getGraphics());
+		state = new State(paint);
+		
 		newField = new int[WIDTH + 2][HEIGHT + 2];
 		oldField = new int[WIDTH + 2][HEIGHT + 2];
 		NoChanges = true;
