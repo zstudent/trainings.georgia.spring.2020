@@ -3,12 +3,11 @@ package columns;
 import java.util.*;
 
 class Figure {
-	static int x, y, data[] = new int[4];
+	protected int data[];
 	private Random random;
 
 	public Figure() {
-		x = Columns.WIDTH / 2 + 1;
-		y = 1;
+		data = new int[4];
 		random = new Random();
 		data[0] = 0;
 		int colorsNum = Columns.gameColors.length;

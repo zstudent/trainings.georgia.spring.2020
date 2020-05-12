@@ -3,7 +3,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 
 public class Paint {
-	Graphics graphics;
+	protected Graphics graphics;
 	
 	public Paint(Graphics graphics) {
 		this.graphics = graphics;
@@ -30,6 +30,31 @@ public class Paint {
 			graphics.setColor(Color.black);
 			graphics.drawRect(row, col, WH, WH);
 		}
+	}
+	
+	void showHelp() {
+		graphics.setColor(Color.black);
+		graphics.drawString(" Keys available:", 200 - Columns.LEFT_BORDER, 102);
+		graphics.drawString("Roll Box Up:     ", 200 - Columns.LEFT_BORDER, 118);
+		graphics.drawString("Roll Box Down:   ", 200 - Columns.LEFT_BORDER, 128);
+		graphics.drawString("Figure Left:     ", 200 - Columns.LEFT_BORDER, 138);
+		graphics.drawString("Figure Right:    ", 200 - Columns.LEFT_BORDER, 148);
+		graphics.drawString("Level High/Low: +/-", 200 - Columns.LEFT_BORDER, 158);
+		graphics.drawString("Drop Figure:   space", 200 - Columns.LEFT_BORDER, 168);
+		graphics.drawString("Pause:           P", 200 - Columns.LEFT_BORDER, 180);
+		graphics.drawString("Quit:     Esc or Q", 200 - Columns.LEFT_BORDER, 190);
+	}
+	
+	void showLevel(int level) {
+		graphics.setColor(Color.black);
+		graphics.clearRect(Columns.LEFT_BORDER + 100, 390, 100, 20);
+		graphics.drawString("Level: " + level, Columns.LEFT_BORDER + 100, 400);
+	}
+
+	void showScore(long score) {
+		graphics.setColor(Color.black);
+		graphics.clearRect(Columns.LEFT_BORDER, 390, 100, 20);
+		graphics.drawString("Score: " + score, Columns.LEFT_BORDER, 400);
 	}
 	
 }
