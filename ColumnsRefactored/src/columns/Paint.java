@@ -32,6 +32,27 @@ public class Paint {
 		}
 	}
 	
+	public void drawField(Field newField) {
+		int i, j;
+		for (i = 1; i <= Columns.HEIGHT; i++) {
+			for (j = 1; j <= Columns.WIDTH; j++) {
+				drawBox(j, i, newField.getValue(j, i));
+			}
+		}
+	}
+	
+	public void drawFigure(int x, int y, Figure figure) {
+		drawBox(x, y, figure.data[1]);
+		drawBox(x, y + 1, figure.data[2]);
+		drawBox(x, y + 2, figure.data[3]);
+	}
+	
+	public void hideFigure(int x, int y) {
+		drawBox(x, y, 0);
+		drawBox(x, y + 1, 0);
+		drawBox(x, y + 2, 0);
+	}
+	
 	void showHelp() {
 		graphics.setColor(Color.black);
 		graphics.drawString(" Keys available:", 200 - Columns.LEFT_BORDER, 102);

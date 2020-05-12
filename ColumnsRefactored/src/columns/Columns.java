@@ -36,15 +36,14 @@ public class Columns extends Applet implements Runnable {
 	void Delay(long time) {
 		try {
 			Thread.sleep(time);
-		} catch (InterruptedException e) {
-			//e.printStackTrace();
-		}
+		} catch (InterruptedException e) {}
 	}
 
 	public void init() {
 		paint = new Paint(getGraphics());
 		state = new State(paint);
 		keyPressed = false;
+		k = 0;
 		thread = null;
 	}
 
@@ -66,113 +65,110 @@ public class Columns extends Applet implements Runnable {
 
 		paint.showLevel(state.level);
 		paint.showScore(state.score);
-		state.drawField();
-		state.drawFigure();
+		paint.drawField(state.newField);
+		paint.drawFigure(state.x, state.y, state.figure);
 		requestFocus();
 	}
 	
 
 	public void run() {
-		k = 0;
-		paint.graphics.setColor(Color.black);
 		requestFocus();
-
 		do {
 			calculateTime = System.currentTimeMillis();
 			state.launchNewFigure();
-			state.drawFigure();
-			while ((state.y < HEIGHT - 2) && (state.newField.getValue(state.x, state.y + 3) == 0)) {
-				if ((int) (System.currentTimeMillis() - calculateTime) > (MAX_LEVEL - state.level) * TIME_SHIFT + MIN_TIME_SHIFT) {
+			paint.drawFigure(state.x, state.y, state.figure);
+			while (checkBounds()) {
+				if (checkTime()) {
 					calculateTime = System.currentTimeMillis();
-					state.hideFigure();
+					paint.hideFigure(state.x, state.y);
 					state.y++;
-					state.drawFigure();
+					paint.drawFigure(state.x, state.y, state.figure);
 				}
 				state.DScore = 0;
 				do {
 					Delay(50);
 					if (keyPressed) {
 						keyPressed = false;
-						switch (action) {
-						case Event.LEFT:
-							if ((state.x > 1) && (state.newField.getValue(state.x - 1, state.y + 2) == 0)) {
-								state.hideFigure();
-								state.x--;
-								state.drawFigure();
-							}
-							break;
-						case Event.RIGHT:
-							if ((state.x < WIDTH) && (state.newField.getValue(state.x + 1, state.y + 2) == 0)) {
-								state.hideFigure();
-								state.x++;
-								state.drawFigure();
-							}
-							break;
-						case Event.UP:
-							int tmp = state.figure.data[1];
-							state.figure.data[1] = state.figure.data[2];
-							state.figure.data[2] = state.figure.data[3];
-							state.figure.data[3] = tmp;
-							state.drawFigure();
-							break;
-						case Event.DOWN:
-							int tmp1  = state.figure.data[1];
-							state.figure.data[1] = state.figure.data[3];
-							state.figure.data[3] = state.figure.data[2];
-							state.figure.data[2] = tmp1;
-							state.drawFigure();
-							break;
-						case ' ':
-							state.hideFigure();
-							state.dropFigure();
-							state.drawFigure();
-							calculateTime = 0;
-							break;
-						case 'P':
-						case 'p':
-							while (!keyPressed) {
-								state.hideFigure();
-								Delay(500);
-								state.drawFigure();
-								Delay(500);
-							}
-							calculateTime = System.currentTimeMillis();
-							break;
-						case '-':
-							if (state.level > 0)
-								state.level--;
-							k = 0;
-							paint.showLevel(state.level);
-							break;
-						case '+':
-							if (state.level < MAX_LEVEL)
-								state.level++;
-							k = 0;
-							paint.showLevel(state.level);
-							break;
-						}
+						doApprropriateAction();
 					}
-				} while ((int) (System.currentTimeMillis() - calculateTime) <= (MAX_LEVEL - state.level) * TIME_SHIFT + MIN_TIME_SHIFT);
+				} while (!checkTime());
 			}
 			state.pasteFigure();
 			do {
-				state.noChanges = true;
-				state.testField();
-				if (!state.noChanges) {
-					Delay(500);
-					state.packField();
-					state.drawField();
-					state.score += state.DScore;
-					paint.showScore(state.score);
-					if (k >= FIG_TO_DROP) {
-						k = 0;
-						if (state.level < MAX_LEVEL)
-							state.level++;
-						paint.showLevel(state.level);
-					}
-				}
+				checkChanges();
 			} while (!state.noChanges);
 		} while (!state.fullField());
+	}
+
+	private boolean checkTime() {
+		return (int) (System.currentTimeMillis() - calculateTime) > (MAX_LEVEL - state.level) * TIME_SHIFT + MIN_TIME_SHIFT;
+	}
+
+	private boolean checkBounds() {
+		return (state.y < HEIGHT - 2) && (state.newField.getValue(state.x, state.y + 3) == 0);
+	}
+
+	private void checkChanges() {
+		state.noChanges = true;
+		state.testField();
+		if (!state.noChanges) {
+			Delay(500);
+			state.packField();
+			paint.drawField(state.newField);
+			state.score += state.DScore;
+			paint.showScore(state.score);
+			if (k >= FIG_TO_DROP) {
+				k = 0;
+				state.levelUp();
+			}
+		}
+	}
+
+	private void doApprropriateAction() {
+		switch (action) {
+		case Event.LEFT:
+			if ((state.x > 1) && (state.newField.getValue(state.x - 1, state.y + 2) == 0)) {
+				state.moveLeft();
+			}
+			break;
+		case Event.RIGHT:
+			if ((state.x < WIDTH) && (state.newField.getValue(state.x + 1, state.y + 2) == 0)) {
+				state.moveRight();
+			}
+			break;
+		case Event.UP:
+			state.changeUp();
+			break;
+		case Event.DOWN:
+			state.changeDown();
+			break;
+		case ' ':
+			state.dropDown();
+			calculateTime = 0;
+			break;
+		case 'P':
+		case 'p':
+			pauseGame();
+			calculateTime = System.currentTimeMillis();
+			break;
+		case '-':
+			k = 0;
+			state.levelDown();
+			break;
+		case '+':
+			k = 0;
+			state.levelUp();
+			break;
+		}
+	}
+
+	private void pauseGame() {
+		while (!keyPressed) {
+			paint.hideFigure(state.x, state.y);
+			Delay(500);
+			paint.drawFigure(state.x, state.y, state.figure);
+			Delay(500);
+		}
 	}
 
 	public void start() {

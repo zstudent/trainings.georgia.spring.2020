@@ -1,8 +1,7 @@
 package columns;
 
 public class State {
-	protected Field newField;
-	protected Field oldField;
+	protected Field newField, oldField;
 	protected Figure figure;
 	protected Paint paint;
 	protected int HEIGHT;
@@ -31,22 +30,6 @@ public class State {
 		y = 1;
 	}
 	
-	
-	public void drawField() {
-		int i, j;
-		for (i = 1; i <= HEIGHT; i++) {
-			for (j = 1; j <= WIDTH; j++) {
-				paint.drawBox(j, i, newField.getValue(j, i));
-			}
-		}
-	}
-	
-	public void drawFigure() {
-		paint.drawBox(x, y, figure.data[1]);
-		paint.drawBox(x, y + 1, figure.data[2]);
-		paint.drawBox(x, y + 2, figure.data[3]);
-	}
-	
 	public void dropFigure() {
 		int zz;
 		if (y < HEIGHT - 2) {
@@ -64,12 +47,6 @@ public class State {
 				return true;
 		}
 		return false;
-	}
-
-	public void hideFigure() {
-		paint.drawBox(x, y, 0);
-		paint.drawBox(x, y + 1, 0);
-		paint.drawBox(x, y + 2, 0);
 	}
 	
 	public void packField() {
@@ -128,5 +105,47 @@ public class State {
 		}
 	}
 	
+	public void moveLeft() {
+		paint.hideFigure(x, y);
+		x--;
+		paint.drawFigure(x, y, figure);
+	}
 	
+	public void moveRight() {
+		paint.hideFigure(x, y);
+		x++;
+		paint.drawFigure(x, y, figure);
+	}
+	
+	public void changeUp() {
+		int tmp = figure.data[1];
+		figure.data[1] = figure.data[2];
+		figure.data[2] = figure.data[3];
+		figure.data[3] = tmp;
+		paint.drawFigure(x, y, figure);
+	}
+	
+	public void changeDown() {
+		int tmp = figure.data[1];
+		figure.data[1] = figure.data[3];
+		figure.data[3] = figure.data[2];
+		figure.data[2] = tmp;
+		paint.drawFigure(x, y, figure);
+	}
+	
+	public void dropDown() {
+		paint.hideFigure(x, y);
+		dropFigure();
+		paint.drawFigure(x, y, figure);
+	}
+	
+	public void levelDown() {
+		if(level > 0) level--;
+		paint.showLevel(level);
+	}
+	
+	public void levelUp() {
+		if(level < Columns.MAX_LEVEL) level++;
+		paint.showLevel(level);
+	}
 }
