@@ -2,7 +2,7 @@ package lesson200407;
 
 import java.util.Iterator;
 
-public class LinkedList  implements Iterable<String>{
+public class Stack  implements Iterable<String>{
 	
 	private static class Node {
 		Node next;
@@ -15,8 +15,20 @@ public class LinkedList  implements Iterable<String>{
 
 	private Node head = null;
 	
-	public void add(String item) {
+	public void push(String item) {
 		head = new Node(head, item);
+	}
+	
+	public String pop() {
+		if(head == null) return "null";
+		String item = head.value;
+		head = head.next;
+		return item;
+	}
+	
+	public String top() {
+		if(head == null) return "null";
+		return head.value;
 	}
 	
 	@Override

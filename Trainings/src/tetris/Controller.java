@@ -32,4 +32,22 @@ public class Controller implements ModelListener {
 		model.dropDown();
 	}
 
+	public void rotate() {
+		model.rotate();
+		
+	}
+
+	public int level() {
+		return model.level();
+	}
+
+	public void playAgain() {
+		model.playAgain();
+		
+	}
+
+	public boolean gameOver() {
+		return model.logic.gameOver();
+	}
+
 }
