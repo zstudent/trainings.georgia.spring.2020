@@ -11,10 +11,11 @@ public class EchoServer {
 	public static void main(String[] args) {
 		System.out.println("Start echo server");
 		try {
-			ServerSocket ss = new ServerSocket(10000);
+			ServerSocket ss = new ServerSocket(10001);
 			while (true) {
 				Socket socket = ss.accept();
 				System.out.println(socket);
+				
 				new Thread(() -> {
 					try {
 						communicate(socket);
@@ -22,6 +23,7 @@ public class EchoServer {
 						e.printStackTrace();
 					}
 				}).start();
+				
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
