@@ -1,0 +1,17 @@
+
+                                     master
+zstudent                            /
+         [ 1 ]  [ 2 ] [ 3 ] [ 4 ] [ 5 ]
+                       \               your branch [ hw1 ] [hw2] (PR)
+                        \            /
+          [ 1 ]  [ 2 ] [ 3 ] [ 4 ] [ 5 ]
+                                     \
+                                      master
+          
+1) Update from Upstream (pull)
+2) create a branch from you new master
+3) do your work in the branch (commits)
+4) push
+5) make pull request           
+
+use .gitignore      

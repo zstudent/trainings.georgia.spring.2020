@@ -1,0 +1,27 @@
+T -> R      Function<T,R>
+(int, int) -> int    IntBinaryOperator
+T -> void        Consumer<T>
+() -> T     Supplier<T>  Callable<T>
+(T,U) -> R   BiFunction<T,U,R>
+
+
+Method references:
+
+(1)
+(args) -> ClassName.staticMethod(args)
+       |
+       V
+  ClassName::staticMethod
+
+(2)
+(arg0, rest) -> arg0.instanceMethod(rest)
+       |
+       V
+ ClassName::instanceMethod
+ 
+ 
+(3) 
+(args) -> expr.instanceMethod(args)
+         |
+         V
+    expr::instanceMethod
