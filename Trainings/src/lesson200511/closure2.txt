@@ -1,0 +1,16 @@
+
+
+[ Closure2 class description (y = 10)]
+
+main {
+   int x = 0;
+   Runnable r = ...
+   y = 20; -->  [ Closure2 class description (y = 20)]
+   new Thread starts with r
+}
+
+r {
+  Pause for 5 secs.
+  print captured x 0
+  print Closure2.y  <== [ Closure2 class description (y = 20)]
+}
