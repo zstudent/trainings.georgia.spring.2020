@@ -19,7 +19,7 @@ Our goal for the next 4-5 months
 	+ JUnit
 	- Mockito
 	+ OOAD support features
-	- Java 8 (lambda, streams, optional)
+	+ Java 8 (lambda, streams, optional)
 	+ Concurrency
 	- build tools (Maven/Gradle)
 	* Spring / Spring Boot
@@ -46,7 +46,7 @@ Next few weeks (till May 31)
 + refactoring practice
 - git secrets
 - Mockito
-- Java lambda & streams & optionals
++ Java lambda & streams & optionals
 - Concurrency Workshop: increase performance of open source tools
 - Refactoring workshop
 - build tools (Maven/Gradle)
