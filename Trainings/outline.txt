@@ -44,11 +44,11 @@ Next few weeks (till May 31)
 + assessments
 + refactoring theory
 + refactoring practice
+- Refactoring workshop
 - git secrets
 - Mockito
 + Java lambda & streams & optionals
 - Concurrency Workshop: increase performance of open source tools
-- Refactoring workshop
 - build tools (Maven/Gradle)
 
 @ battle tetris 
