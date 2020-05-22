@@ -46,3 +46,12 @@ Refactor Columns game.  Deadline May 12. DO everyday commits.
 Mysterious Name, Duplicated Code, Long Function, Long Parameter List, Global Data, Mutable Data
 Divergent Change, Shotgun Surgery, Feature Envy, Data Clumps, Primitive Obsession, Repeated Switches, Loops, Lazy Element
 Speculative Generality, Temporary Field, Message Chains, Middle Man, Insider Trading, Large Class, Alternative Classes with Different Interfaces, Data Class, Refused Bequest, Comments
+
+2020-05-22  Deadline June 1st
+Conway's Game Of Life 
+https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life
+Standard field size 50x50
+Borders are 'strict':  everything behind borders disappear
+Commits every day:  I want to see your progress
+We will compare your models by time spent to compute 1000 generations
+The fastest models will get prizes
