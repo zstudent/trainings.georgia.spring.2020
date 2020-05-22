@@ -23,13 +23,6 @@ public class Columns extends Applet implements Runnable {
 
 	Thread thr = null;
 
-	void Delay(long t) {
-		try {
-			Thread.sleep(t);
-		} catch (InterruptedException e) {
-		}
-	}
-
 	@Override
 	public void init() {
 		_gr = getGraphics();
@@ -52,13 +45,7 @@ public class Columns extends Applet implements Runnable {
 	@Override
 	public void paint(Graphics g) {
 		// ShowHelp(g);
-
-		g.setColor(Color.black);
-
-		view.ShowLevel(model);
-		view.ShowScore(model);
-		view.DrawField(model);
-		view.DrawFigure(model.getFig());
+		view.drawAll(model);
 		requestFocus();
 	}
 
@@ -88,7 +75,7 @@ public class Columns extends Applet implements Runnable {
 		model.setNoChanges(true);
 		model.TestField();
 		if (!model.isNoChanges()) {
-			Delay(500);
+			Utils.delay(500);
 			model.PackField();
 			view.DrawField(model);
 			model.setScore(model.getScore() + model.getDropScore());
@@ -114,7 +101,7 @@ public class Columns extends Applet implements Runnable {
 
 	private void listenForKeyPressedUntilNextSlideDown() {
 		do {
-			Delay(50);
+			Utils.delay(50);
 			if (keyPressed)
 				reactToKeyAction();
 		} while (millisSinceLastSlideDown() <= timeFrameForSlidingDown());
@@ -156,9 +143,9 @@ public class Columns extends Applet implements Runnable {
 			case 'p':
 				while (!keyPressed) {
 					view.HideFigure(model.getFig());
-					Delay(500);
+					Utils.delay(500);
 					view.DrawFigure(model.getFig());
-					Delay(500);
+					Utils.delay(500);
 				}
 				timestamp = System.currentTimeMillis();
 				break;

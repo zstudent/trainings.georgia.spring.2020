@@ -88,4 +88,11 @@ public class View {
 		_gr.drawString("Quit:     Esc or Q", 200 - Columns.LeftBorder, 190);
 	}
 
+	void drawAll(Model model) {
+		ShowLevel(model);
+		ShowScore(model);
+		DrawField(model);
+		DrawFigure(model.getFig());
+	}
+
 }
