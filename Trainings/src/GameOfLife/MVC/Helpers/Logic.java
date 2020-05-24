@@ -10,6 +10,7 @@ public class Logic {
     private State stateForNewChanges;
     private CyclicBarrier waitingToProcessAllCurrentGenerationCells;
     private GenerationWasUpdatedListener generationWasUpdatedListener;
+    public boolean SANITY_CHECK = false;
 
     public Logic(State state){
         setUpMainStateAndStateForNewChanged(state);
@@ -27,7 +28,7 @@ public class Logic {
 
     private void refreshedToNewGameBoardState(){
         updateStatePointers();
-        signallGenerationUpdate();
+        if(!SANITY_CHECK)signallGenerationUpdate();
         ThreadUtils.pauseThreadFor(1000);
     }
 
@@ -38,7 +39,7 @@ public class Logic {
 
     private void setUpMainStateAndStateForNewChanged(State state) {
         this.state = state;
-        state.fillStateWithRandomCells();
+        //if(!SANITY_CHECK)state.fillStateWithRandomCells();
         stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
     }
 
@@ -59,6 +60,7 @@ public class Logic {
     private void startToProcessAppropriateCellOfBoard(int finalRow, int finalCol) {
         while(true){
             processAppropriateCellOfBoard(finalRow, finalCol);
+            if(SANITY_CHECK)break;
         }
     }
 
@@ -92,7 +94,7 @@ public class Logic {
         stateForNewChanges.setNewStateOfCell(row,col,numberOfLivingNeighbours == 3);
     }
 
-    private int getNumberOfLivingNeighbours(int row,int col){
+    public int getNumberOfLivingNeighbours(int row,int col){
         int numberOfNeighbours = 0;
         for(int deltaRow = -1; deltaRow<=1; deltaRow++){
             for(int deltaCol = -1; deltaCol<=1; deltaCol++){

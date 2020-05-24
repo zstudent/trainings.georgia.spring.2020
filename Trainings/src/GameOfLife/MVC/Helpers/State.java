@@ -38,8 +38,17 @@ public class State {
                 && col < getGameBoardColumns() && col >=0 ;
     }
 
+    public boolean isStateEmpty(){
+        for (int row = 0; row < gameBoard.length; row++) {
+            for (int col = 0; col < gameBoard[0].length; col++) {
+                if(isCellAlive(row,col))return false;
+            }
+        }
+        return true;
+    }
+
     public void fillStateWithRandomCells(){
-        int initNumberOfAliveCells = 25;
+        int initNumberOfAliveCells = 200;
         Random random = new Random();
         for (int row = 0; row < gameBoard.length; row++) {
             for (int col = 0; col < gameBoard[0].length; col++) {
