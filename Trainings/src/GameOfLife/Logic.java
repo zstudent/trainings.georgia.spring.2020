@@ -1,5 +1,7 @@
 package GameOfLife;
 
+import GameOfLife.ThreadUtils.ThreadUtils;
+
 import java.util.concurrent.BrokenBarrierException;
 import java.util.concurrent.CyclicBarrier;
 
@@ -7,39 +9,54 @@ public class Logic {
     private State state;
     private State stateForNewChanges;
     private CyclicBarrier waitingForThreadsToProcessCurrentGeneration;
+    private GenerationWasUpdatedListener generationWasUpdatedListener;
 
-    public Logic(State state){
+    public Logic(State state,GenerationWasUpdatedListener generationWasUpdatedListener){
         this.state = state;
         stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
         waitingForThreadsToProcessCurrentGeneration = new CyclicBarrier(state.getGameBoardColumns() * state.getGameBoardRows(),
                                                                  this::refreshedToNewGameBoardState);
-        setUpThreadsForIndividualCells();
+        this.generationWasUpdatedListener = generationWasUpdatedListener;
+        setUpThreadsForIndividualCellProcessing();
     }
 
-    private boolean refreshedToNewGameBoardState(){
+    private void refreshedToNewGameBoardState(){
         state.pointToANewGameBoard(stateForNewChanges);
         stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
-        return true;
+        ThreadUtils.pauseThreadFor(100);
+        signallGenerationUpdate();
     }
 
-    private void setUpThreadsForIndividualCells(){
+    private void signallGenerationUpdate() {
+        generationWasUpdatedListener.generationWasUpdated();
+    }
+
+    private void setUpThreadsForIndividualCellProcessing(){
         for(int row=0; row<state.getGameBoardRows(); row++){
             for(int col=0; col<state.getGameBoardColumns(); col++){
                 int finalRow = row;
                 int finalCol = col;
-                new Thread(()->{
-                    try {
-                        processAppropriateCellOfBoard(finalRow, finalCol);
-                        waitingForThreadsToProcessCurrentGeneration.await();
-                    } catch (InterruptedException  | BrokenBarrierException e) {
-                        e.printStackTrace();
-                    }
-                }).start();
+                new Thread(()-> startToProcessAppropriateCellOfBoard(finalRow, finalCol)).start();
             }
         }
     }
 
-    private void processAppropriateCellOfBoard(int row,int col){
+    private void startToProcessAppropriateCellOfBoard(int finalRow, int finalCol) {
+        while(true){
+            processAppropriateCellOfBoard(finalRow, finalCol);
+        }
+    }
+
+    private void processAppropriateCellOfBoard(int finalRow, int finalCol) {
+        try {
+            tryToprocessAppropriateCellOfBoard(finalRow, finalCol);
+            waitingForThreadsToProcessCurrentGeneration.await();
+        } catch (InterruptedException  | BrokenBarrierException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void tryToprocessAppropriateCellOfBoard(int row, int col){
         int numberOfLivingNeighbours = getNumberOfLivingNeighbours(row,col);
         processCurrentCellAccordingTo(numberOfLivingNeighbours,row,col);
     }
@@ -73,5 +90,4 @@ public class Logic {
         }
         return numberOfNeighbours;
     }
-
 }
