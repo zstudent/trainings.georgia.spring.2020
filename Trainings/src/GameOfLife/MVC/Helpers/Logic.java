@@ -1,4 +1,4 @@
-package GameOfLife;
+package GameOfLife.MVC.Helpers;
 
 import GameOfLife.ThreadUtils.ThreadUtils;
 
@@ -8,27 +8,42 @@ import java.util.concurrent.CyclicBarrier;
 public class Logic {
     private State state;
     private State stateForNewChanges;
-    private CyclicBarrier waitingForThreadsToProcessCurrentGeneration;
+    private CyclicBarrier waitingToProcessAllCurrentGenerationCells;
     private GenerationWasUpdatedListener generationWasUpdatedListener;
 
-    public Logic(State state,GenerationWasUpdatedListener generationWasUpdatedListener){
-        this.state = state;
-        stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
-        waitingForThreadsToProcessCurrentGeneration = new CyclicBarrier(state.getGameBoardColumns() * state.getGameBoardRows(),
-                                                                 this::refreshedToNewGameBoardState);
+    public Logic(State state){
+        setUpMainStateAndStateForNewChanged(state);
+        waitingToProcessAllCurrentGenerationCells = new CyclicBarrier(state.getGameBoardColumns() * state.getGameBoardRows(),
+                                                                            this::refreshedToNewGameBoardState);
+    }
+
+    public void setGenerationUpdatedListener(GenerationWasUpdatedListener generationWasUpdatedListener){
         this.generationWasUpdatedListener = generationWasUpdatedListener;
+    }
+
+    public void startProcessingCells(){
         setUpThreadsForIndividualCellProcessing();
     }
 
     private void refreshedToNewGameBoardState(){
-        state.pointToANewGameBoard(stateForNewChanges);
-        stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
-        ThreadUtils.pauseThreadFor(100);
+        updateStatePointers();
         signallGenerationUpdate();
+        ThreadUtils.pauseThreadFor(1000);
+    }
+
+    private void updateStatePointers() {
+        state.pointToANewGameBoard(stateForNewChanges);
+        stateForNewChanges = new State(30,30);
+    }
+
+    private void setUpMainStateAndStateForNewChanged(State state) {
+        this.state = state;
+        state.fillStateWithRandomCells();
+        stateForNewChanges = new State(state.getGameBoardRows(),state.getGameBoardColumns());
     }
 
     private void signallGenerationUpdate() {
-        generationWasUpdatedListener.generationWasUpdated();
+        generationWasUpdatedListener.generationWasUpdated(state);
     }
 
     private void setUpThreadsForIndividualCellProcessing(){
@@ -50,7 +65,7 @@ public class Logic {
     private void processAppropriateCellOfBoard(int finalRow, int finalCol) {
         try {
             tryToprocessAppropriateCellOfBoard(finalRow, finalCol);
-            waitingForThreadsToProcessCurrentGeneration.await();
+            waitingToProcessAllCurrentGenerationCells.await();
         } catch (InterruptedException  | BrokenBarrierException e) {
             e.printStackTrace();
         }
@@ -70,14 +85,11 @@ public class Logic {
     }
 
     private void currentlyAliveCellProcess(int numberOfLivingNeighbours, int row, int col) {
-        if(numberOfLivingNeighbours<2) stateForNewChanges.setNewStateOfCell(row,col,false);
-        else if(numberOfLivingNeighbours ==3 || numberOfLivingNeighbours ==2) stateForNewChanges.setNewStateOfCell(row,col,true);
-        else if(numberOfLivingNeighbours > 3) stateForNewChanges.setNewStateOfCell(row,col,false);
+        stateForNewChanges.setNewStateOfCell(row,col,numberOfLivingNeighbours ==3 || numberOfLivingNeighbours ==2);
     }
 
     private void currentlyDeadCellProcess(int numberOfLivingNeighbours, int row, int col) {
-        boolean cellNewState =  numberOfLivingNeighbours == 3;
-        stateForNewChanges.setNewStateOfCell(row,col,cellNewState);
+        stateForNewChanges.setNewStateOfCell(row,col,numberOfLivingNeighbours == 3);
     }
 
     private int getNumberOfLivingNeighbours(int row,int col){
@@ -85,7 +97,8 @@ public class Logic {
         for(int deltaRow = -1; deltaRow<=1; deltaRow++){
             for(int deltaCol = -1; deltaCol<=1; deltaCol++){
                 if(state.isInBounds(row+deltaRow,col+deltaCol)
-                        && state.isCellAlive(row+deltaRow,col+deltaCol)) numberOfNeighbours++;
+                        && state.isCellAlive(row+deltaRow,col+deltaCol)
+                            && !(deltaCol==deltaRow && deltaRow==0)) numberOfNeighbours++;
             }
         }
         return numberOfNeighbours;
