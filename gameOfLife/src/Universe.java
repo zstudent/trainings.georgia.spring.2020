@@ -9,12 +9,15 @@ public class Universe extends JComponent {
     private final int EDGE_LENGTH = 10;
     private final int NODE_NUM = 50;
     private final int PANEL_WIDTH = 70;
-    private int delay = 100;
+    private int delay = 50;
     private JFrame frame;
     private JButton start;
     private JButton stop;
     private JButton nextStep;
     private JButton pause;
+    private JButton print;
+    private JButton gliderGun;
+    private JButton random;
     private Timer timer;
     private static State state;
     private boolean gameOn;
@@ -59,6 +62,28 @@ public class Universe extends JComponent {
                    nextStep.setEnabled(true);
             }
         });
+
+        print.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                state.board.forEach(n -> System.out.println("revive(new Node("+n.getX()+", "+n.getY()+"));"));
+            }
+        });
+
+        gliderGun.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                state.gliderGun();
+                repaint();
+            }
+        });
+        random.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                state.random();
+                repaint();
+            }
+        });
     }
 
     private void tick(){
@@ -75,6 +100,9 @@ public class Universe extends JComponent {
         stop = new JButton("stop");
         nextStep = new JButton("next");
         pause = new JButton("pause");
+        print = new JButton("print");
+        gliderGun = new JButton("Glider");
+        random = new JButton("random");
         panel.setEnabled(false);
         stop.setEnabled(false);
         setUpButtons();
@@ -86,6 +114,12 @@ public class Universe extends JComponent {
         panel.add(stop);
         panel.add(Box.createVerticalStrut(10));
         panel.add(nextStep);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(print);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(gliderGun);
+        panel.add(Box.createVerticalStrut(10));
+        panel.add(random);
         return panel;
     }
 
@@ -105,7 +139,7 @@ public class Universe extends JComponent {
     }
 
     public Universe(){
-        Dimension dimension = new Dimension(NODE_NUM * EDGE_LENGTH, NODE_NUM * EDGE_LENGTH + PANEL_WIDTH);
+        Dimension dimension = new Dimension(NODE_NUM * EDGE_LENGTH, NODE_NUM * EDGE_LENGTH);
         this.setPreferredSize(dimension);
         state = new State();
         timer = new Timer(delay, new ActionListener() {
