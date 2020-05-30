@@ -47,7 +47,7 @@ public class State {
     }
 
     private void checkSurvivesOrNot(int count, int x, int y) {
-        if(field.getGridSpot(x, y)){
+        if (field.getGridSpot(x, y)) {
             field.setUpdGridSpot(x, y, count == 3 || count == 2);
         } else {
             field.setUpdGridSpot(x, y, count == 3);
@@ -56,5 +56,9 @@ public class State {
 
     private boolean inBounds(int x, int y) {
         return x >= 0 && x < size && y >= 0 && y < size;
+    }
+
+    public Field getField() {
+        return field;
     }
 }
