@@ -35,9 +35,10 @@ public class CellTest {
 		})
 	public void shouldFullfillTransition(String initial, int numberOfNeighbours, String expected) {
 		CellState initialState = CellState.valueOf(initial);
-		Cell cell = new Cell(initialState);
+		Cell uut = new Cell(initialState);
 		
-		CellState actual = cell.getNextState(numberOfNeighbours);
+		uut.update(numberOfNeighbours);
+		CellState actual = uut.getState();
 		
 		CellState expectedState = CellState.valueOf(expected);
 		assertEquals(expectedState, actual);

@@ -23,5 +23,47 @@ public class UniverseTest {
 		CellState[][] actual = uut.getState();
 		assertArrayEquals(original, actual);
 	}
+	
+	@Test
+	public void shouldUpdateCell() {
+		Universe uut = new Universe(new CellState[][] { { X } });
+		
+		uut.update();
+		
+		CellState[][] actual = uut.getState();
+		assertEquals(CellState.DEAD, actual[0][0]);
+	}
+	
+	@Test
+	public void shouldUpdateAllCells() {
+		Universe uut = new Universe(new CellState[][] {
+			{ O, X, X },
+			{ X, O, X },
+			{ O, O, X }
+		});
+		
+		CellState[][] expected = new CellState[][] {
+			{ O, X, X },
+			{ O, O, X },
+			{ O, X, O }
+		};
+		
+		uut.update();
+		CellState[][] actual = uut.getState();
+		
+		assertArrayEquals(expected, actual);
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }

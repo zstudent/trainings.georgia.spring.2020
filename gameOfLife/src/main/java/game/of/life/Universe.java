@@ -1,5 +1,7 @@
 package game.of.life;
 
+import org.junit.Test;
+
 import game.of.life.Cell.CellState;
 
 public class Universe {
@@ -28,5 +30,65 @@ public class Universe {
 		}
 		return cellStates;
 	}
+
+	public void update() {
+		CellState[][] cellStates = getState();
+		for (int row = 0; row < state.length; row++) {
+			for (int col = 0; col < state.length; col++) {
+				int numberOfAliveNeighbours = getNumberOfAliveNeighbours(cellStates, row, col);
+				state[row][col].update(numberOfAliveNeighbours);
+			}
+		}
+	}
+
+	private int getNumberOfAliveNeighbours(CellState[][] state, int row, int col) {
+		int numberOfNeighbours = 0;
+		if (row > 0) {
+			int rowAbove = row - 1;
+			if (col > 0) {
+				if (state[rowAbove][col - 1] == CellState.ALIVE) numberOfNeighbours++;
+			}
+			if (state[rowAbove][col] == CellState.ALIVE) numberOfNeighbours++;
+			if (col < state[row].length - 1) {
+				if (state[rowAbove][col + 1] == CellState.ALIVE) numberOfNeighbours++;
+			}
+		}
+		
+		if (row < state.length - 1) {
+			int rowBelow = row + 1;
+			if (col > 0) {
+				if (state[rowBelow][col - 1] == CellState.ALIVE) numberOfNeighbours++;
+			}
+			if (state[rowBelow][col] == CellState.ALIVE) numberOfNeighbours++;
+			if (col < state[row].length - 1) {
+				if (state[rowBelow][col + 1] == CellState.ALIVE) numberOfNeighbours++;
+			}
+		}
+		
+		if (col > 0) {
+			if (state[row][col - 1] == CellState.ALIVE) numberOfNeighbours++;
+		}
+		
+		if (col < state[row].length - 1) {
+			if (state[row][col + 1] == CellState.ALIVE) numberOfNeighbours++;
+		}
+		
+		return numberOfNeighbours;
+	}
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 }
