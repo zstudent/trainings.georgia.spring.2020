@@ -45,35 +45,41 @@ public class Universe {
 		int numberOfNeighbours = 0;
 		if (row > 0) {
 			int rowAbove = row - 1;
-			if (col > 0) {
-				if (state[rowAbove][col - 1] == CellState.ALIVE) numberOfNeighbours++;
-			}
-			if (state[rowAbove][col] == CellState.ALIVE) numberOfNeighbours++;
-			if (col < state[row].length - 1) {
-				if (state[rowAbove][col + 1] == CellState.ALIVE) numberOfNeighbours++;
-			}
+			numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, rowAbove, col);
 		}
 		
 		if (row < state.length - 1) {
 			int rowBelow = row + 1;
-			if (col > 0) {
-				if (state[rowBelow][col - 1] == CellState.ALIVE) numberOfNeighbours++;
-			}
-			if (state[rowBelow][col] == CellState.ALIVE) numberOfNeighbours++;
-			if (col < state[row].length - 1) {
-				if (state[rowBelow][col + 1] == CellState.ALIVE) numberOfNeighbours++;
-			}
+			numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, rowBelow, col);
 		}
 		
-		if (col > 0) {
-			if (state[row][col - 1] == CellState.ALIVE) numberOfNeighbours++;
-		}
+		numberOfNeighbours += getAliveNeighbourCountOfLeftCell(state, row, col - 1);
 		
-		if (col < state[row].length - 1) {
-			if (state[row][col + 1] == CellState.ALIVE) numberOfNeighbours++;
-		}
+		numberOfNeighbours += getCountIfCellIsAlive(state, row, col);
 		
 		return numberOfNeighbours;
+	}
+
+	private int getNumbersOfAliveNeighboursInRow(CellState[][] state, int row, int col) {
+		int numberOfNeighbours = 0;
+		numberOfNeighbours += getAliveNeighbourCountOfLeftCell(state, row, col - 1);
+		if (state[row][col] == CellState.ALIVE) numberOfNeighbours++;
+		numberOfNeighbours += getCountIfCellIsAlive(state, row, col);
+		return numberOfNeighbours;
+	}
+
+	private int getCountIfCellIsAlive(CellState[][] state, int row, int col) {
+		if (col < state[row].length - 1) {
+			if (state[row][col + 1] == CellState.ALIVE) return 1;
+		}
+		return 0;
+	}
+
+	private int getAliveNeighbourCountOfLeftCell(CellState[][] state, int row, int col) {
+		if (col >= 0) {
+			if (state[row][col] == CellState.ALIVE) return 1;
+		}
+		return 0;
 	}
 	
 

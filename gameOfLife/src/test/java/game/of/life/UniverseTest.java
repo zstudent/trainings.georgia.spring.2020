@@ -51,11 +51,32 @@ public class UniverseTest {
 		uut.update();
 		CellState[][] actual = uut.getState();
 		
-		assertArrayEquals(expected, actual);
-		
+		assertArrayEquals(expected, actual);		
 	}
 	
+	@Test
+	public void shouldConsiderAllNeighbours() {
+		Universe uut = new Universe(new CellState[][] {
+			{ X, X, X },
+			{ X, X, X },
+			{ X, X, X }
+		});
+		
+		CellState[][] expected = new CellState[][] {
+			{ X, O, X },
+			{ O, O, O },
+			{ X, O, X }
+		};
+		
+		CellState[][] actual = getNextState(uut);
+		
+		assertArrayEquals(expected, actual);		
+	}
 	
+	private CellState[][] getNextState(Universe uut) {
+		uut.update();
+		return uut.getState();
+	}
 	
 	
 	
