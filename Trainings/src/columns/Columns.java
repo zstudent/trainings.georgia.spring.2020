@@ -1,74 +1,113 @@
 package columns;
 
-import java.applet.Applet;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
-public class Columns extends Applet implements Runnable {
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
+import javax.swing.WindowConstants;
+
+public class Columns implements Runnable {
 	static final int SL = 25, Depth = 15, Width = 7, MaxLevel = 7,
 			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200,
 			LeftBorder = 2, TopBorder = 2;
-
 
 	int ch;
 	long timestamp;
 	Font fCourier;
 	boolean keyPressed = false;
-	Graphics _gr;
-	
+
 	Model model;
 	View view;
 
-	Thread thr = null;
+	Graphics _graphics;
+	Thread thread;
 
-	@Override
+	public static void main(String[] args) {
+		Columns columns = new Columns();
+		SwingUtilities.invokeLater(columns::init);
+	}
+
 	public void init() {
-		_gr = getGraphics();
+		
+		System.out.println("start");
+		
+		JFrame frame = new JFrame("Columns");
+		
+		JPanel panel = new JPanel();
+		panel.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+				keyPressed = true;
+				ch = e.getKeyCode();
+				reactToKeyAction();
+			}
+		});
+		
+		panel.setPreferredSize(new Dimension(400, 800));
+		
+		frame.add(panel);
+		
+		frame.pack();
+		
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		
+		frame.setVisible(true);
+		
+		panel.requestFocus();
+		
+		_graphics = panel.getGraphics();
+		_graphics.setColor(Color.black);
+		
+		thread = new Thread(this);
+		thread.start();
+		
+		Thread timer = new Thread(() -> {
+			while (true) {
+				Utils.delay(1000);
+				SwingUtilities.invokeLater(this::slideFigureDown);
+			}
+		});
+		timer.start();
+
 	}
 
-	@Override
-	public boolean keyDown(Event e, int k) {
-		keyPressed = true;
-		ch = e.key;
-		return true;
-	}
-
-	@Override
+	// FIXME  move to some other place
 	public boolean lostFocus(Event e, Object w) {
 		keyPressed = true;
 		ch = 'P';
 		return true;
 	}
 
-	@Override
-	public void paint(Graphics g) {
-		// ShowHelp(g);
+	public void paint() {
 		view.drawAll(model);
-		requestFocus();
 	}
 
 	public void run() {
 		createModelAndView();
 		model.initState();
-		initView();
 
 		do {
 			timestamp = System.currentTimeMillis();
 			new Figure();
 			view.DrawFigure(model.getFig());
-			slideFigureDownUntilBottomReached();
 			model.pasteFigure(model.getFig());
 			do {
 				removeTriples();
 			} while (!model.isNoChanges());
 		} while (!model.isGameOver());
+		System.out.println("finished");
 	}
 
 	private void createModelAndView() {
 		model = new Model(this);
-		view = new View(_gr);
+		view = new View(_graphics);
 	}
 
 	private void removeTriples() {
@@ -89,58 +128,39 @@ public class Columns extends Applet implements Runnable {
 		}
 	}
 
-	private void slideFigureDownUntilBottomReached() {
-		while (model.canFigureSlideDown()) {
-			if (millisSinceLastSlideDown() > timeFrameForSlidingDown()) {
-				slideFigureDown();
-			}
-			model.setDropScore(0);
-			listenForKeyPressedUntilNextSlideDown();
-		}
-	}
-
-	private void listenForKeyPressedUntilNextSlideDown() {
-		do {
-			Utils.delay(50);
-			if (keyPressed)
-				reactToKeyAction();
-		} while (millisSinceLastSlideDown() <= timeFrameForSlidingDown());
-	}
-
 	private void reactToKeyAction() {
 		{
 			keyPressed = false;
 			switch (ch) {
-			case Event.LEFT:
+			case KeyEvent.VK_LEFT:
 				if (model.canWeMoveToTheLeft()) {
 					view.HideFigure(model.getFig());
 					model.getFig().x--;
 					view.DrawFigure(model.getFig());
 				}
 				break;
-			case Event.RIGHT:
+			case KeyEvent.VK_RIGHT:
 				if (model.canWeMoveToTheRight()) {
 					view.HideFigure(model.getFig());
 					model.getFig().x++;
 					view.DrawFigure(model.getFig());
 				}
 				break;
-			case Event.UP:
+			case KeyEvent.VK_UP:
 				model.rotateFigureColorsUp();
 				view.DrawFigure(model.getFig());
 				break;
-			case Event.DOWN:
+			case KeyEvent.VK_DOWN:
 				model.rotateFigureColorsDown();
 				view.DrawFigure(model.getFig());
 				break;
-			case ' ':
+			case KeyEvent.VK_SPACE:
 				view.HideFigure(model.getFig());
 				model.DropFigure(model.getFig());
 				view.DrawFigure(model.getFig());
 				timestamp = 0;
 				break;
-			case 'P':
-			case 'p':
+			case KeyEvent.VK_P:
 				while (!keyPressed) {
 					view.HideFigure(model.getFig());
 					Utils.delay(500);
@@ -149,13 +169,13 @@ public class Columns extends Applet implements Runnable {
 				}
 				timestamp = System.currentTimeMillis();
 				break;
-			case '-':
+			case KeyEvent.VK_MINUS:
 				if (model.getLevel() > 0)
 					model.setLevel(model.getLevel() - 1);
 				model.setFiguresCollectedOnThisLevel(0);
 				view.ShowLevel(model);
 				break;
-			case '+':
+			case KeyEvent.VK_PLUS:
 				if (model.getLevel() < MaxLevel)
 					model.setLevel(model.getLevel() + 1);
 				model.setFiguresCollectedOnThisLevel(0);
@@ -166,44 +186,21 @@ public class Columns extends Applet implements Runnable {
 	}
 
 	private void slideFigureDown() {
+		if (!model.canFigureSlideDown())
+			return;
 		timestamp = System.currentTimeMillis();
 		view.HideFigure(model.getFig());
 		model.getFig().y++;
+		model.setDropScore(0);
 		view.DrawFigure(model.getFig());
 	}
 
 	private int timeFrameForSlidingDown() {
-		return (MaxLevel - model.getLevel()) * TimeShift
-						+ MinTimeShift;
+		return (MaxLevel - model.getLevel()) * TimeShift + MinTimeShift;
 	}
 
 	private int millisSinceLastSlideDown() {
-		return (int) (System.currentTimeMillis()
-				- timestamp);
+		return (int) (System.currentTimeMillis() - timestamp);
 	}
 
-	private void initView() {
-		_gr.setColor(Color.black);
-		requestFocus();
-	}
-
-	@Override
-	public void start() {
-		_gr.setColor(Color.black);
-
-		// setBackground (new Color(180,180,180));
-
-		if (thr == null) {
-			thr = new Thread(this);
-			thr.start();
-		}
-	}
-
-	@Override
-	public void stop() {
-		if (thr != null) {
-			thr.stop();
-			thr = null;
-		}
-	}
 }

@@ -40,7 +40,7 @@ Done in April
 + example of networking program (chat)
 @ snake
 
-Next few weeks (till May 31) 
+Next few weeks (till mid of June) 
 + assessments
 + refactoring theory
 + refactoring practice
