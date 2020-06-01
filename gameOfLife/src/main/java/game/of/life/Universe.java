@@ -43,44 +43,35 @@ public class Universe {
 
 	private int getNumberOfAliveNeighbours(CellState[][] state, int row, int col) {
 		int numberOfNeighbours = 0;
-		if (row > 0) {
-			int rowAbove = row - 1;
-			numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, rowAbove, col);
-		}
 		
-		if (row < state.length - 1) {
-			int rowBelow = row + 1;
-			numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, rowBelow, col);
-		}
+		numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, row - 1, col);		
 		
-		numberOfNeighbours += getAliveNeighbourCountOfLeftCell(state, row, col - 1);
+		numberOfNeighbours += getNumbersOfAliveNeighboursInRow(state, row + 1, col);
 		
-		numberOfNeighbours += getCountIfCellIsAlive(state, row, col);
+		numberOfNeighbours += getCountIfCellIsAlive(state, row, col - 1);
+		
+		numberOfNeighbours += getCountIfCellIsAlive(state, row, col + 1);
 		
 		return numberOfNeighbours;
 	}
 
 	private int getNumbersOfAliveNeighboursInRow(CellState[][] state, int row, int col) {
 		int numberOfNeighbours = 0;
-		numberOfNeighbours += getAliveNeighbourCountOfLeftCell(state, row, col - 1);
-		if (state[row][col] == CellState.ALIVE) numberOfNeighbours++;
-		numberOfNeighbours += getCountIfCellIsAlive(state, row, col);
+		if (row >= 0 && row < state.length) {
+			numberOfNeighbours += getCountIfCellIsAlive(state, row, col - 1);
+			numberOfNeighbours += getCountIfCellIsAlive(state, row, col);
+			numberOfNeighbours += getCountIfCellIsAlive(state, row, col + 1);
+		}
 		return numberOfNeighbours;
 	}
 
 	private int getCountIfCellIsAlive(CellState[][] state, int row, int col) {
-		if (col < state[row].length - 1) {
-			if (state[row][col + 1] == CellState.ALIVE) return 1;
-		}
-		return 0;
-	}
-
-	private int getAliveNeighbourCountOfLeftCell(CellState[][] state, int row, int col) {
-		if (col >= 0) {
+		if (col >= 0 && col < state[row].length) {
 			if (state[row][col] == CellState.ALIVE) return 1;
 		}
 		return 0;
 	}
+
 	
 
 	
