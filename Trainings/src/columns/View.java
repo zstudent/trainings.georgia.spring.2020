@@ -45,21 +45,21 @@ public class View {
 		int i, j;
 		for (i = 1; i <= Columns.Depth; i++) {
 			for (j = 1; j <= Columns.Width; j++) {
-				DrawBox(j, i, model.getNewField()[j][i]);
+				DrawBox(j, i, model.newField[j][i]);
 			}
 		}
 	}
 
-	void DrawFigure(Figure f) {
-		DrawBox(f.x, f.y, f.c[1]);
-		DrawBox(f.x, f.y + 1, f.c[2]);
-		DrawBox(f.x, f.y + 2, f.c[3]);
+	void DrawFigure(Model model) {
+		DrawBox(model.x, model.y, model.c[1]);
+		DrawBox(model.x, model.y + 1, model.c[2]);
+		DrawBox(model.x, model.y + 2, model.c[3]);
 	}
 
-	void HideFigure(Figure f) {
-		DrawBox(f.x, f.y, 0);
-		DrawBox(f.x, f.y + 1, 0);
-		DrawBox(f.x, f.y + 2, 0);
+	void HideFigure(Model model) {
+		DrawBox(model.x, model.y, 0);
+		DrawBox(model.x, model.y + 1, 0);
+		DrawBox(model.x, model.y + 2, 0);
 	}
 
 	void ShowScore(Model model) {
@@ -92,7 +92,7 @@ public class View {
 		ShowLevel(model);
 		ShowScore(model);
 		DrawField(model);
-		DrawFigure(model.getFig());
+		DrawFigure(model);
 	}
 
 }
