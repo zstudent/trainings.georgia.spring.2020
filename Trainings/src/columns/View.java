@@ -2,6 +2,9 @@ package columns;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.List;
+
+import columns.ModelEvent.Delay;
 
 public class View {
 
@@ -41,37 +44,35 @@ public class View {
 		}
 	}
 
-	void DrawField(Model model) {
+	void DrawField(int[][] field) {
 		int i, j;
 		for (i = 1; i <= Columns.Depth; i++) {
 			for (j = 1; j <= Columns.Width; j++) {
-				DrawBox(j, i, model.newField[j][i]);
+				DrawBox(j, i, field[j][i]);
 			}
 		}
 	}
 
 	void DrawFigure(Model model) {
-		DrawBox(model.x, model.y, model.c[1]);
-		DrawBox(model.x, model.y + 1, model.c[2]);
-		DrawBox(model.x, model.y + 2, model.c[3]);
+		drawFigure(model.x, model.y, model.c);
 	}
 
-	void HideFigure(Model model) {
-		DrawBox(model.x, model.y, 0);
-		DrawBox(model.x, model.y + 1, 0);
-		DrawBox(model.x, model.y + 2, 0);
+	private void drawFigure(int x, int y, int[] c) {
+		DrawBox(x, y, c[1]);
+		DrawBox(x, y + 1, c[2]);
+		DrawBox(x, y + 2, c[3]);
 	}
 
-	void ShowScore(Model model) {
+	void ShowScore(long score) {
 		_gr.setColor(Color.black);
 		_gr.clearRect(Columns.LeftBorder, 390, 100, 20);
-		_gr.drawString("Score: " + model.getScore(), Columns.LeftBorder, 400);
+		_gr.drawString("Score: " + score, Columns.LeftBorder, 400);
 	}
 
-	void ShowLevel(Model model) {
+	void ShowLevel(int level) {
 		_gr.setColor(Color.black);
 		_gr.clearRect(Columns.LeftBorder + 100, 390, 100, 20);
-		_gr.drawString("Level: " + model.getLevel(), Columns.LeftBorder + 100, 400);
+		_gr.drawString("Level: " + level, Columns.LeftBorder + 100, 400);
 	}
 
 	void ShowHelp() {
@@ -89,10 +90,44 @@ public class View {
 	}
 
 	void drawAll(Model model) {
-		ShowLevel(model);
-		ShowScore(model);
-		DrawField(model);
-		DrawFigure(model);
+		ShowLevel(model.getLevel());
+		ShowScore(model.getScore());
+		DrawField(model.newField);
+		drawFigure(model.x, model.y, model.c);
+	}
+
+	public void playEvents(List<ModelEvent> events) {
+		for (ModelEvent modelEvent : events) {
+			modelEvent.accept(this);
+		}
+	}
+
+	public void visit(ModelEvent.HideFigure hideFigure) {
+		int x = hideFigure.x;
+		int y = hideFigure.y;
+		DrawBox(x, y, 0);
+		DrawBox(x, y + 1, 0);
+		DrawBox(x, y + 2, 0);
+	}
+
+	public void visit(ModelEvent.DrawFigure drawFigure) {
+		drawFigure(drawFigure.x, drawFigure.y, drawFigure.c);
+	}
+
+	public void visit(Delay delay) {
+		Utils.delay(delay.millis);
+	}
+
+	public void visit(columns.ModelEvent.ShowScore showScore) {
+		ShowScore(showScore.score);
+	}
+
+	public void visit(columns.ModelEvent.ShowLevel showLevel) {
+		ShowLevel(showLevel.level);
+	}
+
+	public void visit(columns.ModelEvent.DrawField drawField) {
+		DrawField(drawField.field);
 	}
 
 }

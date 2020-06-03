@@ -39,7 +39,7 @@ public class Columns {
 		initUI();
 
 		createModelAndView();
-		launchNewFigure();
+		model.launchNewFigure();
 
 		launchTimer();
 
@@ -49,7 +49,10 @@ public class Columns {
 		Thread timer = new Thread(() -> {
 			while (true) {
 				Utils.delay(timeFrameForSlidingDown());
-				SwingUtilities.invokeLater(this::slideFigureDown);
+				SwingUtilities.invokeLater(() -> {
+					var events = model.slideFigureDown(this);
+					view.playEvents(events);
+				});
 			}
 		});
 		timer.start();
@@ -64,7 +67,8 @@ public class Columns {
 			public void keyPressed(KeyEvent e) {
 				keyPressed = true;
 				ch = e.getKeyCode();
-				reactToKeyAction();
+				var events = model.reactToKeyAction(ch);
+				view.playEvents(events);
 			}
 		});
 
@@ -95,106 +99,9 @@ public class Columns {
 		view.drawAll(model);
 	}
 
-	private void launchNewFigure() {
-		model.createNewFigure();
-		view.DrawFigure(model);
-	}
-
 	private void createModelAndView() {
 		model = new Model(this);
 		view = new View(_graphics);
-	}
-
-	private void removeTriples() {
-		model.setNoChanges(true);
-		model.TestField();
-		if (!model.isNoChanges()) {
-			Utils.delay(500);
-			model.PackField();
-			view.DrawField(model);
-			model.setScore(model.getScore() + model.getDropScore());
-			view.ShowScore(model);
-			if (model.getFiguresCollectedOnThisLevel() >= FigToDrop) {
-				model.setFiguresCollectedOnThisLevel(0);
-				if (model.getLevel() < MaxLevel)
-					model.setLevel(model.getLevel() + 1);
-				view.ShowLevel(model);
-			}
-		}
-	}
-
-	private void reactToKeyAction() {
-		{
-			keyPressed = false;
-			switch (ch) {
-			case KeyEvent.VK_LEFT:
-				if (model.canWeMoveToTheLeft()) {
-					view.HideFigure(model);
-					model.x = model.x - 1;
-					view.DrawFigure(model);
-				}
-				break;
-			case KeyEvent.VK_RIGHT:
-				if (model.canWeMoveToTheRight()) {
-					view.HideFigure(model);
-					model.x = model.x + 1;
-					view.DrawFigure(model);
-				}
-				break;
-			case KeyEvent.VK_UP:
-				model.rotateFigureColorsUp();
-				view.DrawFigure(model);
-				break;
-			case KeyEvent.VK_DOWN:
-				model.rotateFigureColorsDown();
-				view.DrawFigure(model);
-				break;
-			case KeyEvent.VK_SPACE:
-				view.HideFigure(model);
-				model.DropFigure();
-				view.DrawFigure(model);
-				break;
-			case KeyEvent.VK_P:
-				while (!keyPressed) {
-					view.HideFigure(model);
-					Utils.delay(500);
-					view.DrawFigure(model);
-					Utils.delay(500);
-				}
-				break;
-			case KeyEvent.VK_MINUS:
-				if (model.getLevel() > 0)
-					model.setLevel(model.getLevel() - 1);
-				model.setFiguresCollectedOnThisLevel(0);
-				view.ShowLevel(model);
-				break;
-			case KeyEvent.VK_PLUS:
-				if (model.getLevel() < MaxLevel)
-					model.setLevel(model.getLevel() + 1);
-				model.setFiguresCollectedOnThisLevel(0);
-				view.ShowLevel(model);
-				break;
-			}
-		}
-	}
-
-	private void slideFigureDown() {
-		if (model.canSlideFigureDown()) {
-			view.HideFigure(model);
-			model.y++;
-			model.setDropScore(0);
-			view.DrawFigure(model);
-		} else {
-			model.pasteFigure();
-			do {
-				removeTriples();
-			} while (!model.isNoChanges());
-			if (!model.isGameOver()) {
-				launchNewFigure();
-			} else {
-				//  TODO  game over code
-			}
-		}
 	}
 
 	private int timeFrameForSlidingDown() {

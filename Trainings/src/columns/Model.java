@@ -1,6 +1,17 @@
 package columns;
 
+import java.awt.event.KeyEvent;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
+
+import columns.ModelEvent.Delay;
+import columns.ModelEvent.DrawField;
+import columns.ModelEvent.DrawFigure;
+import columns.ModelEvent.HideFigure;
+import columns.ModelEvent.ShowLevel;
+import columns.ModelEvent.ShowScore;
 
 public class Model {
 
@@ -191,6 +202,107 @@ public class Model {
 		c[1] = (int) (Math.abs(r.nextInt()) % 7 + 1);
 		c[2] = (int) (Math.abs(r.nextInt()) % 7 + 1);
 		c[3] = (int) (Math.abs(r.nextInt()) % 7 + 1);
+	}
+
+	List<ModelEvent> reactToKeyAction(int ch) {
+		List<ModelEvent> events = new ArrayList<ModelEvent>();
+		switch (ch) {
+		case KeyEvent.VK_LEFT:
+			if (canWeMoveToTheLeft()) {
+				events.add(new HideFigure(this));
+				x = x - 1;
+				events.add(new DrawFigure(this));
+			}
+			break;
+		case KeyEvent.VK_RIGHT:
+			if (canWeMoveToTheRight()) {
+				events.add(new HideFigure(this));
+				x = x + 1;
+				events.add(new DrawFigure(this));
+			}
+			break;
+		case KeyEvent.VK_UP:
+			rotateFigureColorsUp();
+			events.add(new DrawFigure(this));
+			
+			break;
+		case KeyEvent.VK_DOWN:
+			rotateFigureColorsDown();
+			events.add(new DrawFigure(this));
+			break;
+		case KeyEvent.VK_SPACE:
+			events.add(new HideFigure(this));
+			DropFigure();
+			events.add(new DrawFigure(this));
+			break;
+		case KeyEvent.VK_P:
+			while (!columns.keyPressed) {
+				events.add(new HideFigure(this));
+				events.add(new Delay(500));
+				events.add(new DrawFigure(this));
+				events.add(new Delay(500));
+			}
+			break;
+		case KeyEvent.VK_MINUS:
+			if (getLevel() > 0)
+				setLevel(getLevel() - 1);
+			setFiguresCollectedOnThisLevel(0);
+			events.add(new ShowLevel(getLevel()));
+			break;
+		case KeyEvent.VK_PLUS:
+			if (getLevel() < Columns.MaxLevel)
+				setLevel(getLevel() + 1);
+			setFiguresCollectedOnThisLevel(0);
+			events.add(new ShowLevel(getLevel()));
+			break;
+		}
+		return events;
+	}
+
+	List<ModelEvent> slideFigureDown(Columns columns) {
+		List<ModelEvent> events = new ArrayList<ModelEvent>();
+		if (canSlideFigureDown()) {
+			events.add(new HideFigure(this));
+			y++;
+			setDropScore(0);
+			events.add(new DrawFigure(this));
+		} else {
+			pasteFigure();
+			do {
+				events.addAll(columns.model.removeTriples(columns));
+			} while (!isNoChanges());
+			if (!isGameOver()) {
+				events.addAll(columns.model.launchNewFigure());
+			} else {
+				// TODO game over code
+			}
+		}
+		return events;
+	}
+
+	List<ModelEvent> removeTriples(Columns columns) {
+		List<ModelEvent> events = new ArrayList<ModelEvent>();
+		setNoChanges(true);
+		TestField();
+		if (!isNoChanges()) {
+			events.add(new Delay(500));
+			PackField();
+			events.add(new DrawField(newField));
+			setScore(getScore() + getDropScore());
+			events.add(new ShowScore(getScore()));
+			if (getFiguresCollectedOnThisLevel() >= Columns.FigToDrop) {
+				setFiguresCollectedOnThisLevel(0);
+				if (getLevel() < Columns.MaxLevel)
+					setLevel(getLevel() + 1);
+				events.add(new ShowLevel(getLevel()));
+			}
+		}
+		return events;
+	}
+
+	List<ModelEvent> launchNewFigure() {
+		createNewFigure();
+		return Arrays.asList(new DrawFigure(this));
 	}
 
 }
