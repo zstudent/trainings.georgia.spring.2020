@@ -8,7 +8,21 @@ public class GameLoopTest {
 
 	@Test
 	public void doesNothingIfGameIsNotRunning() {
-		GameLoop gameLoop = new GameLoop();
+		TestGame testGame = new TestGame();
+		GameLoop uut = new GameLoop();
+		
+		uut.run();
+		
+		assertFalse(testGame.isUpdated);
+	}
+	
+	public class TestGame implements Game {
+		
+		public boolean isUpdated;
+		
+		public void setRunning(boolean b) {
+			
+		}
 	}
 
 }

@@ -1,5 +1,5 @@
 package game.loop;
 
-public class Game {
+public interface Game {
 
 }
