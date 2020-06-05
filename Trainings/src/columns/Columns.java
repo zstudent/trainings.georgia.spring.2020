@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Event;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
@@ -17,10 +19,6 @@ public class Columns {
 	static final int SL = 25, Depth = 15, Width = 7, MaxLevel = 7,
 			TimeShift = 250, FigToDrop = 33, MinTimeShift = 200,
 			LeftBorder = 2, TopBorder = 2;
-
-	int ch;
-	Font fCourier;
-	boolean keyPressed = false;
 
 	Model model;
 	View view;
@@ -41,8 +39,12 @@ public class Columns {
 		createModelAndView();
 		model.launchNewFigure();
 
+
 		launchTimer();
 
+		SwingUtilities.invokeLater(() -> {
+			view.drawAll(model);
+		});
 	}
 
 	private void launchTimer() {
@@ -50,7 +52,7 @@ public class Columns {
 			while (true) {
 				Utils.delay(timeFrameForSlidingDown());
 				SwingUtilities.invokeLater(() -> {
-					var events = model.slideFigureDown(this);
+					var events = model.timerTickOccured();
 					view.playEvents(events);
 				});
 			}
@@ -65,10 +67,21 @@ public class Columns {
 		panel.addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-				keyPressed = true;
-				ch = e.getKeyCode();
-				var events = model.reactToKeyAction(ch);
+				var events = model.reactToKeyAction(e.getKeyCode());
 				view.playEvents(events);
+			}
+		});
+
+		panel.addFocusListener(new FocusListener() {
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				model.setPauseMode();
+			}
+
+			@Override
+			public void focusGained(FocusEvent e) {
+				model.setPlayMode();
 			}
 		});
 
@@ -86,13 +99,6 @@ public class Columns {
 
 		_graphics = panel.getGraphics();
 		_graphics.setColor(Color.black);
-	}
-
-	// FIXME move to some other place
-	public boolean lostFocus(Event e, Object w) {
-		keyPressed = true;
-		ch = 'P';
-		return true;
 	}
 
 	public void paint() {

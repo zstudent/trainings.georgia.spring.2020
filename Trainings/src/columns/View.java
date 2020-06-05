@@ -130,4 +130,8 @@ public class View {
 		DrawField(drawField.field);
 	}
 
+	public void visit(columns.ModelEvent.DrawBox drawBox) {
+		DrawBox(drawBox.x, drawBox.y, drawBox.c);
+	}
+
 }

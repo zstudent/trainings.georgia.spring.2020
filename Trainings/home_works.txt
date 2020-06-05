@@ -55,3 +55,7 @@ Borders are 'strict':  everything behind borders disappear
 Commits every day:  I want to see your progress
 We will compare your models by time spent to compute 1000 generations
 The fastest models will get prizes
+
+
+2020-06-05
+Finish refactoring of Columns:  make View platform independent (introduce interface for platform graphics).

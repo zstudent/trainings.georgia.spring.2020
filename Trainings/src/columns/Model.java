@@ -3,6 +3,7 @@ package columns;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -14,6 +15,35 @@ import columns.ModelEvent.ShowLevel;
 import columns.ModelEvent.ShowScore;
 
 public class Model {
+
+	abstract class State {
+		abstract List<ModelEvent> timerTickOccured();
+	}
+
+	class PlayMode extends State {
+
+		@Override
+		List<ModelEvent> timerTickOccured() {
+			return slideFigureDown();
+		}
+
+	}
+
+	class PauseMode extends State {
+
+		boolean figureIsDisplayed = true;
+
+		@Override
+		List<ModelEvent> timerTickOccured() {
+			figureIsDisplayed = !figureIsDisplayed;
+			return Arrays.asList(figureIsDisplayed
+					? new ModelEvent.DrawFigure(Model.this)
+					: new ModelEvent.HideFigure(Model.this));
+		}
+
+	}
+
+	State state = new PlayMode();
 
 	int newField[][];
 	int oldField[][];
@@ -75,35 +105,34 @@ public class Model {
 		NoChanges = noChanges;
 	}
 
-	void checkNeighbours(int a, int b, int c, int d, int i, int j) {
+	List<ModelEvent> checkNeighbours(int a, int b, int c, int d, int i, int j) {
+		List<ModelEvent> events = new ArrayList<ModelEvent>();
 		if ((newField[j][i] == newField[a][b])
 				&& (newField[j][i] == newField[c][d])) {
 			oldField[a][b] = 0;
-			columns.view.DrawBox(a, b, 8);
+			events.add(new ModelEvent.DrawBox(a, b, 8));
 			oldField[j][i] = 0;
-			columns.view.DrawBox(j, i, 8);
+			events.add(new ModelEvent.DrawBox(j, i, 8));
 			oldField[c][d] = 0;
-			columns.view.DrawBox(c, d, 8);
+			events.add(new ModelEvent.DrawBox(c, d, 8));
 			setNoChanges(false);
 			setScore(getScore() + (getLevel() + 1) * 10);
 			setFiguresCollectedOnThisLevel(
 					getFiguresCollectedOnThisLevel() + 1);
 		}
+		return events;
 	}
 
 	boolean canSlideFigureDown() {
-		return (y < Columns.Depth - 2)
-				&& (newField[x][y + 3] == 0);
+		return (y < Columns.Depth - 2) && (newField[x][y + 3] == 0);
 	}
 
 	boolean canWeMoveToTheLeft() {
-		return (x > 1)
-				&& (newField[x - 1][y + 2] == 0);
+		return (x > 1) && (newField[x - 1][y + 2] == 0);
 	}
 
 	boolean canWeMoveToTheRight() {
-		return (x < Columns.Width)
-				&& (newField[x + 1][y + 2] == 0);
+		return (x < Columns.Width) && (newField[x + 1][y + 2] == 0);
 	}
 
 	void DropFigure() {
@@ -162,7 +191,8 @@ public class Model {
 		newField[x][y + 2] = c[3];
 	}
 
-	void TestField() {
+	List<ModelEvent> TestField() {
+		List<ModelEvent> events = new ArrayList<ModelEvent>();
 		int i, j;
 		for (i = 1; i <= Columns.Depth; i++) {
 			for (j = 1; j <= Columns.Width; j++) {
@@ -172,13 +202,14 @@ public class Model {
 		for (i = 1; i <= Columns.Depth; i++) {
 			for (j = 1; j <= Columns.Width; j++) {
 				if (newField[j][i] > 0) {
-					checkNeighbours(j, i - 1, j, i + 1, i, j);
-					checkNeighbours(j - 1, i, j + 1, i, i, j);
-					checkNeighbours(j - 1, i - 1, j + 1, i + 1, i, j);
-					checkNeighbours(j + 1, i - 1, j - 1, i + 1, i, j);
+					events.addAll(checkNeighbours(j, i - 1, j, i + 1, i, j));
+					events.addAll(checkNeighbours(j - 1, i, j + 1, i, i, j));
+					events.addAll(checkNeighbours(j - 1, i - 1, j + 1, i + 1, i, j));
+					events.addAll(checkNeighbours(j + 1, i - 1, j - 1, i + 1, i, j));
 				}
 			}
 		}
+		return events;
 	}
 
 	private void initState() {
@@ -224,7 +255,7 @@ public class Model {
 		case KeyEvent.VK_UP:
 			rotateFigureColorsUp();
 			events.add(new DrawFigure(this));
-			
+
 			break;
 		case KeyEvent.VK_DOWN:
 			rotateFigureColorsDown();
@@ -234,14 +265,11 @@ public class Model {
 			events.add(new HideFigure(this));
 			DropFigure();
 			events.add(new DrawFigure(this));
+			events.addAll(slideFigureDown());
 			break;
 		case KeyEvent.VK_P:
-			while (!columns.keyPressed) {
-				events.add(new HideFigure(this));
-				events.add(new Delay(500));
-				events.add(new DrawFigure(this));
-				events.add(new Delay(500));
-			}
+			state = state instanceof PlayMode ? new PauseMode()
+					: new PlayMode();
 			break;
 		case KeyEvent.VK_MINUS:
 			if (getLevel() > 0)
@@ -259,7 +287,7 @@ public class Model {
 		return events;
 	}
 
-	List<ModelEvent> slideFigureDown(Columns columns) {
+	List<ModelEvent> slideFigureDown() {
 		List<ModelEvent> events = new ArrayList<ModelEvent>();
 		if (canSlideFigureDown()) {
 			events.add(new HideFigure(this));
@@ -269,10 +297,10 @@ public class Model {
 		} else {
 			pasteFigure();
 			do {
-				events.addAll(columns.model.removeTriples(columns));
+				events.addAll(removeTriples());
 			} while (!isNoChanges());
 			if (!isGameOver()) {
-				events.addAll(columns.model.launchNewFigure());
+				events.addAll(launchNewFigure());
 			} else {
 				// TODO game over code
 			}
@@ -280,10 +308,10 @@ public class Model {
 		return events;
 	}
 
-	List<ModelEvent> removeTriples(Columns columns) {
+	List<ModelEvent> removeTriples() {
 		List<ModelEvent> events = new ArrayList<ModelEvent>();
 		setNoChanges(true);
-		TestField();
+		events.addAll(TestField());
 		if (!isNoChanges()) {
 			events.add(new Delay(500));
 			PackField();
@@ -303,6 +331,18 @@ public class Model {
 	List<ModelEvent> launchNewFigure() {
 		createNewFigure();
 		return Arrays.asList(new DrawFigure(this));
+	}
+
+	public List<ModelEvent> timerTickOccured() {
+		return state.timerTickOccured();
+	}
+	
+	void setPlayMode() {
+		state = new PlayMode();
+	}
+	
+	void setPauseMode() {
+		state = new PauseMode();
 	}
 
 }

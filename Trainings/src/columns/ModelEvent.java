@@ -93,6 +93,22 @@ public abstract class ModelEvent {
 		}
 		
 	}
+	
+	static class DrawBox extends ModelEvent {
+		int x, y, c;
+
+		public DrawBox(int x, int y, int c) {
+			super();
+			this.x = x;
+			this.y = y;
+			this.c = c;
+		}
+
+		@Override
+		protected void accept(View view) {
+			view.visit(this);
+		}
+	}
 
 	protected abstract void accept(View view);
 
