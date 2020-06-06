@@ -27,6 +27,8 @@ public class Columns {
 
 	Graphics _graphics;
 
+
+
 	public static void main(String[] args) {
 		Columns columns = new Columns();
 		SwingUtilities.invokeLater(columns::init);
@@ -102,7 +104,7 @@ public class Columns {
 
 	private void createModelAndView() {
 		model = new Model(this);
-		view = new View(_graphics);
+		view = new View(new PlatformGraphicsImplementator(_graphics));
 	}
 
 	private void removeTriples() {
@@ -113,12 +115,12 @@ public class Columns {
 			model.PackField();
 			view.DrawField(model);
 			model.setScore(model.getScore() + model.getDropScore());
-			view.ShowScore(model);
+			view.showScore(model);
 			if (model.getFiguresCollectedOnThisLevel() >= FigToDrop) {
 				model.setFiguresCollectedOnThisLevel(0);
 				if (model.getLevel() < MaxLevel)
 					model.setLevel(model.getLevel() + 1);
-				view.ShowLevel(model);
+				view.showLevel(model);
 			}
 		}
 	}
@@ -166,13 +168,13 @@ public class Columns {
 				if (model.getLevel() > 0)
 					model.setLevel(model.getLevel() - 1);
 				model.setFiguresCollectedOnThisLevel(0);
-				view.ShowLevel(model);
+				view.showLevel(model);
 				break;
 			case KeyEvent.VK_PLUS:
 				if (model.getLevel() < MaxLevel)
 					model.setLevel(model.getLevel() + 1);
 				model.setFiguresCollectedOnThisLevel(0);
-				view.ShowLevel(model);
+				view.showLevel(model);
 				break;
 			}
 		}

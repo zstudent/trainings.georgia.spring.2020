@@ -68,11 +68,11 @@ public class Model {
 		if ((newField[j][i] == newField[a][b])
 				&& (newField[j][i] == newField[c][d])) {
 			oldField[a][b] = 0;
-			columns.view.DrawBox(a, b, 8);
+			columns.view.drawBox(a, b, 8);
 			oldField[j][i] = 0;
-			columns.view.DrawBox(j, i, 8);
+			columns.view.drawBox(j, i, 8);
 			oldField[c][d] = 0;
-			columns.view.DrawBox(c, d, 8);
+			columns.view.drawBox(c, d, 8);
 			setNoChanges(false);
 			setScore(getScore() + (getLevel() + 1) * 10);
 			setFiguresCollectedOnThisLevel(
