@@ -44,6 +44,7 @@ public class Model {
 				state[row][col].update(numberOfAliveNeighbours);
 			}
 		}
+		fireOnChange();
 	}
 
 	private int getNumberOfAliveNeighbours(CellState[][] state, int row, int col) {
@@ -75,6 +76,16 @@ public class Model {
 
 	public void addListener(ModelListener modelListener) {
 		listeners.add(modelListener);
+	}
+
+	public void refreshView() {
+		fireOnChange();
+	}
+
+	private void fireOnChange() {
+		for (ModelListener listener : listeners) {
+			listener.onChange(this);
+		}
 	}
 
 }

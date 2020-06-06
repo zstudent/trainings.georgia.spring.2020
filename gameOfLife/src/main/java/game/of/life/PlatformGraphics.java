@@ -1,5 +1,7 @@
 package game.of.life;
 
+import java.awt.Color;
+
 public interface PlatformGraphics {
-	void fillRect(int color, int row, int col);
+	void drawCell(Color color, int row, int col);
 }

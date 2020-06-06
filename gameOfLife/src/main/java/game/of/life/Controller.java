@@ -13,7 +13,7 @@ public class Controller implements ModelListener {
 	
 	@Override
 	public void onChange(Model model) {
-		view.draw(model);
+		view.draw(model.getState());
 	}
 	
 }
