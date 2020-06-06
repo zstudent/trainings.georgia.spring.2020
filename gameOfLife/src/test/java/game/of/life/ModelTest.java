@@ -5,7 +5,7 @@ import game.of.life.Cell.CellState;
 
 import org.junit.Test;
 
-public class UniverseTest {
+public class ModelTest {
 
 	private static final CellState O = CellState.DEAD;
 	private static final CellState X = CellState.ALIVE;
@@ -18,7 +18,7 @@ public class UniverseTest {
 			{ O, X, X },
 		};
 		
-		Universe uut = new Universe(original);
+		Model uut = new Model(original);
 		
 		CellState[][] actual = uut.getState();
 		assertArrayEquals(original, actual);
@@ -26,7 +26,7 @@ public class UniverseTest {
 	
 	@Test
 	public void shouldUpdateCell() {
-		Universe uut = new Universe(new CellState[][] { { X } });
+		Model uut = new Model(new CellState[][] { { X } });
 		
 		uut.update();
 		
@@ -36,7 +36,7 @@ public class UniverseTest {
 	
 	@Test
 	public void shouldUpdateAllCells() {
-		Universe uut = new Universe(new CellState[][] {
+		Model uut = new Model(new CellState[][] {
 			{ O, X, X },
 			{ X, O, X },
 			{ O, O, X }
@@ -56,7 +56,7 @@ public class UniverseTest {
 	
 	@Test
 	public void shouldConsiderAllNeighbours() {
-		Universe uut = new Universe(new CellState[][] {
+		Model uut = new Model(new CellState[][] {
 			{ X, X, X },
 			{ X, X, X },
 			{ X, X, X }
@@ -73,7 +73,7 @@ public class UniverseTest {
 		assertArrayEquals(expected, actual);		
 	}
 	
-	private CellState[][] getNextState(Universe uut) {
+	private CellState[][] getNextState(Model uut) {
 		uut.update();
 		return uut.getState();
 	}

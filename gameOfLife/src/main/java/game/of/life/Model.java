@@ -1,14 +1,19 @@
 package game.of.life;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 
 import game.of.life.Cell.CellState;
 
-public class Universe {
+public class Model {
 
 	private Cell[][] state;
+	
+	List<ModelListener> listeners = new ArrayList<>();
 
-	public Universe(CellState[][] cellStates) {
+	public Model(CellState[][] cellStates) {
 		int LENGTH = cellStates.length;
 		state = new Cell[LENGTH][];
 		for (int row = 0; row < LENGTH; row++) {
@@ -66,6 +71,10 @@ public class Universe {
 				return 1;
 		}
 		return 0;
+	}
+
+	public void addListener(ModelListener modelListener) {
+		listeners.add(modelListener);
 	}
 
 }
