@@ -59,3 +59,8 @@ The fastest models will get prizes
 
 2020-06-05
 Finish refactoring of Columns:  make View platform independent (introduce interface for platform graphics).
+
+2020-06-18
+Learn Mockito:
+https://www.youtube.com/watch?v=d2KwvXQgQx4
+https://github.com/in28minutes/MockitoTutorialForBeginners
