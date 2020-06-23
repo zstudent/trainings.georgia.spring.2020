@@ -40,7 +40,7 @@ Next few weeks (till mid of June)
 + assessments
 + refactoring theory
 + refactoring practice
-- Refactoring workshop
++ Refactoring workshop (Columns)
 - git secrets
 * Mockito
 + Java lambda & streams & optionals

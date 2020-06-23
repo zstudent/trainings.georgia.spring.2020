@@ -64,3 +64,9 @@ Finish refactoring of Columns:  make View platform independent (introduce interf
 Learn Mockito:
 https://www.youtube.com/watch?v=d2KwvXQgQx4
 https://github.com/in28minutes/MockitoTutorialForBeginners
+
+2020-06-23
+Apply Mockito to some classes from Snake or Tetris or Columns
+Learn about JMock's feature of checking sequences of invocations (http://jmock.org/sequences.html)
+Check whether Mockito has the same feature
+

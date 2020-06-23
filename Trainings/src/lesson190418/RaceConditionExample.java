@@ -9,7 +9,9 @@ public class RaceConditionExample {
 		new Thread(() -> {
 
 			while (true) {
-				data.change();
+				synchronized (data) {
+					data.change();
+				}
 			}
 
 		}).start();
@@ -17,7 +19,9 @@ public class RaceConditionExample {
 		new Thread(() -> {
 
 			while (true) {
-				System.out.println(data.get());
+				synchronized (data) {
+					System.out.println(data.get());
+				}
 			}
 
 		}).start();
