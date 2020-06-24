@@ -70,3 +70,6 @@ Apply Mockito to some classes from Snake or Tetris or Columns
 Learn about JMock's feature of checking sequences of invocations (http://jmock.org/sequences.html)
 Check whether Mockito has the same feature
 
+2020-06-24
+Learn Maven:  https://www.udemy.com/share/101tMgAEUac11TQHg=/
+
