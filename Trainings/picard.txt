@@ -1,0 +1,23 @@
+SinglePassSamProgram.makeItSo()
+
+        ExecutorService service = Executors.newSingleThreadExecutor();
+        Semaphore sem = new Semaphore(1000);
+
+        for (final SAMRecord rec : in) {
+        	sem.acquireUninterruptibly();
+        	service.execute(()-> {
+        		process(programs, walker, progress, rec);
+        		sem.release();
+        	});
+
+            // See if we need to terminate early?
+            if (stopAfter > 0 && progress.getCount() >= stopAfter) {
+                break;
+            }
+
+            // And see if we're into the unmapped reads at the end
+            if (!anyUseNoRefReads && rec.getReferenceIndex() == SAMRecord.NO_ALIGNMENT_REFERENCE_INDEX) {
+                break;
+            }
+        }
+
