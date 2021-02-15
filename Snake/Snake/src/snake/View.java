@@ -1,8 +1,7 @@
-package tetris;
-
-import javax.swing.JLabel;
+package snake;
 
 public class View {
+
 	private PlatformGraphics graphics;
 
 	public View() {
@@ -16,7 +15,6 @@ public class View {
 
 	public void draw(State state) {
 		drawData(state.field.data, 0, 0, true);
-		drawData(state.figure.data, state.row, state.col, false);
 	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {
