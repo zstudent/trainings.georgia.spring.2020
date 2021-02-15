@@ -1,7 +1,6 @@
 package tetris;
 
 public class State {
-
 	static final int ROWS = 20;
 	static final int COLUMNS = 10;
 
@@ -28,14 +27,12 @@ public class State {
 			for (int c = 0; c < figure.data[r].length; c++) {
 				if (figure.data[r][c] == 0)
 					continue;
-				int figureBoxRowOnTHeField = row + r;
-				int figureBoxColOntTheField = col + c;
-				if (figureBoxRowOnTHeField < 0
-						|| figureBoxRowOnTHeField >= height
-						|| figureBoxColOntTheField < 0
-						|| figureBoxColOntTheField >= width)
+				int figureBoxRowOnTheField = row + r;
+				int figureBoxColOnTheField = col + c;
+				if (figureBoxRowOnTheField < 0 || figureBoxRowOnTheField >= height || figureBoxColOnTheField < 0
+						|| figureBoxColOnTheField >= width)
 					return false;
-				if (0 < field.data[figureBoxRowOnTHeField][figureBoxColOntTheField])
+				if (0 < field.data[figureBoxRowOnTheField][figureBoxColOnTheField])
 					return false;
 			}
 		}
@@ -51,6 +48,6 @@ public class State {
 				field.data[row + r][col + c] = v;
 			}
 		}
-	}
 
+	}
 }
