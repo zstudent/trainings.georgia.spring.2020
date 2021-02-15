@@ -1,13 +1,13 @@
 package tetris;
 
 public class View {
-
 	private PlatformGraphics graphics;
-	
+
 	public View() {
-		graphics = (color, row, col) -> {};
+		graphics = (color, row, col) -> {
+		};
 	}
-	
+
 	public View(PlatformGraphics graphics) {
 		this.graphics = graphics;
 	}
@@ -21,7 +21,8 @@ public class View {
 		for (int r = 0; r < data.length; r++) {
 			for (int c = 0; c < data[r].length; c++) {
 				int color = data[r][c];
-				if (color == 0 && !drawBlacks) continue;
+				if (color == 0 && !drawBlacks)
+					continue;
 				drawBox(color, row + r, col + c);
 			}
 		}
@@ -30,5 +31,4 @@ public class View {
 	private void drawBox(int color, int row, int col) {
 		graphics.fillRect(color, row, col);
 	}
-
 }
