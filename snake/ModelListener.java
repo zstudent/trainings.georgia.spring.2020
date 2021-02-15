@@ -1,4 +1,4 @@
-package tetris;
+package snake;
 
 public interface ModelListener {
 

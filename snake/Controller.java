@@ -1,4 +1,8 @@
-package tetris;
+package snake;
+
+import snake.Model;
+import snake.State;
+import snake.View;
 
 public class Controller implements ModelListener {
 	View view;
@@ -15,6 +19,18 @@ public class Controller implements ModelListener {
 		view.draw(state);
 	}
 
+	public void restart() {
+		model.restart();
+	}
+
+	public void move() {
+		model.move();
+	}
+
+	public boolean gameOver() {
+		return model.gameOver();
+	}
+
 	public void moveLeft() {
 		model.moveLeft();
 	}
@@ -27,20 +43,7 @@ public class Controller implements ModelListener {
 		model.moveDown();
 	}
 
-	public void dropDown() {
-		model.dropDown();
-	}
-
-	public void rotateLeft() {
-		model.rotateLeft();
-		
-	}
-
-	public void rotateRight() {
-		model.rotateRight();
-		
-	}
-	public boolean gameOver() {
-		return model.gameOver();
+	public void moveUp() {
+		model.moveUp();
 	}
 }

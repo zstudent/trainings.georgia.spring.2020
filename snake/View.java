@@ -1,4 +1,8 @@
-package tetris;
+package snake;
+
+import snake.PlatformGraphics;
+import snake.State;
+
 
 public class View {
 	private PlatformGraphics graphics;
@@ -14,7 +18,7 @@ public class View {
 
 	public void draw(State state) {
 		drawData(state.field.data, 0, 0, true);
-		drawData(state.figure.data, state.row, state.col, false);
+		//drawData(state.figure.data, state.row, state.col, false);
 	}
 
 	private void drawData(int[][] data, int row, int col, boolean drawBlacks) {

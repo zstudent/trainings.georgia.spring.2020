@@ -1,4 +1,4 @@
-package tetris;
+package snake;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -16,22 +16,18 @@ import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import javax.swing.WindowConstants;
 
-public class Tetris {
-	private static int velocity;
-	private static final int VELOCITY=1000;
+public class Snake {
 	private static final Color[] COLORS = { Color.black, Color.yellow, Color.blue, Color.green, Color.red, Color.cyan,
 			Color.magenta, Color.pink };
-	private static JLabel scoreLabel;
 	
 
 	public static void main(String[] args) {
-		SwingUtilities.invokeLater(Tetris::begin);
+		SwingUtilities.invokeLater(Snake::begin);
 	}
 
 	private static void begin() {
-		JFrame frame = new JFrame("Tetris");
+		JFrame frame = new JFrame("Snake");
 		JPanel panel = new JPanel();
-		scoreLabel=new JLabel ("SCORE: "+Field.score);
 		panel.setPreferredSize(new Dimension(550, 700));
 		frame.add(panel);
 		frame.pack();
@@ -40,24 +36,21 @@ public class Tetris {
 		easy.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				velocity=VELOCITY;
-				SwingUtilities.invokeLater(Tetris::setup);
+				SwingUtilities.invokeLater(Snake::setup);
 			}
 		});
 		final JButton med = new JButton("Medium Level");
 		med.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				velocity=VELOCITY/2;
-				SwingUtilities.invokeLater(Tetris::setup);
+				SwingUtilities.invokeLater(Snake::setup);
 			}
 		});
 		final JButton hard = new JButton("Hard Level");
 		hard.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				frame.setVisible(false);
-				velocity=VELOCITY/4;
-				SwingUtilities.invokeLater(Tetris::setup);
+				SwingUtilities.invokeLater(Snake::setup);
 			}
 		});
 		frame.add(easy,BorderLayout.NORTH);
@@ -71,12 +64,11 @@ public class Tetris {
 	}
 
 	private static void setup() {
-		JFrame frame = new JFrame("Tetris");
+		JFrame frame = new JFrame("Snake");
 
 		JPanel panel = new JPanel();
 	
-		panel.add(scoreLabel);
-		panel.setPreferredSize(new Dimension(400, 700));
+		panel.setPreferredSize(new Dimension(550, 700));
 		frame.add(panel);
 
 		frame.pack();
@@ -110,14 +102,11 @@ public class Tetris {
 					controller.moveRight();
 					break;
 
+				case KeyEvent.VK_UP:
+					controller.moveUp();
+					break;
 				case KeyEvent.VK_DOWN:
-					controller.dropDown();
-					break;
-				case KeyEvent.VK_L:
-					controller.rotateLeft();
-					break;
-				case KeyEvent.VK_R:
-					controller.rotateRight();
+					controller.moveDown();
 					break;
 
 				default:
@@ -128,19 +117,17 @@ public class Tetris {
 		Thread thread = new Thread(() -> {
 			while (true) {
 				try {
-					Thread.sleep(velocity);
+					Thread.sleep(250);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
 				if (controller.gameOver()) {
 					graphics.setColor(Color.RED);
-					graphics.drawString("GAME OVER", 180, 350);
+					graphics.drawString("GAME OVER", 225, 350);
 					break;
 
 				}
-				scoreLabel.setText("SCORE: " + Field.score);
-
-				SwingUtilities.invokeLater(controller::moveDown);
+				SwingUtilities.invokeLater(controller::move);
 			}
 		});
 		thread.setDaemon(true);
