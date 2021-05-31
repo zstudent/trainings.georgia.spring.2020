@@ -9,9 +9,13 @@ public class State {
 	Figure figure;
 	public int row;
 	public int col;
+	public int level;
+	public int score;
 
 	public State() {
 		this.field = new Field(COLUMNS, ROWS);
+		this.level = 0;
+		this.score = 0;
 		launchNewFigure();
 	}
 
@@ -52,5 +56,6 @@ public class State {
 			}
 		}
 	}
+	
 
 }

@@ -2,12 +2,15 @@ package tetris;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 
 public class LogicTests {
 
 	private Logic logic;
+	private Object object;
 
 	@Before
 	public void setUp() {
@@ -70,13 +73,14 @@ public class LogicTests {
 		logic.state.figure = new Figure(Figure.I);
 		logic.state.row = fieldHeight() - 1;
 		int row = logic.state.row;
-		Figure old = logic.state.figure; 
+		Figure old = logic.state.figure;
 		boolean success = logic.moveDown();
 		assertFalse(old == logic.state.figure);
 		assertEquals(0, logic.state.row);
 		assertTrue(success);
 		// TODO HOMEWORK:  check that old figure is copied to the field
 	}
+	
 
 	private int fieldHeight() {
 		return logic.state.field.data.length;

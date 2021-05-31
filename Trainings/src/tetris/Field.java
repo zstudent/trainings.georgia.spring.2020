@@ -10,11 +10,15 @@ public class Field {
 		this.data = new int[rows][cols];
 	}
 
-	public void removeFilledRows() {
+	public void removeFilledRows(State state) {
 		OUTER: for (int r = 0; r < data.length; r++) {
 			for (int c = 0; c < data[r].length; c++) {
 				if (data[r][c] == 0)
 					continue OUTER;
+			}
+			state.score += 100;
+			if((state.score / 100) % 3 == 0	) {
+				state.level++;				
 			}
 			for (int i = r; i > 0; i--) {
 				System.arraycopy(data[i - 1], 0, data[i], 0,
